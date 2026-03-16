@@ -63,8 +63,10 @@ class Aset extends CI_Controller
 			'active_menu_wujud' => 'active',
 			'aset' => $this->ma->getAsetWujud(),
 			'brg' => $this->mb->getDataBarang(),
-			'lokasi' => $this->ml->getLokasi()
+			'lokasi' => $this->ml->getLokasi(),
+			'kategori' => $this->mb->getKategori() // ambil kategori
 		);
+
 		$this->load->view('layouts/header', $data);
 		$this->load->view('aset/c_wujudBaru', $data);
 		$this->load->view('layouts/footer');
