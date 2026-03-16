@@ -45,6 +45,12 @@ class ModelUser extends CI_Model
 		return $res;
 	}
 
+	public function update_user($id_user, $data)
+	{
+		$this->db->where('id_user', $id_user);
+		return $this->db->update('users', $data);
+	}
+
 	public function getUserById($id_user)
 	{
 		return $this->db->get_where('users', ['id_user' => $id_user])->row_array();

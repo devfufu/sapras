@@ -211,14 +211,14 @@ class User extends CI_Controller
 			if ($password == $password_dua) {
 
 				$data_user = array(
-					'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT)
+					'password' => password_hash($this->input->post('password'), PASSWORD_ARGON2ID)
 				);
 
 				$id_user = $this->session->userdata('id_user');
 				$query = $this->mu->update_user($id_user, $data_user);
 				if ($query) {
 					$this->session->sess_destroy();
-					redirect('login');
+					redirect('/');
 				} else {
 					$this->session->set_flashdata('gagal', 'Diubah');
 					redirect('pengaturan');
