@@ -75,11 +75,11 @@
                                     <option value="2">TK</option>
                                     <option value="3">SD</option>
                                     <option value="4">SMK</option>
-                                    <option value="5">Bosp TK</option>
-                                    <option value="6">Bosp SD</option>
-                                    <option value="7">Bosp SMK</option>
-                                    <option value="8">Pemerintah</option>
-                                    <option value="9">SMKPK</option>
+                                    <option value="5">BOSP TK</option>
+                                    <option value="6">BOSP SD</option>
+                                    <option value="7">BOSP SMK</option>
+                                    <option value="8">HIBAH</option>
+                                    <option value="9">HIBAH UMUM</option>
                                 </select>
                             </div>
                         </div>
@@ -181,11 +181,11 @@
                                     <option value="TK">TK</option>
                                     <option value="SD">SD</option>
                                     <option value="SMK">SMK</option>
-                                    <option value="BospTK">BOSP TK</option>
-                                    <option value="BospSD">BOSP SD</option>
-                                    <option value="BospSMK">BOSP SMK</option>
-                                    <option value="Pemerintah">Hibah</option>
-                                    <option value="SMKPK">SMKPK</option>
+                                    <option value="BOSP TK">BOSP TK</option>
+                                    <option value="BOSP SD">BOSP SD</option>
+                                    <option value="BOSP SMK">BOSP SMK</option>
+                                    <option value="HIBAH">HIBAH</option>
+                                    <option value="HIBAH UMUM">HIBAH UMUM</option>
                                 </select>
                             </div>
                         </div>
