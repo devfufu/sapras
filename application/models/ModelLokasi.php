@@ -27,6 +27,7 @@ class ModelLokasi extends CI_Model {
 		$res = $this->db->delete("lokasi_aset");
 		return $res;
 	}
+  
 
 }
 

@@ -152,10 +152,10 @@
             <i class="fa fa-print"></i> Print
           </a>
 
-          <a href="<?= base_url('laporan/export_aset/') . $this->input->post('id_lokasi') ?>"
-            class="btn btn-success mt-4">
-            <i class="fa fa-file"></i> Export Excel
-          </a>
+          <a href="<?= base_url('laporan/export_aset/') . $lok['id_lokasi'] ?>"
+    class="btn btn-success mt-4">
+    <i class="fa fa-file"></i> Export Excel
+</a>
         <?php } else { ?>
 
           <!-- PRINT RANGE TAHUN -->

@@ -122,6 +122,13 @@ class ModelLaporan extends CI_Model
 
 		return $this->db->get()->result_array();
 	}
+  
+     public function getLokasiById($id_lokasi)
+      {
+          return $this->db
+              ->get_where('lokasi_aset', ['id_lokasi' => $id_lokasi])
+              ->row();
+      }
 }
 
 /* End of file ModelLaporan.php */

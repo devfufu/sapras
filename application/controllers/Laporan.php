@@ -103,19 +103,24 @@ class Laporan extends CI_Controller
 
 	public function export_aset_range($tahun_awal, $tahun_akhir)
 	{
-		$tahun_awal = $this->uri->segment(3);
-		$tahun_akhir = $this->uri->segment(4);
-
 		$aset = $this->ml->getAsetRangeTahun($tahun_awal, $tahun_akhir);
 
 		$spreadsheet = new Spreadsheet;
 		$sheet = $spreadsheet->getActiveSheet();
 
-		// Judul
+		// 🔥 JUDUL
+		$sheet->mergeCells('A1:F1');
 		$sheet->setCellValue('A1', 'LAPORAN DATA ASET');
-		$sheet->setCellValue('A2', 'TAHUN ' . $tahun_awal . ' - ' . $tahun_akhir);
+		$sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+		$sheet->getStyle('A1')->getFont()->setBold(true);
 
-		// Header tabel
+		// 🔥 SUB JUDUL (TAHUN)
+		$sheet->mergeCells('A2:F2');
+		$sheet->setCellValue('A2', 'TAHUN ' . $tahun_awal . ' - ' . $tahun_akhir);
+		$sheet->getStyle('A2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+		$sheet->getStyle('A2')->getFont()->setBold(true);
+
+		// 🔥 HEADER
 		$sheet->setCellValue('A4', 'NO');
 		$sheet->setCellValue('B4', 'NAMA');
 		$sheet->setCellValue('C4', 'VOLUME');
@@ -123,54 +128,64 @@ class Laporan extends CI_Controller
 		$sheet->setCellValue('E4', 'HARGA (Rp.)');
 		$sheet->setCellValue('F4', 'JUMLAH (Rp.)');
 
-		$kolom = 5;
-		$nomor = 1;
+		// Style header
+		$sheet->getStyle('A4:F4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+		$sheet->getStyle('A4:F4')->getFont()->setBold(true);
+
+		// 🔥 ISI DATA
+		$row = 5;
+		$no = 1;
 		$total = 0;
 
 		foreach ($aset as $item) {
 
-			$sheet->setCellValue('A' . $kolom, $nomor);
-			$sheet->setCellValue('B' . $kolom, $item['nama_barang']);
-			$sheet->setCellValue('C' . $kolom, $item['volume']);
-			$sheet->setCellValue('D' . $kolom, $item['satuan']);
-			$sheet->setCellValue('E' . $kolom, $item['harga']);
-			$sheet->setCellValue('F' . $kolom, $item['total_harga']);
+			$sheet->setCellValue('A' . $row, $no);
+			$sheet->setCellValue('B' . $row, $item['nama_barang']);
+			$sheet->setCellValue('C' . $row, $item['volume']);
+			$sheet->setCellValue('D' . $row, $item['satuan']);
+			$sheet->setCellValue('E' . $row, $item['harga']);
+			$sheet->setCellValue('F' . $row, $item['total_harga']);
 
 			$total += $item['total_harga'];
 
-			$kolom++;
-			$nomor++;
+			$row++;
+			$no++;
 		}
 
-		// Total
-		$sheet->setCellValue('E' . $kolom, 'TOTAL');
-		$sheet->setCellValue('F' . $kolom, $total);
+		// 🔥 TOTAL
+		$sheet->mergeCells('A' . $row . ':E' . $row);
+		$sheet->setCellValue('A' . $row, 'TOTAL');
+		$sheet->setCellValue('F' . $row, $total);
 
-		// Auto width kolom
-		foreach (range('A', 'F') as $columnID) {
-			$sheet->getColumnDimension($columnID)->setAutoSize(true);
-		}
+		$sheet->getStyle('A' . $row . ':F' . $row)->getFont()->setBold(true);
 
-		// Border tabel
-		$styleArray = [
-			'borders' => [
-				'allBorders' => [
-					'borderStyle' => Border::BORDER_THIN,
-				],
-			],
-		];
+		// 🔥 ALIGNMENT DATA
+		$sheet->getStyle('A5:A' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+		$sheet->getStyle('C5:D' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-		$sheet->getStyle('A4:F' . $kolom)->applyFromArray($styleArray);
-
-		// Format angka rupiah
-		$sheet->getStyle('E5:F' . $kolom)
+		// 🔥 FORMAT ANGKA
+		$sheet->getStyle('E5:F' . $row)
 			->getNumberFormat()
 			->setFormatCode('#,##0');
+
+		// 🔥 AUTO SIZE
+		foreach (range('A', 'F') as $col) {
+			$sheet->getColumnDimension($col)->setAutoSize(true);
+		}
+
+		// 🔥 BORDER
+		$sheet->getStyle('A4:F' . $row)->applyFromArray([
+			'borders' => [
+				'allBorders' => [
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+				],
+			],
+		]);
 
 		$writer = new Xlsx($spreadsheet);
 
 		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment;filename="Data_Aset_' . $tahun_awal . '_' . $tahun_akhir . '.xlsx"');
+		header('Content-Disposition: attachment;filename="Data_Aset_Tahun_' . $tahun_awal . '_' . $tahun_akhir . '.xlsx"');
 		header('Cache-Control: max-age=0');
 
 		$writer->save('php://output');
@@ -190,40 +205,87 @@ class Laporan extends CI_Controller
 		}
 	}
 
-	public function export_aset($id_lokasi, $tahun_perolehan)
+	public function export_aset($id_lokasi)
 	{
 		$aset = $this->ml->getAsetWujudExcel($id_lokasi);
+		$lokasi = $this->ml->getLokasiById($id_lokasi);
 
 		$spreadsheet = new Spreadsheet;
+		$sheet = $spreadsheet->getActiveSheet();
 
-		$spreadsheet->setActiveSheetIndex(0)
-			->setCellValue('A1', 'NO')
-			->setCellValue('B1', 'NAMA')
-			->setCellValue('C1', 'VOLUME')
-			->setCellValue('D1', 'SATUAN')
-			->setCellValue('E1', 'HARGA (Rp.)')
-			->setCellValue('F1', 'JUMLAH (Rp.)');
+		$sheet->mergeCells('A1:F1');
+		$sheet->setCellValue('A1', 'LAPORAN DATA ASET');
+		$sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+		$sheet->getStyle('A1')->getFont()->setBold(true);
 
-		$kolom = 2;
-		$nomor = 1;
+
+		$sheet->mergeCells('A2:F2');
+		$sheet->setCellValue('A2', 'LOKASI : ' . $lokasi->nama_lokasi);
+		$sheet->getStyle('A2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+		$sheet->getStyle('A2')->getFont()->setBold(true);
+
+		$sheet->setCellValue('A3', 'NO');
+		$sheet->setCellValue('B3', 'NAMA');
+		$sheet->setCellValue('C3', 'VOLUME');
+		$sheet->setCellValue('D3', 'SATUAN');
+		$sheet->setCellValue('E3', 'HARGA (Rp.)');
+		$sheet->setCellValue('F3', 'JUMLAH (Rp.)');
+
+		$sheet->getStyle('A3:F3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+		$sheet->getStyle('A3:F3')->getFont()->setBold(true);
+
+		$row = 4;
+		$no = 1;
+		$total = 0;
+
 		foreach ($aset as $item) {
 
-			$spreadsheet->setActiveSheetIndex(0)
-				->setCellValue('A' . $kolom, $nomor)
-				->setCellValue('B' . $kolom, $item->nama_barang)
-				->setCellValue('C' . $kolom, $item->volume)
-				->setCellValue('D' . $kolom, $item->satuan)
-				->setCellValue('E' . $kolom, $item->harga)
-				->setCellValue('F' . $kolom, $item->total_harga);
+			$sheet->setCellValue('A' . $row, $no);
+			$sheet->setCellValue('B' . $row, $item->nama_barang);
+			$sheet->setCellValue('C' . $row, $item->volume);
+			$sheet->setCellValue('D' . $row, $item->satuan);
+			$sheet->setCellValue('E' . $row, $item->harga);
+			$sheet->setCellValue('F' . $row, $item->total_harga);
 
-			$kolom++;
-			$nomor++;
+			$total += $item->total_harga;
+
+			$row++;
+			$no++;
 		}
+
+		// 🔥 TOTAL
+		$sheet->mergeCells('A' . $row . ':E' . $row);
+		$sheet->setCellValue('A' . $row, 'TOTAL');
+		$sheet->setCellValue('F' . $row, $total);
+
+		$sheet->getStyle('A' . $row . ':F' . $row)->getFont()->setBold(true);
+
+		// 🔥 RATA TENGAH KOLOM TERTENTU
+		$sheet->getStyle('A4:A' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+		$sheet->getStyle('C4:D' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+		// 🔥 FORMAT ANGKA (Rp)
+		$sheet->getStyle('E4:F' . $row)->getNumberFormat()
+			->setFormatCode('#,##0');
+
+		// 🔥 AUTO SIZE KOLOM
+		foreach (range('A', 'F') as $col) {
+			$sheet->getColumnDimension($col)->setAutoSize(true);
+		}
+
+		// 🔥 BORDER BIAR RAPIH
+		$sheet->getStyle('A3:F' . $row)->applyFromArray([
+			'borders' => [
+				'allBorders' => [
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+				],
+			],
+		]);
 
 		$writer = new Xlsx($spreadsheet);
 
 		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment;filename="Data Aset.xlsx"');
+		header('Content-Disposition: attachment;filename="Data_Aset_Perlokasi.xlsx"');
 		header('Cache-Control: max-age=0');
 
 		$writer->save('php://output');

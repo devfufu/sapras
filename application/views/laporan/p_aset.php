@@ -16,6 +16,16 @@
         font-family: 'Times New Roman', Times, serif;
         font-weight: bold;
     }
+  @media print {
+        table thead th {
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+    }
+  .table thead th {
+        text-align: center !important;
+        vertical-align: middle !important;
+    }
 </style>
 
 <body>
@@ -50,14 +60,14 @@
         <div class="row pt-3">
             <div class="col">
                 <table class="table table-bordered">
-                    <thead class="text-center">
-                        <tr>
+                    <thead>
+                        <tr class="text-center">
                             <th>NO</th>
                             <th>NAMA</th>
                             <th>VOLUME</th>
                             <th>SATUAN</th>
-                            <th>HARGA SATUAN (Rp.)</th>
-                            <th>JUMLAH (Rp.)</th>
+                            <th>HARGA SATUAN <br> (Rp.)</th>
+                            <th>JUMLAH <br> (Rp.)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -101,7 +111,7 @@
                             Kepala Sekolah
                             <br><br><br><br><br>
 
-                            <b>D. Jayadih, M.Kom</b><br>
+                            <b>Dr. Jayadih, M.Kom</b><br>
                             NIP.
                         </td>
 

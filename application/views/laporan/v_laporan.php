@@ -48,7 +48,7 @@
               <label>Pilih Jenis Mode</label>
               <select class="form-control" id="filterOption">
                 <option value="">-- Pilih Filter --</option>
-                <option value="lokasi">Lokasi & Tahun</option>
+                <option value="lokasi">Lokasi</option>
                 <option value="range">Range Tahun</option>
               </select>
             </div>
