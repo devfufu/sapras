@@ -41,10 +41,10 @@
             </div>
             <div class="card-body">
                 <?php if (validation_errors()): ?>
-                <div class="alert alert-danger col-md-8 alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <?= validation_errors(); ?>
-                </div>
+                    <div class="alert alert-danger col-md-8 alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <?= validation_errors(); ?>
+                    </div>
                 <?php endif ?>
                 <p>*Keterangan Kode Aset :</p>
                 <ul>
@@ -112,7 +112,7 @@
                                 <select name="id_lokasi" class="form-control" required>
                                     <option value="">- Pilih --</option>
                                     <?php foreach ($lokasi as $row): ?>
-                                    <option value="<?= $row['id_lokasi']; ?>"><?= $row['nama_lokasi']; ?></option>
+                                        <option value="<?= $row['id_lokasi']; ?>"><?= $row['nama_lokasi']; ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
@@ -141,7 +141,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="jenis_bantuan" class="col-sm-2 col-form-label">Jenis Bantuan</label>
+                            <label for="jenis_bantuan" class="col-sm-2 col-form-label">Sumber Pembelian</label>
                             <div class="col-sm-6">
                                 <select name="jenis_bantuan" class="form-control" required>
                                     <option value="">- Pilih --</option>
@@ -193,41 +193,41 @@
 <!-- /.content-wrapper -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script>
-function myFunction() {
-    var copyText = document.getElementById("myInput");
-    copyText.select();
-    copyText.setSelectionRange(0, 99999)
-    document.execCommand("copy");
-    alert("Teks berhasil disalin: " + copyText.value);
-}
+    function myFunction() {
+        var copyText = document.getElementById("myInput");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999)
+        document.execCommand("copy");
+        alert("Teks berhasil disalin: " + copyText.value);
+    }
 
-$(document).ready(function() {
-    $('.js-example-basic-single').select2({
-        theme: "classic",
-        placeholder: '-- Pilih --',
-        ajax: {
-            url: "<?= base_url('aset_wujud/cari') ?>",
-            dataType: 'json',
-            delay: 250,
-            data: function(params) {
-                return {
-                    bar: params.term
-                };
-            },
-            processResults: function(data) {
-                var results = [];
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2({
+            theme: "classic",
+            placeholder: '-- Pilih --',
+            ajax: {
+                url: "<?= base_url('aset_wujud/cari') ?>",
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        bar: params.term
+                    };
+                },
+                processResults: function(data) {
+                    var results = [];
 
-                $.each(data, function(index, item) {
-                    results.push({
-                        id: item.id_barang,
-                        text: item.nama_barang
+                    $.each(data, function(index, item) {
+                        results.push({
+                            id: item.id_barang,
+                            text: item.nama_barang
+                        });
                     });
-                });
-                return {
-                    results: results
-                };
+                    return {
+                        results: results
+                    };
+                }
             }
-        }
+        });
     });
-});
 </script>

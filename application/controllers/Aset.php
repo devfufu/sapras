@@ -64,7 +64,7 @@ class Aset extends CI_Controller
 			'aset' => $this->ma->getAsetWujud(),
 			'brg' => $this->mb->getDataBarang(),
 			'lokasi' => $this->ml->getLokasi(),
-			'kategori' => $this->mb->getKategori() // ambil kategori
+			'kategori' => $this->mb->getKategori()
 		);
 
 		$this->load->view('layouts/header', $data);
@@ -508,26 +508,23 @@ class Aset extends CI_Controller
 
 	public function filterAset()
 	{
-		$id_kategori = $this->input->post('id_kategori');
-		$tahun_perolehan = $this->input->post('tahun_perolehan');
-		$kondisi = $this->input->post('kondisi');
+		$id_kategori = $this->input->post('id_kategori', true);
+		$tahun_perolehan = $this->input->post('tahun_perolehan', true);
+		$kondisi = $this->input->post('kondisi', true);
+		$jenis_bantuan = $this->input->post('jenis_bantuan', true);
 
 		$data = array(
 			'title' => 'Aset Berwujud',
 			'active_menu_open' => 'menu-open',
 			'active_menu_aset' => 'active',
 			'active_menu_wujud' => 'active',
-			'aset' => $this->ma->getFilterAsetWujud($id_kategori, $tahun_perolehan, $kondisi),
+			'aset' => $this->ma->getFilterAsetWujud($id_kategori, $tahun_perolehan, $kondisi, $jenis_bantuan),
 			'kategori' => $this->mk->getKategoriBarang()
 		);
-		if (count($data['aset']) > 0) {
-			$this->load->view('layouts/header', $data);
-			$this->load->view('aset/v_wujud', $data);
-			$this->load->view('layouts/footer');
-		} else {
-			$this->session->set_flashdata('gagal', 'Ditemukan');
-			redirect('aset_wujud');
-		}
+
+		$this->load->view('layouts/header', $data);
+		$this->load->view('aset/v_wujud', $data);
+		$this->load->view('layouts/footer');
 	}
 
 	public function dihapuskanAset()

@@ -6,13 +6,15 @@ class ModelAset extends CI_Model
 
 	public function getAsetWujud()
 	{
-		$this->db->select('*');
+		$this->db->select('a.*, b.nama_barang, c.nama_lokasi');
 		$this->db->from('asets a');
 		$this->db->join('barang b', 'b.id_barang = a.id_barang');
-		$this->db->where('volume !=', 0);
-		$this->db->where('volume >', 0);
-		$query = $this->db->get();
-		return $query->result_array();
+		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi'); // TAMBAHAN
+
+		$this->db->where('a.volume !=', 0);
+		$this->db->where('a.volume >', 0);
+
+		return $this->db->get()->result_array();
 	}
 
 	public function getAsetDihapuskan()
@@ -54,18 +56,31 @@ class ModelAset extends CI_Model
 		return $query->result_array();
 	}
 
-	public function getFilterAsetWujud($id_kategori, $tahun_perolehan, $kondisi)
+	public function getFilterAsetWujud($id_kategori = null, $tahun_perolehan = null, $kondisi = null, $jenis_bantuan = null)
 	{
 		$this->db->select('*');
 		$this->db->from('asets a');
 		$this->db->join('barang b', 'b.id_barang = a.id_barang');
 		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi');
 		$this->db->join('kategori_barang d', 'd.id_kategori = b.id_kategori');
-		$this->db->where('b.id_kategori', $id_kategori);
-		$this->db->where('tahun_perolehan', $tahun_perolehan);
-		$this->db->where('kondisi', $kondisi);
-		$query = $this->db->get();
-		return $query->result_array();
+
+		if (!empty($id_kategori)) {
+			$this->db->where('b.id_kategori', $id_kategori);
+		}
+
+		if (!empty($tahun_perolehan)) {
+			$this->db->where('tahun_perolehan', $tahun_perolehan);
+		}
+
+		if (!empty($kondisi)) {
+			$this->db->where('kondisi', $kondisi);
+		}
+
+		if (!empty($jenis_bantuan)) {
+			$this->db->where('a.jenis_bantuan', $jenis_bantuan);
+		}
+
+		return $this->db->get()->result_array();
 	}
 
 	public function getFilterAsetDihapuskan($id_kategori, $tgl_penghapusan)

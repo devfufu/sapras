@@ -16,13 +16,15 @@
         font-family: 'Times New Roman', Times, serif;
         font-weight: bold;
     }
-  @media print {
+
+    @media print {
         table thead th {
             text-align: center !important;
             vertical-align: middle !important;
         }
     }
-  .table thead th {
+
+    .table thead th {
         text-align: center !important;
         vertical-align: middle !important;
     }
@@ -63,7 +65,10 @@
                     <thead>
                         <tr class="text-center">
                             <th>NO</th>
+                            <th>KODE ASET</th>
                             <th>NAMA</th>
+                            <th>LOKASI</th>
+                            <th>SUMBER PEMBELIAN</th>
                             <th>VOLUME</th>
                             <th>SATUAN</th>
                             <th>HARGA SATUAN <br> (Rp.)</th>
@@ -82,7 +87,10 @@
 
                             <tr>
                                 <td><?= $no++; ?></td>
+                                <td><?= $row['kode_aset'] ?></td>
                                 <td><?= $row['nama_barang'] ?></td>
+                                <td><?= $row['nama_lokasi'] ?></td>
+                                <td><?= $row['jenis_bantuan'] ?></td>
                                 <td><?= $row['volume'] ?></td>
                                 <td><?= $row['satuan'] ?></td>
                                 <td><?= laporan($row['harga']) ?></td>
@@ -92,7 +100,7 @@
                         <?php endforeach; ?>
 
                         <tr>
-                            <td colspan="5"><b>Total</b></td>
+                            <td colspan="8"><b>Total</b></td>
                             <td><b><?= laporan($sum) ?></b></td>
                         </tr>
 

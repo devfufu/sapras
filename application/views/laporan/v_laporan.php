@@ -59,14 +59,11 @@
           <div class="card-header bg-primary">
             Filter Berdasarkan Lokasi & Tahun
           </div>
-
           <form action="<?= base_url('laporan/search_aset') ?>" method="post">
-
             <div class="card-body">
-
               <div class="form-group">
                 <label>Lokasi</label>
-                <select name="id_lokasi" class="form-control" required>
+                <select name="id_lokasi" class="form-control">
                   <option value="">-- Pilih Lokasi --</option>
 
                   <?php foreach ($lokasi as $l) { ?>
@@ -79,6 +76,21 @@
 
                 </select>
               </div>
+              <div class="form-group">
+                <label>Sumber Pembelian</label>
+                <select name="jenis_bantuan" class="form-control">
+                  <option value="">- Pilih Sumber Pembelian --</option>
+                  <option value="Yayasan">Yayasan</option>
+                  <option value="Tk">TK</option>
+                  <option value="Sd">SD</option>
+                  <option value="Smk">SMK</option>
+                  <option value="BospTK">BOSP TK</option>
+                  <option value="BospSD">BOSP SD</option>
+                  <option value="BospSMK">BOSP SMK</option>
+                  <option value="Hibah">HIBAH</option>
+                  <option value="hibahUmum">HIBAH UMUM</option>
+                </select>
+              </div>
 
             </div>
 
@@ -87,7 +99,6 @@
                 Cari Data
               </button>
             </div>
-
           </form>
         </div>
         <div class="card" id="formRange" style="display:none;">
@@ -100,7 +111,7 @@
 
               <div class="form-group">
                 <label>Dari Tahun</label>
-                <select name="tahun_awal" class="form-control" required>
+                <select name="tahun_awal" class="form-control">
 
                   <option value="">-- Pilih Tahun Awal --</option>
 

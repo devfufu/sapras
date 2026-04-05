@@ -64,6 +64,7 @@ $route['aset_wujud/ubah'] = 'Aset/ubahAset';
 $route['aset_wujud/detail/(:any)'] = 'Aset/detailAset/(:any)';
 $route['aset_wujud/hapus/(:any)'] = 'Aset/hapusAset/(:any)';
 $route['aset_wujud/filter'] = 'Aset/filterAset';
+
 //Dihapuskan
 $route['aset_dihapuskan'] = 'Aset/dihapuskanAset';
 $route['aset_dihapuskan/detail/(:any)'] = 'Aset/detailDihapuskanAset/(:any)';
@@ -114,14 +115,14 @@ $route['penghapusan'] = 'Penghapusan/index';
 $route['penghapusan/simpan'] = 'Penghapusan/simpanPenghapusan';
 
 //Laporan
-//Laporan Data Aset
 $route['laporan/aset'] = 'Laporan/aset';
 $route['laporan/search_aset'] = 'Laporan/searchAset';
 $route['laporan/search_asetRange'] = 'Laporan/searchAsetRange';
-$route['laporan/print_aset/(:any)'] = 'Laporan/printAset/$1';
-$route['laporan/export_aset/(:any)'] = 'Laporan/export_aset/$1';
+$route['laporan/print_aset'] = 'Laporan/printAset';
+$route['laporan/export_aset'] = 'Laporan/export_aset';
 $route['laporan/print_aset_range/(:num)/(:num)'] = 'laporan/print_aset_range/$1/$2';
 $route['laporan/export_aset_range/(:num)/(:num)'] = 'laporan/export_aset_range/$1/$2';
+
 //Laporan Penghapusan
 $route['laporan/penghapusan'] = 'Laporan/penghapusan';
 $route['laporan/search_penghapusan'] = 'Laporan/searchPenghapusan';

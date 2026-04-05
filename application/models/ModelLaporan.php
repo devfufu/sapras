@@ -4,25 +4,42 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class ModelLaporan extends CI_Model
 {
 
-	public function getAsetWujud($id_lokasi)
+	public function getAsetWujud($id_lokasi = null, $jenis_bantuan = null)
 	{
 		$this->db->select('*');
 		$this->db->from('asets a');
 		$this->db->join('barang b', 'b.id_barang = a.id_barang');
-		$this->db->where('volume >', 0);
-		$this->db->where('a.id_lokasi', $id_lokasi);
+		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi');
 
-		$query = $this->db->get();
-		return $query->result_array();
+		$this->db->where('a.volume >', 0);
+
+		if (!empty($id_lokasi)) {
+			$this->db->where('a.id_lokasi', $id_lokasi);
+		}
+
+		if (!empty($jenis_bantuan)) {
+			$this->db->where('a.jenis_bantuan', $jenis_bantuan);
+		}
+
+		return $this->db->get()->result_array();
 	}
 
-	public function getAsetWujudExcel($id_lokasi)
+	public function getAsetWujudExcel($id_lokasi, $jenis_bantuan)
 	{
-		$this->db->select('*');
+		$this->db->select('a.*, b.nama_barang, l.nama_lokasi');
 		$this->db->from('asets a');
 		$this->db->join('barang b', 'b.id_barang = a.id_barang');
+		$this->db->join('lokasi_aset l', 'l.id_lokasi = a.id_lokasi');
+
 		$this->db->where('a.volume >', 0);
-		$this->db->where('a.id_lokasi', $id_lokasi);
+
+		if (!empty($id_lokasi)) {
+			$this->db->where('a.id_lokasi', $id_lokasi);
+		}
+
+		if (!empty($jenis_bantuan)) {
+			$this->db->where('a.jenis_bantuan', $jenis_bantuan);
+		}
 
 		return $this->db->get()->result();
 	}
@@ -122,13 +139,13 @@ class ModelLaporan extends CI_Model
 
 		return $this->db->get()->result_array();
 	}
-  
-     public function getLokasiById($id_lokasi)
-      {
-          return $this->db
-              ->get_where('lokasi_aset', ['id_lokasi' => $id_lokasi])
-              ->row();
-      }
+
+	public function getLokasiById($id_lokasi)
+	{
+		return $this->db
+			->get_where('lokasi_aset', ['id_lokasi' => $id_lokasi])
+			->row();
+	}
 }
 
 /* End of file ModelLaporan.php */
