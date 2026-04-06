@@ -118,24 +118,37 @@ class ModelLaporan extends CI_Model
 		return $res->result();
 	}
 
-	public function getAsetRangeTahun($tahun_awal, $tahun_akhir)
+	public function getAsetRangeTahun($tahun_awal = null, $tahun_akhir = null, $jenis_bantuan = null)
 	{
 		$this->db->select('*');
 		$this->db->from('asets a');
 		$this->db->join('barang b', 'b.id_barang = a.id_barang');
+		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi');
 		$this->db->where('volume >', 0);
-		$this->db->where('tahun_perolehan >=', $tahun_awal);
-		$this->db->where('tahun_perolehan <=', $tahun_akhir);
+
+		if (!empty($tahun_awal)) {
+			$this->db->where('tahun_perolehan >=', $tahun_awal);
+		}
+		if (!empty($tahun_akhir)) {
+			$this->db->where('tahun_perolehan <=', $tahun_akhir);
+		}
+		if (!empty($jenis_bantuan)) {
+			$this->db->where('a.jenis_bantuan', $jenis_bantuan);
+		}
 
 		return $this->db->get()->result_array();
 	}
 
-	public function getAsetLabelPrint()
+	public function getAsetLabelPrint($jenis_bantuan = null)
 	{
 		$this->db->select('a.*, b.nama_barang, b.merek, b.tahun_perolehan');
 		$this->db->from('asets a');
 		$this->db->join('barang b', 'b.id_barang = a.id_barang');
 		$this->db->where('a.volume >', 0);
+
+		if (!empty($jenis_bantuan)) {
+			$this->db->where('a.jenis_bantuan', $jenis_bantuan);
+		}
 
 		return $this->db->get()->result_array();
 	}

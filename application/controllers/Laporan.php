@@ -39,6 +39,7 @@ class Laporan extends CI_Controller
 	{
 		$tahun_awal  = $this->input->post('tahun_awal');
 		$tahun_akhir = $this->input->post('tahun_akhir');
+		$jenis_bantuan = $this->input->post('jenis_bantuan', true);
 
 		$data = array(
 			'title' => 'Laporan Data Aset',
@@ -46,7 +47,7 @@ class Laporan extends CI_Controller
 			'active_menu_lpr' => 'active',
 			'active_menu_ast' => 'active',
 			'lokasi' => $this->ml->getLokasi(),
-			'aset' => $this->ml->getAsetRangeTahun($tahun_awal, $tahun_akhir),
+			'aset' => $this->ml->getAsetRangeTahun($tahun_awal, $tahun_akhir, $jenis_bantuan),
 			'range' => $tahun_awal . " - " . $tahun_akhir
 		);
 
@@ -90,22 +91,26 @@ class Laporan extends CI_Controller
 
 	public function print_aset_range($tahun_awal, $tahun_akhir)
 	{
+		$jenis_bantuan = $this->input->get('jenis_bantuan');
+
 		$data = array(
 			'title' => 'Print Laporan Aset',
-			'aset' => $this->ml->getAsetRangeTahun($tahun_awal, $tahun_akhir),
+			'aset' => $this->ml->getAsetRangeTahun($tahun_awal, $tahun_akhir, $jenis_bantuan),
 			'range' => $tahun_awal . " - " . $tahun_akhir
 		);
+
 		if (count($data['aset']) > 0) {
 			$this->load->view('laporan/p_aset', $data);
 		} else {
-			$this->session->set_flashdata('gagal', 'Ditemukan');
+			$this->session->set_flashdata('gagal', 'Data tidak ditemukan');
 			redirect('laporan/aset');
 		}
 	}
 
 	public function export_aset_range($tahun_awal, $tahun_akhir)
 	{
-		$aset = $this->ml->getAsetRangeTahun($tahun_awal, $tahun_akhir);
+		$jenis_bantuan = $this->input->get('jenis_bantuan');
+		$aset = $this->ml->getAsetRangeTahun($tahun_awal, $tahun_akhir, $jenis_bantuan);
 
 		$spreadsheet = new Spreadsheet;
 		$sheet = $spreadsheet->getActiveSheet();
@@ -122,13 +127,15 @@ class Laporan extends CI_Controller
 
 		$sheet->setCellValue('A4', 'NO');
 		$sheet->setCellValue('B4', 'NAMA');
-		$sheet->setCellValue('C4', 'VOLUME');
-		$sheet->setCellValue('D4', 'SATUAN');
-		$sheet->setCellValue('E4', 'HARGA (Rp.)');
-		$sheet->setCellValue('F4', 'JUMLAH (Rp.)');
+		$sheet->setCellValue('C4', 'LOKASI');
+		$sheet->setCellValue('D4', 'SUMBER PEMBELIAN');
+		$sheet->setCellValue('E4', 'VOLUME');
+		$sheet->setCellValue('F4', 'SATUAN');
+		$sheet->setCellValue('G4', 'HARGA (Rp.)');
+		$sheet->setCellValue('H4', 'JUMLAH (Rp.)');
 
-		$sheet->getStyle('A4:F4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-		$sheet->getStyle('A4:F4')->getFont()->setBold(true);
+		$sheet->getStyle('A4:H4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+		$sheet->getStyle('A4:H4')->getFont()->setBold(true);
 
 		$row = 5;
 		$no = 1;
@@ -138,10 +145,12 @@ class Laporan extends CI_Controller
 
 			$sheet->setCellValue('A' . $row, $no);
 			$sheet->setCellValue('B' . $row, $item['nama_barang']);
-			$sheet->setCellValue('C' . $row, $item['volume']);
-			$sheet->setCellValue('D' . $row, $item['satuan']);
-			$sheet->setCellValue('E' . $row, $item['harga']);
-			$sheet->setCellValue('F' . $row, $item['total_harga']);
+			$sheet->setCellValue('C' . $row, $item['nama_lokasi']);
+			$sheet->setCellValue('D' . $row, $item['jenis_bantuan']);
+			$sheet->setCellValue('E' . $row, $item['volume']);
+			$sheet->setCellValue('F' . $row, $item['satuan']);
+			$sheet->setCellValue('G' . $row, $item['harga']);
+			$sheet->setCellValue('H' . $row, $item['total_harga']);
 
 			$total += $item['total_harga'];
 
@@ -149,25 +158,25 @@ class Laporan extends CI_Controller
 			$no++;
 		}
 
-		$sheet->mergeCells('A' . $row . ':E' . $row);
+		$sheet->mergeCells('A' . $row . ':G' . $row);
 		$sheet->setCellValue('A' . $row, 'TOTAL');
-		$sheet->setCellValue('F' . $row, $total);
+		$sheet->setCellValue('H' . $row, $total);
 
-		$sheet->getStyle('A' . $row . ':F' . $row)->getFont()->setBold(true);
+		$sheet->getStyle('A' . $row . ':H' . $row)->getFont()->setBold(true);
 
 		$sheet->getStyle('A5:A' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-		$sheet->getStyle('C5:D' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+		$sheet->getStyle('C5:H' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-		$sheet->getStyle('E5:F' . $row)
+		$sheet->getStyle('E5:H' . $row)
 			->getNumberFormat()
 			->setFormatCode('#,##0');
 
 
-		foreach (range('A', 'F') as $col) {
+		foreach (range('A', 'H') as $col) {
 			$sheet->getColumnDimension($col)->setAutoSize(true);
 		}
 
-		$sheet->getStyle('A4:F' . $row)->applyFromArray([
+		$sheet->getStyle('A4:H' . $row)->applyFromArray([
 			'borders' => [
 				'allBorders' => [
 					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -523,6 +532,38 @@ class Laporan extends CI_Controller
 		$this->load->view('layouts/header', $data);
 		$this->load->view('laporan/v_p_label', $data);
 		$this->load->view('layouts/footer');
+	}
+
+	public function filterLabel()
+	{
+		$jenis_bantuan = $this->input->post('jenis_bantuan', true);
+
+		$data = array(
+			'title' => 'Laporan Aset',
+			'active_menu_lp' => 'menu-open',
+			'active_menu_lpr' => 'active',
+			'active_print_label' => 'active',
+			'lokasi' => $this->ml->getLokasi(),
+			'aset' => $this->ml->getAsetLabelPrint($jenis_bantuan)
+		);
+
+		if (count($data['aset']) > 0) {
+			$this->load->view('layouts/header', $data);
+			$this->load->view('laporan/v_p_label', $data);
+			$this->load->view('layouts/footer');
+		} else {
+			$this->session->set_flashdata('gagal', 'Data tidak ditemukan');
+			redirect('laporan/printLabel');
+		}
+	}
+
+	public function printLabelAll()
+	{
+		$jenis_bantuan = $this->input->get('jenis_bantuan');
+
+		$data['aset'] = $this->ml->getAsetLabelPrint($jenis_bantuan);
+
+		$this->load->view('laporan/v_label_print_all', $data);
 	}
 
 	public function cetakLabel($id_aset, $ukuran)

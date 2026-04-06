@@ -43,6 +43,41 @@
                 </div>
             </div>
             <div class="card-body">
+                <form action="<?= base_url('laporan/filterLabel') ?>" method="POST">
+                    <div class="row justify-content-left align-items-center mb-3">
+                        <div class="col-md-3">
+                            <select name="jenis_bantuan" class="form-control">
+                                <option value="">- Pilih Sumber Dana --</option>
+                                <option value="Yayasan">Yayasan</option>
+                                <option value="Tk">TK</option>
+                                <option value="Sd">SD</option>
+                                <option value="Smk">SMK</option>
+                                <option value="BospTK">BOSP TK</option>
+                                <option value="BospSD">BOSP SD</option>
+                                <option value="BospSMK">BOSP SMK</option>
+                                <option value="Hibah">HIBAH</option>
+                                <option value="hibahUmum">HIBAH UMUM</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-success btn-block">
+                                Filter
+                            </button>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-info btn-block">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <a href="<?= base_url('laporan/printLabelAll') . '?jenis_bantuan=' . urlencode($this->input->post('jenis_bantuan')) ?>"
+                    class="btn btn-danger mt-2 mb-2">
+                    <i class="fa fa-print"></i> Print
+                </a>
+
                 <div class="table-responsive">
                     <table id="example2" class="table table-bordered table-striped">
                         <thead>
@@ -50,6 +85,7 @@
                                 <th>No</th>
                                 <th>Kode Aset</th>
                                 <th>Nama Barang</th>
+                                <th>Sumber Pembelian</th>
                                 <th>Merek</th>
                                 <th>Tahun Perolehan</th>
                                 <th>Aksi</th>
@@ -59,39 +95,40 @@
                             <?php
                             $no = 1;
                             foreach ($aset as $row): ?>
-                                <tr>
-                                    <td><?= $no++; ?></td>
-                                    <td><?= $row['kode_aset']; ?></td>
-                                    <td><?= $row['nama_barang']; ?></td>
-                                    <td><?= $row['merek']; ?></td>
-                                    <td><?= $row['tahun_perolehan']; ?></td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fas fa-print"></i> Cetak
-                                            </button>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td><?= $row['kode_aset']; ?></td>
+                                <td><?= $row['nama_barang']; ?></td>
+                                <td><?= $row['jenis_bantuan']; ?></td>
+                                <td><?= $row['merek']; ?></td>
+                                <td><?= $row['tahun_perolehan']; ?></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fas fa-print"></i> Cetak
+                                        </button>
 
-                                            <div class="dropdown-menu">
+                                        <div class="dropdown-menu">
 
-                                                <a class="dropdown-item"
-                                                    href="<?= base_url('laporan/cetakLabel/' . $row['id_aset'] . '/kecil') ?>">
-                                                    Label Kecil
-                                                </a>
+                                            <a class="dropdown-item"
+                                                href="<?= base_url('laporan/cetakLabel/' . $row['id_aset'] . '/kecil') ?>">
+                                                Label Kecil
+                                            </a>
 
-                                                <a class="dropdown-item"
-                                                    href="<?= base_url('laporan/cetakLabel/' . $row['id_aset'] . '/sedang') ?>">
-                                                    Label Sedang
-                                                </a>
+                                            <a class="dropdown-item"
+                                                href="<?= base_url('laporan/cetakLabel/' . $row['id_aset'] . '/sedang') ?>">
+                                                Label Sedang
+                                            </a>
 
-                                                <a class="dropdown-item"
-                                                    href="<?= base_url('laporan/cetakLabel/' . $row['id_aset'] . '/besar') ?>">
-                                                    Label Besar
-                                                </a>
+                                            <a class="dropdown-item"
+                                                href="<?= base_url('laporan/cetakLabel/' . $row['id_aset'] . '/besar') ?>">
+                                                Label Besar
+                                            </a>
 
-                                            </div>
                                         </div>
-                                    </td>
-                                </tr>
+                                    </div>
+                                </td>
+                            </tr>
                             <?php endforeach ?>
                         </tbody>
                     </table>
@@ -111,11 +148,11 @@
 <script src="<?= base_url() ?>src/backend/plugins/datatables/jquery.dataTables.js"></script>
 <script src="<?= base_url() ?>src/backend/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script>
-    $(function() {
-        $("#example2").DataTable({
-            "language": {
-                "sSearch": "Cari"
-            }
-        });
+$(function() {
+    $("#example2").DataTable({
+        "language": {
+            "sSearch": "Cari"
+        }
     });
+});
 </script>

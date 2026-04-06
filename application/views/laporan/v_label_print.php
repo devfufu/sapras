@@ -8,112 +8,112 @@
 <head>
     <title>Cetak Label Aset</title>
     <style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .label {
+        width: 8cm;
+        height: 2.1cm;
+        border: 2px solid #000;
+        padding: 2px;
+        box-sizing: border-box;
+    }
+
+    .row-label {
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+
+    /* KECIL */
+
+    .label-kecil {
+        transform: scale(1);
+
+    }
+
+    /* SEDANG */
+
+    .label-sedang {
+        transform: scale(1.3);
+    }
+
+    /* BESAR */
+
+    .label-besar {
+        transform: scale(1.6);
+    }
+
+
+    /* layout */
+
+    .row-label {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo {
+        width: 80px;
+        text-align: center;
+    }
+
+    .logo img {
+        width: 60px;
+    }
+
+    .info {
+        flex: 1;
+        text-align: center;
+        border-left: 2px solid black;
+        border-right: 2px solid black;
+        padding: 5px;
+    }
+
+    .barcode {
+        width: 90px;
+        text-align: center;
+    }
+
+    .barcode img {
+        width: 70px;
+    }
+
+    .judul {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .nomor {
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .nama_barang {
+        font-size: 11px;
+        font-weight: bold;
+    }
+
+    @media print {
+
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
         }
 
         .label {
-            width: 8cm;
-            height: 2.1cm;
-            border: 2px solid #000;
-            padding: 2px;
-            box-sizing: border-box;
+            page-break-inside: avoid;
         }
 
-        .row-label {
-            display: flex;
-            align-items: center;
-            height: 100%;
-        }
+    }
 
-        /* KECIL */
-
-        .label-kecil {
-            transform: scale(1);
-
-        }
-
-        /* SEDANG */
-
-        .label-sedang {
-            transform: scale(1.3);
-        }
-
-        /* BESAR */
-
-        .label-besar {
-            transform: scale(1.6);
-        }
-
-
-        /* layout */
-
-        .row-label {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo {
-            width: 80px;
-            text-align: center;
-        }
-
-        .logo img {
-            width: 60px;
-        }
-
-        .info {
-            flex: 1;
-            text-align: center;
-            border-left: 2px solid black;
-            border-right: 2px solid black;
-            padding: 5px;
-        }
-
-        .barcode {
-            width: 90px;
-            text-align: center;
-        }
-
-        .barcode img {
-            width: 70px;
-        }
-
-        .judul {
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .nomor {
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .nama_barang {
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        @media print {
-
-            body {
-                margin: 0;
-            }
-
-            .label {
-                page-break-inside: avoid;
-            }
-
-        }
-
-        * {
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
+    * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
     </style>
 </head>
 
@@ -155,9 +155,9 @@
     </div>
 </body>
 <script>
-    window.onafterprint = function() {
-        window.location.href = "<?= base_url('laporan/printLabel') ?>";
-    };
+window.onafterprint = function() {
+    window.location.href = "<?= base_url('laporan/printLabel') ?>";
+};
 </script>
 
 

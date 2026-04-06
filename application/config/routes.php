@@ -128,16 +128,21 @@ $route['laporan/penghapusan'] = 'Laporan/penghapusan';
 $route['laporan/search_penghapusan'] = 'Laporan/searchPenghapusan';
 $route['laporan/print_penghapusan/(:any)/(:any)'] = 'Laporan/printPenghapusan/(:any)/(:any)';
 $route['laporan/export_penghapusan/(:any)/(:any)'] = 'Laporan/export_penghapusan/(:any)/(:any)';
+
 //Laporan QR Code
 $route['laporan/qr_code'] = 'Laporan/qrcodeAset';
 $route['laporan/print_qrcode'] = 'Laporan/printQrcode';
+
 //Laporan Pengadaan
 $route['laporan/pengadaan'] = 'Laporan/pengadaan';
 $route['laporan/search_pengadaan'] = 'Laporan/searchPengadaan';
 $route['laporan/print_pengadaan/(:any)/(:any)'] = 'Laporan/printPengadaan/(:any)/(:any)';
 $route['laporan/export_pengadaan/(:any)/(:any)'] = 'Laporan/export_pengadaan/(:any)/(:any)';
+
 //Laporan Print Label All data
 $route['laporan/printLabel'] = 'Laporan/printLabel';
+$route['laporan/filterLabel'] = 'Laporan/filterLabel';
+$route['laporan/printLabelAll'] = 'Laporan/printLabelAll';
 $route['laporan/cetakLabel/(:any)/(:any)'] = 'Laporan/cetakLabel/$1/$2';
 
 

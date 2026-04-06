@@ -145,6 +145,24 @@
                 </select>
               </div>
 
+
+              <div class="form-group">
+                <label>Sumber Pembelian</label>
+                <select name="jenis_bantuan" class="form-control">
+                  <option value="">- Pilih Sumber Pembelian --</option>
+                  <option value="Yayasan">Yayasan</option>
+                  <option value="Tk">TK</option>
+                  <option value="Sd">SD</option>
+                  <option value="Smk">SMK</option>
+                  <option value="BospTK">BOSP TK</option>
+                  <option value="BospSD">BOSP SD</option>
+                  <option value="BospSMK">BOSP SMK</option>
+                  <option value="Hibah">HIBAH</option>
+                  <option value="hibahUmum">HIBAH UMUM</option>
+                </select>
+              </div>
+
+
             </div>
 
             <div class="card-footer">
@@ -165,12 +183,16 @@
             <i class="fa fa-file"></i> Export Excel
           </a>
         <?php } else { ?>
-          <a href="<?= base_url('laporan/print_aset_range/') . $this->input->post('tahun_awal') . '/' . $this->input->post('tahun_akhir') ?>"
-            class="btn btn-danger mt-4">
+          <a href="<?= base_url('laporan/print_aset_range/'
+                      . $this->input->post('tahun_awal') . '/'
+                      . $this->input->post('tahun_akhir'))
+                      . '?jenis_bantuan=' . $this->input->post('jenis_bantuan') ?>" class="btn btn-danger mt-4">
             <i class="fa fa-print"></i> Print
           </a>
-          <a href="<?= base_url('laporan/export_aset_range/') . $this->input->post('tahun_awal') . '/' . $this->input->post('tahun_akhir') ?>"
-            class="btn btn-success mt-4">
+          <a href="<?= base_url('laporan/export_aset_range/')
+                      . $this->input->post('tahun_awal') . '/'
+                      . $this->input->post('tahun_akhir')
+                      . '?jenis_bantuan=' . $this->input->post('jenis_bantuan') ?>" class="btn btn-success mt-4">
             <i class="fa fa-file"></i> Export Excel
           </a>
         <?php } ?>

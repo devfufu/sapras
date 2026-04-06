@@ -52,7 +52,6 @@
                 <option value="range">Range Tahun</option>
               </select>
             </div>
-
           </div>
         </div>
         <div class="card" id="formLokasi" style="display:none;">
@@ -144,6 +143,23 @@
 
                 </select>
               </div>
+
+              <div class="form-group">
+                <label>Sumber Pembelian</label>
+                <select name="jenis_bantuan" class="form-control">
+                  <option value="">- Pilih Sumber Pembelian --</option>
+                  <option value="Yayasan">Yayasan</option>
+                  <option value="Tk">TK</option>
+                  <option value="Sd">SD</option>
+                  <option value="Smk">SMK</option>
+                  <option value="BospTK">BOSP TK</option>
+                  <option value="BospSD">BOSP SD</option>
+                  <option value="BospSMK">BOSP SMK</option>
+                  <option value="Hibah">HIBAH</option>
+                  <option value="hibahUmum">HIBAH UMUM</option>
+                </select>
+              </div>
+
 
             </div>
 
