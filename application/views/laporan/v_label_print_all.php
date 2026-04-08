@@ -125,7 +125,8 @@
 
                     <!-- INFO -->
                     <div class="info">
-                        <div class="judul">SMK FADILAH</div>
+                        <div class="judul"> <?= !empty($judul) ? $judul : 'Label Default' ?></div>
+                        <div class="judul"> <?= !empty($jenis_bantuan) ? $jenis_bantuan : 'Label Default' ?></div>
                         <div class="nomor">No: <?= $a['kode_aset']; ?></div>
                         <div class="nama_barang"><?= $a['nama_barang']; ?></div>
                     </div>
@@ -144,7 +145,10 @@
 </body>
 <script>
     window.onafterprint = function() {
-        window.location.href = "<?= base_url('laporan/printLabel') ?>";
+        window.close();
+        setTimeout(function() {
+            window.location.href = "<?= base_url('laporan') ?>";
+        }, 500);
     };
 </script>
 

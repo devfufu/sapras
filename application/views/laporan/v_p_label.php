@@ -72,12 +72,19 @@
                         </div>
                     </div>
                 </form>
-
-                <a href="<?= base_url('laporan/printLabelAll') . '?jenis_bantuan=' . urlencode($this->input->post('jenis_bantuan')) ?>"
-                    class="btn btn-danger mt-2 mb-2">
-                    <i class="fa fa-print"></i> Print
-                </a>
-
+                <div class="row justify-content-left align-items-center mb-3">
+                    <div class="col-md-3">
+                        <select name="judul" id="judul" class="form-control">
+                            <option value="">-- Pilih Judul Label --</option>
+                            <option value="TK Fadilah">TK Fadilah</option>
+                            <option value="SD Fadilah">SD Fadilah</option>
+                            <option value="SMK Fadilah">SMK Fadilah</option>
+                        </select>
+                    </div>
+                    <a href="#" onclick="printData()" class="btn btn-danger mt-2 mb-2">
+                        <i class="fa fa-print"></i> Print
+                    </a>
+                </div>
                 <div class="table-responsive">
                     <table id="example2" class="table table-bordered table-striped">
                         <thead>
@@ -95,40 +102,39 @@
                             <?php
                             $no = 1;
                             foreach ($aset as $row): ?>
-                            <tr>
-                                <td><?= $no++; ?></td>
-                                <td><?= $row['kode_aset']; ?></td>
-                                <td><?= $row['nama_barang']; ?></td>
-                                <td><?= $row['jenis_bantuan']; ?></td>
-                                <td><?= $row['merek']; ?></td>
-                                <td><?= $row['tahun_perolehan']; ?></td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fas fa-print"></i> Cetak
-                                        </button>
+                                <tr>
+                                    <td><?= $no++; ?></td>
+                                    <td><?= $row['kode_aset']; ?></td>
+                                    <td><?= $row['nama_barang']; ?></td>
+                                    <td><?= $row['jenis_bantuan']; ?></td>
+                                    <td><?= $row['merek']; ?></td>
+                                    <td><?= $row['tahun_perolehan']; ?></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                <i class="fas fa-print"></i> Cetak
+                                            </button>
 
-                                        <div class="dropdown-menu">
+                                            <div class="dropdown-menu">
 
-                                            <a class="dropdown-item"
-                                                href="<?= base_url('laporan/cetakLabel/' . $row['id_aset'] . '/kecil') ?>">
-                                                Label Kecil
-                                            </a>
+                                                <a class="dropdown-item" href="#"
+                                                    onclick="printLabel('<?= $row['id_aset'] ?>','kecil')">
+                                                    Label Kecil
+                                                </a>
 
-                                            <a class="dropdown-item"
-                                                href="<?= base_url('laporan/cetakLabel/' . $row['id_aset'] . '/sedang') ?>">
-                                                Label Sedang
-                                            </a>
+                                                <a class="dropdown-item" href="#"
+                                                    onclick="printLabel('<?= $row['id_aset'] ?>','sedang')">
+                                                    Label Sedang
+                                                </a>
 
-                                            <a class="dropdown-item"
-                                                href="<?= base_url('laporan/cetakLabel/' . $row['id_aset'] . '/besar') ?>">
-                                                Label Besar
-                                            </a>
-
+                                                <a class="dropdown-item" href="#"
+                                                    onclick="printLabel('<?= $row['id_aset'] ?>','besar')">
+                                                    Label Besar
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
                             <?php endforeach ?>
                         </tbody>
                     </table>
@@ -148,11 +154,33 @@
 <script src="<?= base_url() ?>src/backend/plugins/datatables/jquery.dataTables.js"></script>
 <script src="<?= base_url() ?>src/backend/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script>
-$(function() {
-    $("#example2").DataTable({
-        "language": {
-            "sSearch": "Cari"
-        }
+    function printLabel(id_aset, ukuran) {
+        var jenis_bantuan = "<?= urlencode($this->input->post('jenis_bantuan')) ?>";
+        var judul = document.getElementById('judul').value;
+
+        var url = "<?= base_url('laporan/cetakLabel') ?>/" +
+            id_aset + "/" + ukuran +
+            "?jenis_bantuan=" + jenis_bantuan +
+            "&judul=" + encodeURIComponent(judul); // ⬅️ pakai &
+
+        window.open(url, '_blank');
+    }
+
+    function printData() {
+        var jenis_bantuan = "<?= urlencode($this->input->post('jenis_bantuan')) ?>";
+        var judul = document.getElementById('judul').value;
+
+        var url = "<?= base_url('laporan/printLabelAll') ?>" +
+            "?jenis_bantuan=" + jenis_bantuan +
+            "&judul=" + encodeURIComponent(judul);
+
+        window.open(url, '_blank');
+    }
+    $(function() {
+        $("#example2").DataTable({
+            "language": {
+                "sSearch": "Cari"
+            }
+        });
     });
-});
 </script>

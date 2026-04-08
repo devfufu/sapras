@@ -126,16 +126,17 @@ class Laporan extends CI_Controller
 		$sheet->getStyle('A2')->getFont()->setBold(true);
 
 		$sheet->setCellValue('A4', 'NO');
-		$sheet->setCellValue('B4', 'NAMA');
-		$sheet->setCellValue('C4', 'LOKASI');
-		$sheet->setCellValue('D4', 'SUMBER PEMBELIAN');
-		$sheet->setCellValue('E4', 'VOLUME');
-		$sheet->setCellValue('F4', 'SATUAN');
-		$sheet->setCellValue('G4', 'HARGA (Rp.)');
-		$sheet->setCellValue('H4', 'JUMLAH (Rp.)');
+		$sheet->setCellValue('B4', 'KODE ASET');
+		$sheet->setCellValue('C4', 'NAMA');
+		$sheet->setCellValue('D4', 'LOKASI');
+		$sheet->setCellValue('E4', 'SUMBER PEMBELIAN');
+		$sheet->setCellValue('F4', 'VOLUME');
+		$sheet->setCellValue('G4', 'SATUAN');
+		$sheet->setCellValue('H4', 'HARGA (Rp.)');
+		$sheet->setCellValue('I4', 'JUMLAH (Rp.)');
 
-		$sheet->getStyle('A4:H4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-		$sheet->getStyle('A4:H4')->getFont()->setBold(true);
+		$sheet->getStyle('A4:I4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+		$sheet->getStyle('A4:I4')->getFont()->setBold(true);
 
 		$row = 5;
 		$no = 1;
@@ -144,13 +145,14 @@ class Laporan extends CI_Controller
 		foreach ($aset as $item) {
 
 			$sheet->setCellValue('A' . $row, $no);
-			$sheet->setCellValue('B' . $row, $item['nama_barang']);
-			$sheet->setCellValue('C' . $row, $item['nama_lokasi']);
-			$sheet->setCellValue('D' . $row, $item['jenis_bantuan']);
-			$sheet->setCellValue('E' . $row, $item['volume']);
-			$sheet->setCellValue('F' . $row, $item['satuan']);
-			$sheet->setCellValue('G' . $row, $item['harga']);
-			$sheet->setCellValue('H' . $row, $item['total_harga']);
+			$sheet->setCellValue('B' . $row, $item['kode_aset']);
+			$sheet->setCellValue('C' . $row, $item['nama_barang']);
+			$sheet->setCellValue('D' . $row, $item['nama_lokasi']);
+			$sheet->setCellValue('E' . $row, $item['jenis_bantuan']);
+			$sheet->setCellValue('F' . $row, $item['volume']);
+			$sheet->setCellValue('G' . $row, $item['satuan']);
+			$sheet->setCellValue('H' . $row, $item['harga']);
+			$sheet->setCellValue('I' . $row, $item['total_harga']);
 
 			$total += $item['total_harga'];
 
@@ -158,25 +160,25 @@ class Laporan extends CI_Controller
 			$no++;
 		}
 
-		$sheet->mergeCells('A' . $row . ':G' . $row);
+		$sheet->mergeCells('A' . $row . ':H' . $row);
 		$sheet->setCellValue('A' . $row, 'TOTAL');
-		$sheet->setCellValue('H' . $row, $total);
+		$sheet->setCellValue('I' . $row, $total);
 
-		$sheet->getStyle('A' . $row . ':H' . $row)->getFont()->setBold(true);
+		$sheet->getStyle('A' . $row . ':I' . $row)->getFont()->setBold(true);
 
 		$sheet->getStyle('A5:A' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-		$sheet->getStyle('C5:H' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+		$sheet->getStyle('F5:I' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-		$sheet->getStyle('E5:H' . $row)
+		$sheet->getStyle('E5:I' . $row)
 			->getNumberFormat()
 			->setFormatCode('#,##0');
 
 
-		foreach (range('A', 'H') as $col) {
+		foreach (range('A', 'I') as $col) {
 			$sheet->getColumnDimension($col)->setAutoSize(true);
 		}
 
-		$sheet->getStyle('A4:H' . $row)->applyFromArray([
+		$sheet->getStyle('A4:I' . $row)->applyFromArray([
 			'borders' => [
 				'allBorders' => [
 					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -560,7 +562,10 @@ class Laporan extends CI_Controller
 	public function printLabelAll()
 	{
 		$jenis_bantuan = $this->input->get('jenis_bantuan');
+		$judul = $this->input->get('judul');
 
+		$data['judul'] = $judul;
+		$data['jenis_bantuan'] = $jenis_bantuan;
 		$data['aset'] = $this->ml->getAsetLabelPrint($jenis_bantuan);
 
 		$this->load->view('laporan/v_label_print_all', $data);
@@ -568,6 +573,10 @@ class Laporan extends CI_Controller
 
 	public function cetakLabel($id_aset, $ukuran)
 	{
+
+		$judul = $this->input->get('judul');
+		$jenis_bantuan = $this->input->get('jenis_bantuan');
+
 		$data['aset'] = $this->db
 			->select('a.kode_aset, b.nama_barang, b.tahun_perolehan, a.qr_code')
 			->from('asets a')
@@ -577,6 +586,9 @@ class Laporan extends CI_Controller
 			->row_array();
 
 		$data['ukuran'] = $ukuran;
+		$data['judul'] = $judul;
+		$data['jenis_bantuan'] = $jenis_bantuan;
+
 
 		$this->load->view('laporan/v_label_print', $data);
 	}

@@ -12,22 +12,22 @@
     <title>Print Data Aset</title>
 </head>
 <style>
-    .judul {
-        font-family: 'Times New Roman', Times, serif;
-        font-weight: bold;
-    }
+.judul {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
 
-    @media print {
-        table thead th {
-            text-align: center !important;
-            vertical-align: middle !important;
-        }
-    }
-
-    .table thead th {
+@media print {
+    table thead th {
         text-align: center !important;
         vertical-align: middle !important;
     }
+}
+
+.table thead th {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
 </style>
 
 <body>
@@ -51,10 +51,10 @@
                 <strong class="judul">
                     LAPORAN DATA ASET <br>
                     <?php if (isset($lokasi)) { ?>
-                        LOKASI : <?= $lokasi['nama_lokasi'] ?> <br>
-                        TAHUN : <?= $tahun ?>
+                    LOKASI : <?= $lokasi['nama_lokasi'] ?> <br>
+                    TAHUN : <?= $tahun ?>
                     <?php } else { ?>
-                        TAHUN <?= $range ?>
+                    TAHUN <?= $range ?>
                     <?php } ?>
                 </strong>
             </div>
@@ -85,17 +85,17 @@
                             $sum += $row['total_harga'];
                         ?>
 
-                            <tr>
-                                <td><?= $no++; ?></td>
-                                <td><?= $row['kode_aset'] ?></td>
-                                <td><?= $row['nama_barang'] ?></td>
-                                <td><?= $row['nama_lokasi'] ?></td>
-                                <td><?= $row['jenis_bantuan'] ?></td>
-                                <td><?= $row['volume'] ?></td>
-                                <td><?= $row['satuan'] ?></td>
-                                <td><?= laporan($row['harga']) ?></td>
-                                <td><?= laporan($row['total_harga']) ?></td>
-                            </tr>
+                        <tr>
+                            <td><?= $no++; ?></td>
+                            <td><?= $row['kode_aset'] ?></td>
+                            <td><?= $row['nama_barang'] ?></td>
+                            <td><?= $row['nama_lokasi'] ?></td>
+                            <td><?= $row['jenis_bantuan'] ?></td>
+                            <td><?= $row['volume'] ?></td>
+                            <td><?= $row['satuan'] ?></td>
+                            <td><?= laporan($row['harga']) ?></td>
+                            <td><?= laporan($row['total_harga']) ?></td>
+                        </tr>
 
                         <?php endforeach; ?>
 
@@ -138,17 +138,17 @@
         </div>
     </div>
     <script>
-        window.onload = function() {
+    window.onload = function() {
 
-            window.print();
+        window.print();
 
-        };
+    };
 
-        window.onafterprint = function() {
+    window.onafterprint = function() {
 
-            window.location.href = "<?= base_url('laporan/aset') ?>";
+        window.location.href = "<?= base_url('laporan/search_asetRange') ?>";
 
-        };
+    };
     </script>
 
 </body>
