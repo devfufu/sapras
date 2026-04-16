@@ -41,10 +41,10 @@
             </div>
             <div class="card-body">
                 <?php if (validation_errors()): ?>
-                    <div class="alert alert-danger col-md-8 alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <?= validation_errors(); ?>
-                    </div>
+                <div class="alert alert-danger col-md-8 alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <?= validation_errors(); ?>
+                </div>
                 <?php endif ?>
                 <p>*Keterangan Kode Aset :</p>
                 <ul>
@@ -57,8 +57,8 @@
                         <button onclick="myFunction()">Salin Teks</button>
                     </li>
                 </ul>
-                <form class="form-horizontal" action="<?= base_url('aset_wujud/simpan') ?>" autocomplete="off"
-                    method="post">
+                <form class="form-horizontal" action="<?= base_url('aset_wujud/simpan') ?>"
+                    enctype="multipart/form-data" autocomplete="off" method="post">
                     <div class="card-body">
                         <div class="form-group row">
                             <label for="kode_aset" class="col-sm-2 col-form-label">Kode Aset*</label>
@@ -112,7 +112,7 @@
                                 <select name="id_lokasi" class="form-control" required>
                                     <option value="">- Pilih --</option>
                                     <?php foreach ($lokasi as $row): ?>
-                                        <option value="<?= $row['id_lokasi']; ?>"><?= $row['nama_lokasi']; ?></option>
+                                    <option value="<?= $row['id_lokasi']; ?>"><?= $row['nama_lokasi']; ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
@@ -158,10 +158,16 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Foto Aset</label>
+                            <div class="col-sm-6">
+                                <input type="file" name="foto_aset" class="form-control" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="tanggal_terima" class="col-sm-2 col-form-label">Generate QR Code?</label>
                             <div class="col-sm-6">
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" name="generate" id="generate">
+                                    <input type="checkbox" class="form-check-input" name="gene rate" id="generate">
                                     <label class="form-check-label" for="generate">
                                         Ya
                                     </label>
@@ -193,41 +199,41 @@
 <!-- /.content-wrapper -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script>
-    function myFunction() {
-        var copyText = document.getElementById("myInput");
-        copyText.select();
-        copyText.setSelectionRange(0, 99999)
-        document.execCommand("copy");
-        alert("Teks berhasil disalin: " + copyText.value);
-    }
+function myFunction() {
+    var copyText = document.getElementById("myInput");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999)
+    document.execCommand("copy");
+    alert("Teks berhasil disalin: " + copyText.value);
+}
 
-    $(document).ready(function() {
-        $('.js-example-basic-single').select2({
-            theme: "classic",
-            placeholder: '-- Pilih --',
-            ajax: {
-                url: "<?= base_url('aset_wujud/cari') ?>",
-                dataType: 'json',
-                delay: 250,
-                data: function(params) {
-                    return {
-                        bar: params.term
-                    };
-                },
-                processResults: function(data) {
-                    var results = [];
+$(document).ready(function() {
+    $('.js-example-basic-single').select2({
+        theme: "classic",
+        placeholder: '-- Pilih --',
+        ajax: {
+            url: "<?= base_url('aset_wujud/cari') ?>",
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    bar: params.term
+                };
+            },
+            processResults: function(data) {
+                var results = [];
 
-                    $.each(data, function(index, item) {
-                        results.push({
-                            id: item.id_barang,
-                            text: item.nama_barang
-                        });
+                $.each(data, function(index, item) {
+                    results.push({
+                        id: item.id_barang,
+                        text: item.nama_barang
                     });
-                    return {
-                        results: results
-                    };
-                }
+                });
+                return {
+                    results: results
+                };
             }
-        });
+        }
     });
+});
 </script>

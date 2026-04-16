@@ -89,113 +89,109 @@ class Aset extends CI_Controller
 
 	public function simpanAsetBaru()
 	{
-
 		$this->form_validation->set_rules(
 			'kode_aset',
 			'Kode Aset',
 			'required|trim|is_unique[asets.kode_aset]',
 			array(
-				'required' => "<p>Username tidak boleh kosong</p>",
+				'required' => "<p>Kode Aset tidak boleh kosong</p>",
 				'is_unique' => "<p>Kode Aset sudah digunakan</p>",
 			)
 		);
 
 		if ($this->form_validation->run() != FALSE) {
+
+			// 🔥 generate ID aset (dipakai semua kondisi)
+			$id = $this->uuid->v4();
+			$id_aset = str_replace('-', '', $id);
+
 			$generate = $this->input->post('generate');
+			$kode_aset = $this->input->post('kode_aset');
+
+			// 🔥 hitung
+			$volume = $this->input->post('volume');
+			$harga = $this->input->post('harga');
+			$total = ($volume * $harga);
+
+			$foto = null;
+
+			if (!empty($_FILES['foto_aset']['name'])) {
+
+				$ext = strtolower(pathinfo($_FILES['foto_aset']['name'], PATHINFO_EXTENSION));
+
+				$config['upload_path']   = './src/img/aset/';
+				$config['allowed_types'] = 'jpg|jpeg|png';
+				$config['max_size']      = 2048;
+				$config['file_name']     = 'aset_' . $id_aset . '.' . $ext;
+				$config['overwrite']     = TRUE;
+
+				$this->load->library('upload', $config);
+
+				if ($this->upload->do_upload('foto_aset')) {
+					$upload_data = $this->upload->data();
+					$foto = $upload_data['file_name'];
+				} else {
+					$this->session->set_flashdata('gagal', $this->upload->display_errors());
+					redirect('aset_wujud/tambah');
+					return;
+				}
+			}
+
+			$image_name = null;
+
 			if ($generate) {
 
-				$kode_aset = $this->input->post('kode_aset');
+				$config['cacheable'] = true;
+				$config['cachedir']  = './src/';
+				$config['errorlog']  = './src/';
+				$config['imagedir']  = './src/img/qrcode/';
+				$config['quality']   = true;
+				$config['size']      = '1024';
+				$config['black']     = array(224, 255, 255);
+				$config['white']     = array(70, 130, 180);
 
-				$config['cacheable']    = true; //boolean, the default is true
-				$config['cachedir']     = './src/'; //string, the default is application/cache/
-				$config['errorlog']     = './src/'; //string, the default is application/logs/
-				$config['imagedir']     = './src/img/qrcode/'; //direktori penyimpanan qr code
-				$config['quality']      = true; //boolean, the default is true
-				$config['size']         = '1024'; //interger, the default is 1024
-				$config['black']        = array(224, 255, 255); // array, default is array(255,255,255)
-				$config['white']        = array(70, 130, 180); // array, default is array(0,0,0)
 				$this->ciqrcode->initialize($config);
 
-				$id = $this->uuid->v4();
-				$image = str_replace('-', '', $id);
-
-				$id_as = $this->uuid->v4();
-				$id_aset = str_replace('-', '', $id_as);
-
-				$image_name = $image . '.png'; //buat name dari qr code sesuai dengan nim
+				$image_name = 'qr_' . $id_aset . '.png';
 
 				$url = 'http://localhost/ai/ai_aset/detail/' . $id_aset;
 
-				$params['data'] = $url; //data yang akan di jadikan QR CODE
-				$params['level'] = 'H'; //H=High
-				$params['size'] = 10;
+				$params['data']     = $url;
+				$params['level']    = 'H';
+				$params['size']     = 10;
 				$params['savename'] = FCPATH . $config['imagedir'] . $image_name;
+
 				$this->ciqrcode->generate($params);
+			}
 
-				$volume = $this->input->post('volume');
-				$harga = $this->input->post('harga');
-				$total = ($volume * $harga);
+			$data = array(
+				'id_aset' => $id_aset,
+				'kode_aset' => $kode_aset,
+				'id_barang' => $this->input->post('id_barang'),
+				'id_lokasi' => $this->input->post('id_lokasi'),
+				'volume' => $volume,
+				'satuan' => $this->input->post('satuan'),
+				'harga' => $harga,
+				'total_harga' => $total,
+				'status_aset' => 'Aktif',
+				'kondisi' => $this->input->post('kondisi'),
+				'umur_ekonomis' => $this->input->post('umur_ekonomis'),
+				'jenis_bantuan' => $this->input->post('jenis_bantuan'),
+				'foto_aset' => $foto,
+				'qr_code' => $image_name
+			);
 
-				$data = array(
-					'id_aset' => $id_aset,
-					'kode_aset' => $kode_aset,
-					'id_barang' => $this->input->post('id_barang'),
-					'id_lokasi' => $this->input->post('id_lokasi'),
-					'volume' => $volume,
-					'satuan' => $this->input->post('satuan'),
-					'harga' => $harga,
-					'total_harga' => $total,
-					'status_aset' => 'Aktif',
-					'kondisi' => $this->input->post('kondisi'),
-					'umur_ekonomis' => $this->input->post('umur_ekonomis'),
-					'jenis_bantuan' => $this->input->post('jenis_bantuan'),
-					'qr_code' => $image_name
-				);
+			$result = $this->ma->storeAset($data);
 
-				$result = $this->ma->storeAset($data);
-
-				if ($result >= 1) {
-					$this->session->set_flashdata('sukses', 'Disimpan');
-					redirect('aset_wujud');
-				} else {
-					$this->session->set_flashdata('gagal', 'Disimpan');
-					redirect('aset_wujud/tambah');
-				}
+			if ($result >= 1) {
+				$this->session->set_flashdata('sukses', 'Disimpan');
+				redirect('aset_wujud');
 			} else {
-
-				$id = $this->uuid->v4();
-				$id_aset = str_replace('-', '', $id);
-
-				$volume = $this->input->post('volume');
-				$harga = $this->input->post('harga');
-				$total = ($volume * $harga);
-
-				$data = array(
-					'id_aset' => $id_aset,
-					'kode_aset' => $this->input->post('kode_aset'),
-					'id_barang' => $this->input->post('id_barang'),
-					'id_lokasi' => $this->input->post('id_lokasi'),
-					'volume' => $volume,
-					'satuan' => $this->input->post('satuan'),
-					'harga' => $harga,
-					'total_harga' => $total,
-					'status_aset' => 'Aktif',
-					'kondisi' => $this->input->post('kondisi'),
-					'umur_ekonomis' => $this->input->post('umur_ekonomis'),
-					'jenis_bantuan' => $this->input->post('jenis_bantuan')
-				);
-
-				$result = $this->ma->storeAset($data);
-
-				if ($result >= 1) {
-					$this->session->set_flashdata('sukses', 'Disimpan');
-					redirect('aset_wujud');
-				} else {
-					$this->session->set_flashdata('gagal', 'Disimpan');
-					redirect('aset_wujud/tambah');
-				}
+				$this->session->set_flashdata('gagal', 'Disimpan');
+				redirect('aset_wujud/tambah');
 			}
 		} else {
+
 			$data = array(
 				'title' => 'Aset Berwujud',
 				'active_menu_open' => 'menu-open',
@@ -205,6 +201,7 @@ class Aset extends CI_Controller
 				'brg' => $this->mb->getDataBarang(),
 				'lokasi' => $this->ml->getLokasi()
 			);
+
 			$this->load->view('layouts/header', $data);
 			$this->load->view('aset/c_wujud', $data);
 			$this->load->view('layouts/footer');
@@ -218,107 +215,104 @@ class Aset extends CI_Controller
 			'Kode Aset',
 			'required|trim|is_unique[asets.kode_aset]',
 			array(
-				'required' => "<p>Username tidak boleh kosong</p>",
+				'required' => "<p>Kode Aset tidak boleh kosong</p>",
 				'is_unique' => "<p>Kode Aset sudah digunakan</p>",
 			)
 		);
 
 		if ($this->form_validation->run() != FALSE) {
+
+			// 🔥 generate ID aset (dipakai semua kondisi)
+			$id = $this->uuid->v4();
+			$id_aset = str_replace('-', '', $id);
+
 			$generate = $this->input->post('generate');
+			$kode_aset = $this->input->post('kode_aset');
+
+			// 🔥 hitung
+			$volume = $this->input->post('volume');
+			$harga = $this->input->post('harga');
+			$total = ($volume * $harga);
+
+			$foto = null;
+
+			if (!empty($_FILES['foto_aset']['name'])) {
+
+				$ext = strtolower(pathinfo($_FILES['foto_aset']['name'], PATHINFO_EXTENSION));
+
+				$config['upload_path']   = './src/img/aset/';
+				$config['allowed_types'] = 'jpg|jpeg|png';
+				$config['max_size']      = 2048;
+				$config['file_name']     = 'aset_' . $id_aset . '.' . $ext;
+				$config['overwrite']     = TRUE;
+
+				$this->load->library('upload', $config);
+
+				if ($this->upload->do_upload('foto_aset')) {
+					$upload_data = $this->upload->data();
+					$foto = $upload_data['file_name'];
+				} else {
+					$this->session->set_flashdata('gagal', $this->upload->display_errors());
+					redirect('aset_wujud/tambah');
+					return;
+				}
+			}
+
+			$image_name = null;
+
 			if ($generate) {
 
-				$kode_aset = $this->input->post('kode_aset');
+				$config['cacheable'] = true;
+				$config['cachedir']  = './src/';
+				$config['errorlog']  = './src/';
+				$config['imagedir']  = './src/img/qrcode/';
+				$config['quality']   = true;
+				$config['size']      = '1024';
+				$config['black']     = array(224, 255, 255);
+				$config['white']     = array(70, 130, 180);
 
-				$config['cacheable']    = true; //boolean, the default is true
-				$config['cachedir']     = './src/'; //string, the default is application/cache/
-				$config['errorlog']     = './src/'; //string, the default is application/logs/
-				$config['imagedir']     = './src/img/qrcode/'; //direktori penyimpanan qr code
-				$config['quality']      = true; //boolean, the default is true
-				$config['size']         = '1024'; //interger, the default is 1024
-				$config['black']        = array(224, 255, 255); // array, default is array(255,255,255)
-				$config['white']        = array(70, 130, 180); // array, default is array(0,0,0)
 				$this->ciqrcode->initialize($config);
 
-				$id = $this->uuid->v4();
-				$image = str_replace('-', '', $id);
-
-				$id_as = $this->uuid->v4();
-				$id_aset = str_replace('-', '', $id_as);
-
-				$image_name = $image . '.png'; //buat name dari qr code sesuai dengan nim
+				$image_name = 'qr_' . $id_aset . '.png';
 
 				$url = 'http://localhost/ai/ai_aset/detail/' . $id_aset;
 
-				$params['data'] = $url; //data yang akan di jadikan QR CODE
-				$params['level'] = 'H'; //H=High
-				$params['size'] = 10;
+				$params['data']     = $url;
+				$params['level']    = 'H';
+				$params['size']     = 10;
 				$params['savename'] = FCPATH . $config['imagedir'] . $image_name;
+
 				$this->ciqrcode->generate($params);
+			}
 
-				$volume = $this->input->post('volume');
-				$harga = $this->input->post('harga');
-				$total = ($volume * $harga);
+			$data = array(
+				'id_aset' => $id_aset,
+				'kode_aset' => $kode_aset,
+				'id_barang' => $this->input->post('id_barang'),
+				'id_lokasi' => $this->input->post('id_lokasi'),
+				'volume' => $volume,
+				'satuan' => $this->input->post('satuan'),
+				'harga' => $harga,
+				'total_harga' => $total,
+				'status_aset' => 'Aktif',
+				'kondisi' => $this->input->post('kondisi'),
+				'umur_ekonomis' => $this->input->post('umur_ekonomis'),
+				'jenis_bantuan' => $this->input->post('jenis_bantuan'),
+				'foto_aset' => $foto,
+				'qr_code' => $image_name
+			);
 
-				$data = array(
-					'id_aset' => $id_aset,
-					'kode_aset' => $kode_aset,
-					'id_barang' => $this->input->post('id_barang'),
-					'id_lokasi' => $this->input->post('id_lokasi'),
-					'volume' => $volume,
-					'satuan' => $this->input->post('satuan'),
-					'harga' => $harga,
-					'total_harga' => $total,
-					'status_aset' => 'Aktif',
-					'kondisi' => $this->input->post('kondisi'),
-					'umur_ekonomis' => $this->input->post('umur_ekonomis'),
-					'jenis_bantuan' => $this->input->post('jenis_bantuan'),
-					'qr_code' => $image_name
-				);
+			$result = $this->ma->storeAset($data);
 
-				$result = $this->ma->storeAset($data);
-
-				if ($result >= 1) {
-					$this->session->set_flashdata('sukses', 'Disimpan');
-					redirect('aset_wujud');
-				} else {
-					$this->session->set_flashdata('gagal', 'Disimpan');
-					redirect('aset_wujud/tambah');
-				}
+			if ($result >= 1) {
+				$this->session->set_flashdata('sukses', 'Disimpan');
+				redirect('aset_wujud');
 			} else {
-
-				$id = $this->uuid->v4();
-				$id_aset = str_replace('-', '', $id);
-
-				$volume = $this->input->post('volume');
-				$harga = $this->input->post('harga');
-				$total = ($volume * $harga);
-
-				$data = array(
-					'id_aset' => $id_aset,
-					'kode_aset' => $this->input->post('kode_aset'),
-					'id_barang' => $this->input->post('id_barang'),
-					'id_lokasi' => $this->input->post('id_lokasi'),
-					'volume' => $volume,
-					'satuan' => $this->input->post('satuan'),
-					'harga' => $harga,
-					'total_harga' => $total,
-					'status_aset' => 'Aktif',
-					'kondisi' => $this->input->post('kondisi'),
-					'umur_ekonomis' => $this->input->post('umur_ekonomis'),
-					'jenis_bantuan' => $this->input->post('jenis_bantuan')
-				);
-
-				$result = $this->ma->storeAset($data);
-
-				if ($result >= 1) {
-					$this->session->set_flashdata('sukses', 'Disimpan');
-					redirect('aset_wujud');
-				} else {
-					$this->session->set_flashdata('gagal', 'Disimpan');
-					redirect('aset_wujud/tambah');
-				}
+				$this->session->set_flashdata('gagal', 'Disimpan');
+				redirect('aset_wujud/tambah');
 			}
 		} else {
+
 			$data = array(
 				'title' => 'Aset Berwujud',
 				'active_menu_open' => 'menu-open',
@@ -328,6 +322,7 @@ class Aset extends CI_Controller
 				'brg' => $this->mb->getDataBarang(),
 				'lokasi' => $this->ml->getLokasi()
 			);
+
 			$this->load->view('layouts/header', $data);
 			$this->load->view('aset/c_wujud', $data);
 			$this->load->view('layouts/footer');
@@ -384,7 +379,7 @@ class Aset extends CI_Controller
 				$id = $this->uuid->v4();
 				$image = str_replace('-', '', $id);
 
-				$image_name = $image . '.png'; //buat name dari qr code sesuai dengan nim
+				$image_name = 'qr_' . $id_aset . '.png'; //buat name dari qr code sesuai dengan nim
 
 				$url = 'http://urlkamu.com/aset/detail/' . $id_aset;
 
@@ -398,6 +393,34 @@ class Aset extends CI_Controller
 				$harga = $this->input->post('harga');
 				$total = ($volume * $harga);
 
+				$this->db->where('id_aset', $id_aset);
+				$old = $this->db->get('asets')->row();
+				$foto_lama = $old->foto_aset ?? null;
+
+				$foto = $foto_lama;
+
+				if (!empty($_FILES['foto_aset']['name'])) {
+
+					$ext = strtolower(pathinfo($_FILES['foto_aset']['name'], PATHINFO_EXTENSION));
+
+					$config['upload_path']   = './src/img/aset/';
+					$config['allowed_types'] = 'jpg|jpeg|png';
+					$config['max_size']      = 2048;
+					$config['file_name']     = 'aset_' . $id_aset . '.' . $ext;
+					$config['overwrite']     = TRUE;
+
+					$this->load->library('upload', $config);
+
+					if ($this->upload->do_upload('foto_aset')) {
+						$upload_data = $this->upload->data();
+						$foto = $upload_data['file_name'];
+					} else {
+						$this->session->set_flashdata('gagal', $this->upload->display_errors());
+						redirect('aset_wujud/edit/' . $id_aset);
+						return;
+					}
+				}
+
 				$data = array(
 					'kode_aset' => $kode_aset,
 					'id_barang' => $this->input->post('id_barang'),
@@ -410,6 +433,7 @@ class Aset extends CI_Controller
 					'kondisi' => $this->input->post('kondisi'),
 					'umur_ekonomis' => $this->input->post('umur_ekonomis'),
 					'jenis_bantuan' => $this->input->post('jenis_bantuan'),
+					'foto_aset' => $foto,
 					'qr_code' => $image_name
 				);
 
@@ -434,6 +458,33 @@ class Aset extends CI_Controller
 				$harga = $this->input->post('harga');
 				$total = ($volume * $harga);
 
+				$this->db->where('id_aset', $id_aset);
+				$old = $this->db->get('asets')->row();
+				$foto_lama = $old->foto_aset ?? null;
+				$foto = $foto_lama;
+
+				if (!empty($_FILES['foto_aset']['name'])) {
+
+					$ext = strtolower(pathinfo($_FILES['foto_aset']['name'], PATHINFO_EXTENSION));
+
+					$config['upload_path']   = './src/img/aset/';
+					$config['allowed_types'] = 'jpg|jpeg|png';
+					$config['max_size']      = 2048;
+					$config['file_name']     = 'aset_' . $id_aset . '.' . $ext;
+					$config['overwrite']     = TRUE;
+
+					$this->load->library('upload', $config);
+
+					if ($this->upload->do_upload('foto_aset')) {
+						$upload_data = $this->upload->data();
+						$foto = $upload_data['file_name'];
+					} else {
+						$this->session->set_flashdata('gagal', $this->upload->display_errors());
+						redirect('aset_wujud/edit/' . $id_aset);
+						return;
+					}
+				}
+
 				$data = array(
 					'kode_aset' => $this->input->post('kode_aset'),
 					'id_barang' => $this->input->post('id_barang'),
@@ -446,6 +497,7 @@ class Aset extends CI_Controller
 					'kondisi' => $this->input->post('kondisi'),
 					'umur_ekonomis' => $this->input->post('umur_ekonomis'),
 					'jenis_bantuan' => $this->input->post('jenis_bantuan'),
+					'foto_aset' => $foto,
 					'qr_code' => NULL
 				);
 
@@ -496,12 +548,33 @@ class Aset extends CI_Controller
 	{
 		$id_aset = $this->uri->segment(3);
 
+		// ambil data dulu
 		$this->db->where('id_aset', $id_aset);
-		$get_image_file = $this->db->get('asets')->row();
-		@unlink('src/img/qrcode/' . $get_image_file->qr_code);
+		$data = $this->db->get('asets')->row();
+		if (!$data) {
+			show_404();
+		}
 
+		/* Hapus QR Code */
+		if (!empty($data->qr_code)) {
+			$path_qr = './src/img/qrcode/' . $data->qr_code;
+			if (file_exists($path_qr)) {
+				unlink($path_qr);
+			}
+		}
+
+		/* Hapus Foto Aset */
+		if (!empty($data->foto_aset)) {
+			$path_foto = './src/img/aset/' . $data->foto_aset;
+			if (file_exists($path_foto)) {
+				unlink($path_foto);
+			}
+		}
+
+		/* Hapus Data DB */
 		$this->db->where('id_aset', $id_aset);
 		$this->db->delete('asets');
+
 		$this->session->set_flashdata('sukses', 'Dihapus');
 		redirect('aset_wujud');
 	}

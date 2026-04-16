@@ -24,7 +24,6 @@
 
     <!-- Main content -->
     <section class="content">
-
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
@@ -56,8 +55,8 @@
                             <select name="id_kategori" class="form-control">
                                 <option value="">- Pilih Kategori --</option>
                                 <?php foreach ($kategori as $row): ?>
-                                    <option value="<?= $row['id_kategori']; ?>"><?= $row['kode_kategori']; ?> -
-                                        <?= $row['nama_kategori']; ?></option>
+                                <option value="<?= $row['id_kategori']; ?>"><?= $row['kode_kategori']; ?> -
+                                    <?= $row['nama_kategori']; ?></option>
                                 <?php endforeach ?>
                             </select>
                         </div>
@@ -65,7 +64,7 @@
                             <select name="tahun_perolehan" class="form-control">
                                 <option value="">- Tahun Perolehan --</option>
                                 <?php
-                                for ($i = 2010; $i <= date('Y'); $i++) {
+                                for ($i = 2008; $i <= date('Y'); $i++) {
                                     echo "<option value='$i'>$i</option>";
                                 }
                                 ?>
@@ -107,6 +106,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
+                                <th>Foto</th>
                                 <th>Kode Aset</th>
                                 <th>Nama</th>
                                 <th>Lokasi</th>
@@ -119,29 +119,38 @@
                         <tbody>
                             <?php $no = 1;
                             foreach ($aset as $row): ?>
-                                <tr>
-                                    <td><?= $no++; ?></td>
-                                    <td><?= $row['kode_aset'] ?? '-'; ?></td>
-                                    <td><?= $row['nama_barang'] ?? '-'; ?></td>
-                                    <td><?= $row['nama_lokasi'] ?? '-'; ?></td>
-                                    <td><?= $row['jenis_bantuan'] ?? '-'; ?></td>
-                                    <td align="center"><?= $row['volume'] ?? '-'; ?></td>
-                                    <td><?= rupiah($row['harga']); ?></td>
-                                    <td>
-                                        <a href="<?= base_url('aset_wujud/detail/' . $row['id_aset']) ?>"
-                                            class="btn btn-success btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        <a href="<?= base_url('aset_wujud/edit/' . $row['id_aset']) ?>"
-                                            class="btn btn-info btn-sm">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a href="<?= base_url('aset_wujud/hapus/' . $row['id_aset']) ?>"
-                                            class="btn btn-danger btn-sm tombol-hapus">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td align="center">
+                                    <?php if (!empty($row['foto_aset'])): ?>
+                                    <img src="<?= base_url('src/img/aset/' . $row['foto_aset']) ?>" width="60"
+                                        height="60" style="object-fit: cover; cursor:pointer;" data-toggle="modal"
+                                        data-target="#modalFoto" onclick="showFoto(this.src)">
+                                    <?php else: ?>
+                                    <span class="text-muted">-</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?= $row['kode_aset'] ?? '-'; ?></td>
+                                <td><?= $row['nama_barang'] ?? '-'; ?></td>
+                                <td><?= $row['nama_lokasi'] ?? '-'; ?></td>
+                                <td><?= $row['jenis_bantuan'] ?? '-'; ?></td>
+                                <td align="center"><?= $row['volume'] ?? '-'; ?></td>
+                                <td><?= rupiah($row['harga']); ?></td>
+                                <td>
+                                    <a href="<?= base_url('aset_wujud/detail/' . $row['id_aset']) ?>"
+                                        class="btn btn-success btn-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="<?= base_url('aset_wujud/edit/' . $row['id_aset']) ?>"
+                                        class="btn btn-info btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="<?= base_url('aset_wujud/hapus/' . $row['id_aset']) ?>"
+                                        class="btn btn-danger btn-sm tombol-hapus">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
                             <?php endforeach ?>
                         </tbody>
                         <tfoot>
@@ -166,6 +175,23 @@
             <!-- /.card-footer-->
         </div>
         <!-- /.card -->
+        <div class="modal fade" id="modalFoto" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-body text-center">
+                        <img id="imgPreview" src="" style="width:100%; border-radius:10px;">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Tutup
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
     </section>
     <!-- /.content -->
@@ -173,19 +199,27 @@
 <script src="<?= base_url() ?>src/backend/plugins/datatables/jquery.dataTables.js"></script>
 <script src="<?= base_url() ?>src/backend/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script>
-    $(function() {
-        $("#example1").DataTable({
-            "language": {
-                "sSearch": "Cari"
-            }
-        });
-    });
-</script>
-<script>
-    document.getElementById("filterOption").addEventListener("change", function() {
-        var url = this.value;
-        if (url) {
-            window.location.href = url;
+$(function() {
+    $("#example1").DataTable({
+        "language": {
+            "sSearch": "Cari"
         }
     });
+});
+
+document.getElementById("filterOption").addEventListener("change", function() {
+    var url = this.value;
+    if (url) {
+        window.location.href = url;
+    }
+});
+
+function previewImg(src) {
+    let win = window.open("");
+    win.document.write('<img src="' + src + '" style="width:100%">');
+}
+
+function showFoto(src) {
+    document.getElementById('imgPreview').src = src;
+}
 </script>

@@ -57,8 +57,8 @@
                         <button onclick="myFunction()">Salin Teks</button>
                     </li>
                 </ul> -->
-                <form class="form-horizontal" action="<?= base_url('aset_wujud/simpanAsetBaru') ?>" autocomplete="off"
-                    method="post">
+                <form class="form-horizontal" action="<?= base_url('aset_wujud/simpanAsetBaru') ?>"
+                    enctype="multipart/form-data" autocomplete="off" method="post">
                     <div class="card-body">
                         <div class="form-group row">
                             <label for="kode_aset" class="col-sm-2 col-form-label">Kode Aset*</label>
@@ -187,6 +187,12 @@
                                     <option value="HIBAH">HIBAH</option>
                                     <option value="HIBAH UMUM">HIBAH UMUM</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Foto Aset</label>
+                            <div class="col-sm-6">
+                                <input type="file" name="foto_aset" class="form-control" accept="image/*">
                             </div>
                         </div>
                         <div class="form-group row">

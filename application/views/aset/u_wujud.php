@@ -53,8 +53,8 @@
           <li>20XX = Tahun Perolehan Aset </li>
         </ul>
         <?php foreach ($aset as $row): ?>
-          <form class="form-horizontal" action="<?= base_url('aset_wujud/ubah') ?>" autocomplete="off"
-            method="post">
+          <form class="form-horizontal" action="<?= base_url('aset_wujud/ubah') ?>" enctype="multipart/form-data"
+            autocomplete="off" method="post">
             <input type="hidden" name="id_aset" value="<?= $row['id_aset'] ?>">
             <div class="card-body">
               <div class="form-group row">
@@ -62,6 +62,20 @@
                 <div class="col-sm-6">
                   <input type="text" class="form-control" value="<?= $row['kode_aset'] ?>"
                     name="kode_aset" placeholder="0000/XXX/20XX" required>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Foto Aset</label>
+                <div class="col-sm-6">
+
+                  <?php if (!empty($row['foto_aset'])): ?>
+                    <img src="<?= base_url('src/img/aset/' . $row['foto_aset']) ?>" width="100"
+                      style="margin-bottom:10px; border-radius:5px;">
+                  <?php endif; ?>
+
+                  <input type="file" name="foto_aset" class="form-control" accept="image/*">
+
+                  <small class="text-muted">Kosongkan jika tidak ingin mengubah foto</small>
                 </div>
               </div>
               <div class="form-group row">
