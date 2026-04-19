@@ -148,14 +148,14 @@
                 </div>
               </div>
               <div class="form-group row">
-                <label for="harga" class="col-sm-2 col-form-label">Nilai Aset</label>
+                <label for="harga" class="col-sm-2 col-form-label">Harga Aset</label>
                 <div class="col-sm-6">
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text">Rp.</span>
                     </div>
-                    <input type="number" value="<?= $row['harga'] ?>" name="harga" class="form-control"
-                      placeholder="0000" required>
+                    <input type="text" name="harga" id="harga" value="<?= $row['harga'] ?>"
+                      class="form-control" placeholder="0" required>
                   </div>
                 </div>
               </div>
@@ -238,5 +238,41 @@
       theme: "classic",
       placeholder: '-- Pilih --'
     });
+  });
+
+  var harga = document.getElementById("harga");
+
+  harga.addEventListener("keyup", function(e) {
+
+    this.value = formatRupiah(this.value);
+
+  });
+
+  function formatRupiah(angka) {
+
+    let number_string = angka.replace(/[^,\d]/g, "").toString(),
+      split = number_string.split(","),
+      sisa = split[0].length % 3,
+      rupiah = split[0].substr(0, sisa),
+      ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+    if (ribuan) {
+
+      separator = sisa ? "." : "";
+      rupiah += separator + ribuan.join(".");
+
+    }
+
+    return rupiah;
+
+  }
+
+
+  $("form").submit(function() {
+
+    let harga = $("#harga").val().replace(/\./g, '');
+
+    $("#harga").val(harga);
+
   });
 </script>

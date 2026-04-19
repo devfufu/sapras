@@ -41,10 +41,10 @@
             </div>
             <div class="card-body">
                 <?php if (validation_errors()): ?>
-                <div class="alert alert-danger col-md-8 alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <?= validation_errors(); ?>
-                </div>
+                    <div class="alert alert-danger col-md-8 alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <?= validation_errors(); ?>
+                    </div>
                 <?php endif ?>
                 <p>*Keterangan Kode Aset :</p>
                 <!-- <ul>
@@ -90,9 +90,9 @@
                                     <option value="">- Pilih -</option>
 
                                     <?php foreach ($kategori as $k) { ?>
-                                    <option value="<?= $k->kode_kategori ?>">
-                                        <?= $k->nama_kategori ?>
-                                    </option>
+                                        <option value="<?= $k->kode_kategori ?>">
+                                            <?= $k->nama_kategori ?>
+                                        </option>
                                     <?php } ?>
 
                                 </select>
@@ -143,7 +143,7 @@
                                 <select name="id_lokasi" class="form-control" required>
                                     <option value="">- Pilih --</option>
                                     <?php foreach ($lokasi as $row): ?>
-                                    <option value="<?= $row['id_lokasi']; ?>"><?= $row['nama_lokasi']; ?></option>
+                                        <option value="<?= $row['id_lokasi']; ?>"><?= $row['nama_lokasi']; ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
@@ -161,7 +161,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="harga" class="col-sm-2 col-form-label">Nilai Aset</label>
+                            <label for="harga" class="col-sm-2 col-form-label">Harga Aset</label>
                             <div class="col-sm-6">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
@@ -233,115 +233,117 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 <script>
-function myFunction() {
-    var copyText = document.getElementById("myInput");
-    copyText.select();
-    copyText.setSelectionRange(0, 99999)
-    document.execCommand("copy");
-    alert("Teks berhasil disalin: " + copyText.value);
-}
-
-$(document).ready(function() {
-    $('.js-example-basic-single').select2({
-        theme: "classic",
-        placeholder: '-- Pilih --',
-        ajax: {
-            url: "<?= base_url('aset_wujud/cari') ?>",
-            dataType: 'json',
-            delay: 250,
-            data: function(params) {
-                return {
-                    bar: params.term
-                };
-            },
-            processResults: function(data) {
-                var results = [];
-
-                $.each(data, function(index, item) {
-                    results.push({
-                        id: item.id_barang,
-                        text: item.nama_barang
-                    });
-                });
-                return {
-                    results: results
-                };
-            }
-        }
-    });
-});
-</script>
-<script>
-var harga = document.getElementById("harga");
-
-harga.addEventListener("keyup", function(e) {
-
-    this.value = formatRupiah(this.value);
-
-});
-
-function formatRupiah(angka) {
-
-    let number_string = angka.replace(/[^,\d]/g, "").toString(),
-        split = number_string.split(","),
-        sisa = split[0].length % 3,
-        rupiah = split[0].substr(0, sisa),
-        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-    if (ribuan) {
-
-        separator = sisa ? "." : "";
-        rupiah += separator + ribuan.join(".");
-
+    function myFunction() {
+        var copyText = document.getElementById("myInput");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999)
+        document.execCommand("copy");
+        alert("Teks berhasil disalin: " + copyText.value);
     }
 
-    return rupiah;
-
-}
-
-$(document).ready(function() {
-
-    function generateKode() {
-
-        let dana = $("#sumber_dana").val();
-        let kategori = $("#kategori_aset").val();
-
-        if (dana !== "" && kategori !== "") {
-
-            $.ajax({
-
-                url: "<?= base_url('aset_wujud/generateKodeAset') ?>",
-                method: "POST",
-
-                data: {
-                    dana: dana,
-                    kategori: kategori
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2({
+            theme: "classic",
+            placeholder: '-- Pilih --',
+            ajax: {
+                url: "<?= base_url('aset_wujud/cari') ?>",
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        bar: params.term
+                    };
                 },
+                processResults: function(data) {
+                    var results = [];
 
-                dataType: "json",
-
-                success: function(res) {
-
-                    $("#kode_aset").val(res);
-
+                    $.each(data, function(index, item) {
+                        results.push({
+                            id: item.id_barang,
+                            text: item.nama_barang
+                        });
+                    });
+                    return {
+                        results: results
+                    };
                 }
+            }
+        });
+    });
 
-            });
+    var harga = document.getElementById("harga");
+
+    harga.addEventListener("keyup", function(e) {
+
+        this.value = formatRupiah(this.value);
+
+    });
+
+    function formatRupiah(angka) {
+
+        let number_string = angka.replace(/[^,\d]/g, "").toString(),
+            split = number_string.split(","),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+
+            separator = sisa ? "." : "";
+            rupiah += separator + ribuan.join(".");
 
         }
 
+        return rupiah;
+
     }
 
-    $("#sumber_dana").change(generateKode);
-    $("#kategori_aset").change(generateKode);
 
-});
+    $("form").submit(function() {
 
-$("form").submit(function() {
+        let harga = $("#harga").val().replace(/\./g, '');
 
-    let harga = $("#harga").val().replace(/\./g, '');
+        $("#harga").val(harga);
 
-    $("#harga").val(harga);
+    });
 
-});
+
+
+    $(document).ready(function() {
+
+        function generateKode() {
+
+            let dana = $("#sumber_dana").val();
+            let kategori = $("#kategori_aset").val();
+
+            if (dana !== "" && kategori !== "") {
+
+                $.ajax({
+
+                    url: "<?= base_url('aset_wujud/generateKodeAset') ?>",
+                    method: "POST",
+
+                    data: {
+                        dana: dana,
+                        kategori: kategori
+                    },
+
+                    dataType: "json",
+
+                    success: function(res) {
+
+                        $("#kode_aset").val(res);
+
+                    }
+
+                });
+
+            }
+
+        }
+
+        $("#sumber_dana").change(generateKode);
+        $("#kategori_aset").change(generateKode);
+
+    });
 </script>
