@@ -22,6 +22,10 @@
         text-align: center !important;
         vertical-align: middle !important;
     }
+
+    img {
+        max-width: 80px;
+    }
 }
 
 .table thead th {
@@ -65,6 +69,7 @@
                     <thead>
                         <tr class="text-center">
                             <th>NO</th>
+                            <th>FOTO</th>
                             <th>KODE ASET</th>
                             <th>NAMA</th>
                             <th>LOKASI</th>
@@ -87,6 +92,10 @@
 
                         <tr>
                             <td><?= $no++; ?></td>
+                            <td class="text-center">
+                                <img src="<?= base_url('src/img/aset/' . $row['foto_aset']) ?>" alt="Foto Aset"
+                                    width="80">
+                            </td>
                             <td><?= $row['kode_aset'] ?></td>
                             <td><?= $row['nama_barang'] ?></td>
                             <td><?= $row['nama_lokasi'] ?></td>
@@ -100,7 +109,7 @@
                         <?php endforeach; ?>
 
                         <tr>
-                            <td colspan="8"><b>Total</b></td>
+                            <td colspan="9"><b>Total</b></td>
                             <td><b><?= laporan($sum) ?></b></td>
                         </tr>
 

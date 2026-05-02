@@ -69,18 +69,18 @@ class Xlsx extends BaseReader
     /**
      * Can the current IReader read the file?
      *
-     * @param string $pFilename
+     * @param string $filename
      *
      * @return bool
      */
-    public function canRead($pFilename)
+    public function canRead(string $filename): bool
     {
-        File::assertFile($pFilename);
+        File::assertFile($filename);
 
         $result = false;
         $zip = new ZipArchive();
 
-        if ($zip->open($pFilename) === true) {
+        if ($zip->open($filename) === true) {
             $workbookBasename = $this->getWorkbookBaseName($zip);
             $result = !empty($workbookBasename);
 
@@ -311,13 +311,14 @@ class Xlsx extends BaseReader
     /**
      * Loads Spreadsheet from file.
      *
-     * @param string $pFilename
+     * @param string $filename
+     * @param int $flags
      *
      * @return Spreadsheet
      */
-    public function load($pFilename)
+    public function load(string $filename, int $flags = 0): Spreadsheet
     {
-        File::assertFile($pFilename);
+        File::assertFile($filename);
 
         // Initialisations
         $excel = new Spreadsheet();
@@ -329,7 +330,7 @@ class Xlsx extends BaseReader
         $unparsedLoadedData = [];
 
         $zip = new ZipArchive();
-        $zip->open($pFilename);
+        $zip->open($filename);
 
         //    Read the theme first, because we need the colour scheme when reading the styles
         //~ http://schemas.openxmlformats.org/package/2006/relationships"
