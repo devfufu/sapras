@@ -17,6 +17,7 @@ class User extends CI_Controller
 
 		//load model user
 		$this->load->model('ModelUser', 'mu');
+		 $this->load->model('ModelKategori', 'mk');
 		$this->load->library('upload');
 	}
 
@@ -34,6 +35,29 @@ class User extends CI_Controller
 		$this->load->view('master/v_user', $data);
 		$this->load->view('layouts/footer');
 	}
+
+	public function kategori($idUser)
+	{
+		$data = [
+			'user' => $this->mu->getUserById($idUser),
+			'kategori' => $this->mk->getKategoriBarang(),
+		];
+
+		$this->load->view('master/v_user_kategori', $data);
+	}
+
+	public function simpanKategori()
+{
+    $idUser = $this->input->post('id_user');
+    $idKategori = $this->input->post('id_kategori');
+
+    $this->db->where('id_user', $idUser);
+    $this->db->update('users', [
+        'user_kategori' => $idKategori
+    ]);
+
+    redirect('users');
+}
 
 	public function tambahUser()
 	{
@@ -136,7 +160,7 @@ class User extends CI_Controller
 			$config['encrypt_name'] = TRUE;
 
 			$this->upload->initialize($config);
-			if (! $this->upload->do_upload('foto')) {
+			if (!$this->upload->do_upload('foto')) {
 				$this->session->set_flashdata('gagal', 'Diupload');
 				redirect('pengaturan');
 			} else {
@@ -241,7 +265,8 @@ class User extends CI_Controller
 	{
 		$data = array(
 			'title' => 'Edit User',
-			'users' => $this->mu->getUserById($id_user)
+			'users' => $this->mu->getUserById($id_user),
+			'kategori' => $this->mk->getKategoriBarang()
 		);
 
 		$this->load->view('layouts/header', $data);
@@ -255,9 +280,12 @@ class User extends CI_Controller
 
 		$data = [
 			'nama_user' => $this->input->post('nama_user', true),
-			'username'  => $this->input->post('username', true),
-			'jabatan'   => $this->input->post('jabatan', true),
-			'role'      => $this->input->post('role', true)
+			'username' => $this->input->post('username', true),
+			'jabatan' => $this->input->post('jabatan', true),
+			'role' => $this->input->post('role', true),
+			'user_kategori' => $this->input->post('user_kategori', true),
+
+			
 		];
 
 		if ($this->input->post('password') != '') {

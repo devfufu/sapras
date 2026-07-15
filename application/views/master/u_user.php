@@ -82,7 +82,27 @@
                                     required>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label>Kategori Barang</label>
 
+                            <select name="user_kategori" class="form-control">
+
+                                <option value="">-- Pilih Kategori --</option>
+
+                                <?php foreach ($kategori as $k): ?>
+
+                                    <option value="<?= $k['id_kategori']; ?>"
+                                        <?= ($users['user_kategori'] == $k['id_kategori']) ? 'selected' : ''; ?>
+                                        >
+                                        <?= $k['nama_kategori']; ?>
+
+                                    </option>
+
+                                <?php endforeach; ?>
+
+                            </select>
+
+                        </div>
                         <div class="form-group row">
                             <label class="col-sm-6 col-form-label">Role</label>
                             <div class="col-sm-12">

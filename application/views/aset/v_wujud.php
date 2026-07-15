@@ -49,8 +49,10 @@
                 </div>
             </div>
             <div class="card-body">
+                <?php if ($this->session->userdata('role') == '1') { ?>
                 <form action="<?= base_url('aset_wujud/filter') ?>" method="POST">
                     <div class="row">
+                        
                         <div class="col-3">
                             <select name="id_kategori" class="form-control">
                                 <option value="">- Pilih Kategori --</option>
@@ -100,6 +102,7 @@
                         </div>
                     </div>
                 </form>
+                <?php }?>
                 <br />
                 <div class="table-responsive">
                     <table id="example1" class="table table-bordered table-striped">
@@ -156,6 +159,7 @@
                         <tfoot>
                             <tr>
                                 <th>No.</th>
+                                <th>Foto</th>
                                 <th>Kode Aset</th>
                                 <th>Nama</th>
                                 <th>Lokasi</th>

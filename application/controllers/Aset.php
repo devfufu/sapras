@@ -25,12 +25,13 @@ class Aset extends CI_Controller
 
 	public function index()
 	{
+		$idUser = $this->session->userdata('id_user');
 		$data = array(
 			'title' => 'Aset Berwujud',
 			'active_menu_open' => 'menu-open',
 			'active_menu_aset' => 'active',
 			'active_menu_wujud' => 'active',
-			'aset' => $this->ma->getAsetWujud(),
+			'aset' => $this->ma->getAsetWujudByUser($idUser),
 			'kategori' => $this->mk->getKategoriBarang()
 		);
 		$this->load->view('layouts/header', $data);

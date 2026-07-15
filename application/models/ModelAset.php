@@ -9,14 +9,11 @@ class ModelAset extends CI_Model
 		$this->db->select('a.*, b.nama_barang, c.nama_lokasi');
 		$this->db->from('asets a');
 		$this->db->join('barang b', 'b.id_barang = a.id_barang');
-		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi'); // TAMBAHAN
-
-		$this->db->where('a.volume !=', 0);
+		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi');
 		$this->db->where('a.volume >', 0);
 
 		return $this->db->get()->result_array();
 	}
-
 	public function getAsetDihapuskan()
 	{
 		$this->db->select('*');
@@ -153,6 +150,27 @@ class ModelAset extends CI_Model
 
 		return sprintf("%03s", $kode);
 	}
+
+	public function getAsetWujudByUser($idUser)
+{
+    $user = $this->db
+                ->where('id_user', $idUser)
+                ->get('users')
+                ->row();
+
+    $this->db->select('a.*, b.nama_barang, c.nama_lokasi');
+    $this->db->from('asets a');
+    $this->db->join('barang b', 'b.id_barang = a.id_barang');
+    $this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi');
+
+    if (!empty($user->user_kategori)) {
+        $this->db->where('b.id_kategori', $user->user_kategori);
+    }
+
+    $this->db->where('a.volume >', 0);
+
+    return $this->db->get()->result_array();
+}
 }
 
 /* End of file ModelAset.php */

@@ -37,6 +37,7 @@ $route['lokasi'] = 'LokasiAset/index';
 $route['lokasi/simpan'] = 'LokasiAset/simpanLokasi';
 $route['lokasi/ubah'] = 'LokasiAset/ubahLokasi';
 $route['lokasi/hapus/(:any)'] = 'LokasiAset/hapusLokasi/(:any)';
+
 //User
 $route['users'] = 'User/users';
 $route['users/tambah'] = 'User/tambahUser';

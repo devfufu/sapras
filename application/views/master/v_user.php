@@ -48,11 +48,9 @@
 
         </h3>
         <div class="card-tools">
-          <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
-            title="Collapse">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
             <i class="fas fa-minus"></i></button>
-          <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip"
-            title="Remove">
+          <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
             <i class="fas fa-times"></i></button>
         </div>
       </div>
@@ -65,6 +63,7 @@
                 <th>Nama User</th>
                 <th>Username</th>
                 <th>Jabatan</th>
+                <th>User Kategori</th>
                 <th>Role</th>
                 <th>Aksi</th>
               </tr>
@@ -78,20 +77,20 @@
                   <td><?= $row['nama_user']; ?></td>
                   <td><?= $row['username']; ?></td>
                   <td><?= $row['jabatan']; ?></td>
+                  <td><?= $row['nama_kategori']; ?></td>
                   <td><?= $row['role']; ?></td>
                   <td>
-                    <a href="<?= base_url('users/editUsers/' . $row['id_user']) ?>"
-                      class="btn btn-info btn-sm">
+                    <a href="<?= base_url('users/editUsers/' . $row['id_user']) ?>" class="btn btn-info btn-sm">
                       <i class="fas fa-edit"></i>
                     </a>
                     <a href="<?= base_url('users/hapus/' . $row['id_user']) ?>"
                       class="btn btn-danger btn-sm tombol-hapus">
                       <i class="fas fa-trash"></i>
                     </a>
-                    <a href="<?= base_url('users/resetPassword/' . $row['id_user']) ?>"
-                      class="btn btn-primary btn-sm">
+                    <a href="<?= base_url('users/resetPassword/' . $row['id_user']) ?>" class="btn btn-primary btn-sm">
                       <i class="fas fa-sync"></i>
                     </a>
+                  
                   </td>
                 </tr>
               <?php endforeach ?>
@@ -102,6 +101,8 @@
                 <th>Nama User</th>
                 <th>Username</th>
                 <th>Jabatan</th>
+                <th>User Kategori</th>
+                <th>Role</th>
                 <th>Aksi</th>
               </tr>
             </tfoot>
@@ -141,8 +142,7 @@
               Format Excel: nama_user, username, password, jabatan, role
             </small>
 
-            <a href="<?= base_url('src/assets/template/data_users.xlsx') ?>" class="btn btn-success btn-sm"
-              download>
+            <a href="<?= base_url('src/assets/template/data_users.xlsx') ?>" class="btn btn-success btn-sm" download>
               <i class="fas fa-file-excel"></i> Unduh Template Excel
             </a>
 
@@ -169,32 +169,28 @@
           </button>
         </div>
         <div class="modal-body">
-          <form class="form-horizontal" action="<?= base_url('users/tambah') ?>" autocomplete="off"
-            method="post">
+          <form class="form-horizontal" action="<?= base_url('users/tambah') ?>" autocomplete="off" method="post">
             <div class="form-group row">
               <label for="nama_user" class="col-sm-6 col-form-label">Nama User</label>
               <div class="col-sm-12">
-                <input type="text" class="form-control" placeholder="Nama User.." name="nama_user"
-                  required autofocus>
+                <input type="text" class="form-control" placeholder="Nama User.." name="nama_user" required autofocus>
               </div>
             </div>
             <div class="form-group row">
               <label for="username" class="col-sm-6 col-form-label">Username</label>
               <div class="col-sm-12">
-                <input type="text" class="form-control" placeholder="Username.." name="username"
-                  required>
+                <input type="text" class="form-control" placeholder="Username.." name="username" required>
               </div>
             </div>
             <div class="form-group row">
               <div class="col-sm-6">
                 <label for="password" class="col-sm-4 col-form-label">Password</label>
-                <input type="password" class="form-control" placeholder="Password.." name="password"
-                  required>
+                <input type="password" class="form-control" placeholder="Password.." name="password" required>
               </div>
               <div class="col-sm-6">
                 <label for="password_confirm" class="col-sm-8 col-form-label">Ulangi Password</label>
-                <input type="password" class="form-control" placeholder="Ulangi Password.."
-                  name="password_confirm" required>
+                <input type="password" class="form-control" placeholder="Ulangi Password.." name="password_confirm"
+                  required>
               </div>
             </div>
             <div class="form-group row">
@@ -231,7 +227,7 @@
 <script src="<?= base_url() ?>src/backend/plugins/datatables/jquery.dataTables.js"></script>
 <script src="<?= base_url() ?>src/backend/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script>
-  $(function() {
+  $(function () {
     $("#example1").DataTable({
       "language": {
         "sSearch": "Cari"
