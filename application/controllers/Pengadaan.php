@@ -32,6 +32,31 @@ class Pengadaan extends CI_Controller {
 		$this->load->view('layouts/footer');
 	}
 
+	public function printPengadaan($id)
+	{
+		$data['pengadaan'] = $this->mp->getDetailPengadaan($id);
+
+		if (!$data['pengadaan']) {
+			show_404();
+		}
+
+		$this->load->view('pengadaan/print_pengadaan', $data);
+	}
+
+	public function printMultiple()
+	{
+		$id_pengadaan = $this->input->post('id_pengadaan');
+
+		if (empty($id_pengadaan)) {
+			echo "Tidak ada data yang dipilih.";
+			return;
+		}
+
+		$data['pengadaan'] = $this->mp->getPengadaanByIds($id_pengadaan);
+
+		$this->load->view('pengadaan/print_pengadaan_multiple', $data);
+	}
+
 	public function ubahSpesifikasi()
 	{
 		$id_spesifikasi = $this->input->post('id_spesifikasi');

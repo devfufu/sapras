@@ -95,6 +95,8 @@ $route['pengadaan/setujui/(:any)'] = 'Pengadaan/setujuiPengadaan/(:any)';
 $route['pengadaan/tolak/(:any)'] = 'Pengadaan/tolakPengadaan/(:any)';
 $route['pengadaan/hapus/(:any)'] = 'Pengadaan/hapusPengadaan/(:any)';
 $route['pengadaan/filter'] = 'Pengadaan/filterPengadaan';
+$route['pengadaan/print/(:any)'] = 'Pengadaan/printPengadaan/(:any)';
+$route['pengadaan/print_multiple'] = 'Pengadaan/printMultiple';
 
 //Monitoring
 $route['monitoring'] = 'Monitoring/index';

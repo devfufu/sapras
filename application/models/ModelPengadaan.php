@@ -181,6 +181,18 @@ class ModelPengadaan extends CI_Model {
 		$res = $this->db->delete("pengadaan");
 		return $res;
 	}
+	public function getDetailPengadaan($id)
+	{
+		$this->db->where('id_pengadaan', $id);
+
+		return $this->db->get('pengadaan')->row_array();
+	}
+	public function getPengadaanByIds($ids)
+	{
+		$this->db->where_in('id_pengadaan', $ids);
+
+		return $this->db->get('pengadaan')->result_array();
+	}
 
 }
 

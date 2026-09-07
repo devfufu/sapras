@@ -13,8 +13,7 @@
 
     <title>iAsset - Sistem Manajemen Aset</title>
   </head>
-  <body>
-    
+  <body>   
     <section>
       <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
         <div class="container">
@@ -49,6 +48,7 @@
                     <td width="50px">:</td>
                     <td><?=$d['kode_kategori'] ?> - <?=$d['nama_kategori'] ?></td>
                   </tr>
+                  div
                   <tr>
                     <td width="100px">Merek</td>
                     <td width="50px">:</td>
@@ -128,7 +128,7 @@
 
 
     <footer class="bg-dark text-white text-center pt-4">
-      <strong>Copyright &copy; <script>document.write(new Date().getFullYear());</script> <a href="https://imamdev.com" target="_blank">Imamdev</a></strong>
+      <strong>Copyright &copy; <script>document.write(new Date().getFullYear());</script> <a href="#" target="_blank">SMK Fadilah</a></strong>
       <br/>
     </footer>
 
