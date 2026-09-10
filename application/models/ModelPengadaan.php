@@ -183,15 +183,27 @@ class ModelPengadaan extends CI_Model {
 	}
 	public function getDetailPengadaan($id)
 	{
-		$this->db->where('id_pengadaan', $id);
+		$this->db->select('a.*, b.nama_user, c.nama_lokasi');
+		$this->db->from('pengadaan a');
+		$this->db->join('users b', 'b.id_user = a.id_user', 'left');
+		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi', 'left');
+		$this->db->where('a.id_pengadaan', $id);
 
-		return $this->db->get('pengadaan')->row_array();
+		$query = $this->db->get();
+
+		return $query->row_array();
 	}
 	public function getPengadaanByIds($ids)
 	{
-		$this->db->where_in('id_pengadaan', $ids);
+		$this->db->select('*');
+		$this->db->from('pengadaan a');
+		$this->db->join('users b', 'b.id_user = a.id_user');
+		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi');
+		$this->db->where_in('a.id_pengadaan', $ids);
 
-		return $this->db->get('pengadaan')->result_array();
+		$query = $this->db->get();
+
+		return $query->result_array();
 	}
 
 }

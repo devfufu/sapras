@@ -65,6 +65,8 @@ $route['aset_wujud/ubah'] = 'Aset/ubahAset';
 $route['aset_wujud/detail/(:any)'] = 'Aset/detailAset/(:any)';
 $route['aset_wujud/hapus/(:any)'] = 'Aset/hapusAset/(:any)';
 $route['aset_wujud/filter'] = 'Aset/filterAset';
+$route['aset_wujud/print/(:any)'] = 'Aset/printAset/$1';
+$route['aset_wujud/print_multiple'] = 'Aset/printMultiple';
 
 //Dihapuskan
 $route['aset_dihapuskan'] = 'Aset/dihapuskanAset';
@@ -95,7 +97,7 @@ $route['pengadaan/setujui/(:any)'] = 'Pengadaan/setujuiPengadaan/(:any)';
 $route['pengadaan/tolak/(:any)'] = 'Pengadaan/tolakPengadaan/(:any)';
 $route['pengadaan/hapus/(:any)'] = 'Pengadaan/hapusPengadaan/(:any)';
 $route['pengadaan/filter'] = 'Pengadaan/filterPengadaan';
-$route['pengadaan/print/(:any)'] = 'Pengadaan/printPengadaan/(:any)';
+$route['pengadaan/print/(:any)'] = 'Pengadaan/printPengadaan/$1';
 $route['pengadaan/print_multiple'] = 'Pengadaan/printMultiple';
 
 //Monitoring

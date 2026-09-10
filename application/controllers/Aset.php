@@ -39,6 +39,36 @@ class Aset extends CI_Controller
 		$this->load->view('layouts/footer');
 	}
 
+	public function printAset($id)
+	{
+		$data['aset'] = $this->ma->getDetailAsetPrint($id);
+
+		if (!$data['aset']) {
+			show_404();
+		}
+
+		$this->load->view('aset/print_aset', $data);
+	}
+
+	public function printMultiple()
+	{
+		$id_aset = $this->input->post('id_aset');
+
+		if (empty($id_aset)) {
+			echo "Tidak ada data yang dipilih.";
+			return;
+		}
+
+		$data['aset'] = $this->ma->getAsetByIds($id_aset);
+
+		if (empty($data['aset'])) {
+			echo "Data aset tidak ditemukan.";
+			return;
+		}
+
+		$this->load->view('aset/print_aset_multiple', $data);
+	}
+
 	public function tambahAset()
 	{
 		$data = array(
@@ -120,11 +150,11 @@ class Aset extends CI_Controller
 
 				$ext = strtolower(pathinfo($_FILES['foto_aset']['name'], PATHINFO_EXTENSION));
 
-				$config['upload_path']   = './src/img/aset/';
+				$config['upload_path'] = './src/img/aset/';
 				$config['allowed_types'] = 'jpg|jpeg|png';
-				$config['max_size']      = 2048;
-				$config['file_name']     = 'aset_' . $id_aset . '.' . $ext;
-				$config['overwrite']     = TRUE;
+				$config['max_size'] = 2048;
+				$config['file_name'] = 'aset_' . $id_aset . '.' . $ext;
+				$config['overwrite'] = TRUE;
 
 				$this->load->library('upload', $config);
 
@@ -143,13 +173,13 @@ class Aset extends CI_Controller
 			if ($generate) {
 
 				$config['cacheable'] = true;
-				$config['cachedir']  = './src/';
-				$config['errorlog']  = './src/';
-				$config['imagedir']  = './src/img/qrcode/';
-				$config['quality']   = true;
-				$config['size']      = '1024';
-				$config['black']     = array(224, 255, 255);
-				$config['white']     = array(70, 130, 180);
+				$config['cachedir'] = './src/';
+				$config['errorlog'] = './src/';
+				$config['imagedir'] = './src/img/qrcode/';
+				$config['quality'] = true;
+				$config['size'] = '1024';
+				$config['black'] = array(224, 255, 255);
+				$config['white'] = array(70, 130, 180);
 
 				$this->ciqrcode->initialize($config);
 
@@ -157,9 +187,9 @@ class Aset extends CI_Controller
 
 				$url = 'http://localhost/ai/ai_aset/detail/' . $id_aset;
 
-				$params['data']     = $url;
-				$params['level']    = 'H';
-				$params['size']     = 10;
+				$params['data'] = $url;
+				$params['level'] = 'H';
+				$params['size'] = 10;
 				$params['savename'] = FCPATH . $config['imagedir'] . $image_name;
 
 				$this->ciqrcode->generate($params);
@@ -241,11 +271,11 @@ class Aset extends CI_Controller
 
 				$ext = strtolower(pathinfo($_FILES['foto_aset']['name'], PATHINFO_EXTENSION));
 
-				$config['upload_path']   = './src/img/aset/';
+				$config['upload_path'] = './src/img/aset/';
 				$config['allowed_types'] = 'jpg|jpeg|png';
-				$config['max_size']      = 2048;
-				$config['file_name']     = 'aset_' . $id_aset . '.' . $ext;
-				$config['overwrite']     = TRUE;
+				$config['max_size'] = 2048;
+				$config['file_name'] = 'aset_' . $id_aset . '.' . $ext;
+				$config['overwrite'] = TRUE;
 
 				$this->load->library('upload', $config);
 
@@ -264,13 +294,13 @@ class Aset extends CI_Controller
 			if ($generate) {
 
 				$config['cacheable'] = true;
-				$config['cachedir']  = './src/';
-				$config['errorlog']  = './src/';
-				$config['imagedir']  = './src/img/qrcode/';
-				$config['quality']   = true;
-				$config['size']      = '1024';
-				$config['black']     = array(224, 255, 255);
-				$config['white']     = array(70, 130, 180);
+				$config['cachedir'] = './src/';
+				$config['errorlog'] = './src/';
+				$config['imagedir'] = './src/img/qrcode/';
+				$config['quality'] = true;
+				$config['size'] = '1024';
+				$config['black'] = array(224, 255, 255);
+				$config['white'] = array(70, 130, 180);
 
 				$this->ciqrcode->initialize($config);
 
@@ -278,9 +308,9 @@ class Aset extends CI_Controller
 
 				$url = 'http://localhost/ai/ai_aset/detail/' . $id_aset;
 
-				$params['data']     = $url;
-				$params['level']    = 'H';
-				$params['size']     = 10;
+				$params['data'] = $url;
+				$params['level'] = 'H';
+				$params['size'] = 10;
 				$params['savename'] = FCPATH . $config['imagedir'] . $image_name;
 
 				$this->ciqrcode->generate($params);
@@ -367,14 +397,14 @@ class Aset extends CI_Controller
 
 				$kode_aset = $this->input->post('kode_aset');
 
-				$config['cacheable']    = true; //boolean, the default is true
-				$config['cachedir']     = './src/'; //string, the default is application/cache/
-				$config['errorlog']     = './src/'; //string, the default is application/logs/
-				$config['imagedir']     = './src/img/qrcode/'; //direktori penyimpanan qr code
-				$config['quality']      = true; //boolean, the default is true
-				$config['size']         = '1024'; //interger, the default is 1024
-				$config['black']        = array(224, 255, 255); // array, default is array(255,255,255)
-				$config['white']        = array(70, 130, 180); // array, default is array(0,0,0)
+				$config['cacheable'] = true; //boolean, the default is true
+				$config['cachedir'] = './src/'; //string, the default is application/cache/
+				$config['errorlog'] = './src/'; //string, the default is application/logs/
+				$config['imagedir'] = './src/img/qrcode/'; //direktori penyimpanan qr code
+				$config['quality'] = true; //boolean, the default is true
+				$config['size'] = '1024'; //interger, the default is 1024
+				$config['black'] = array(224, 255, 255); // array, default is array(255,255,255)
+				$config['white'] = array(70, 130, 180); // array, default is array(0,0,0)
 				$this->ciqrcode->initialize($config);
 
 				$id = $this->uuid->v4();
@@ -404,11 +434,11 @@ class Aset extends CI_Controller
 
 					$ext = strtolower(pathinfo($_FILES['foto_aset']['name'], PATHINFO_EXTENSION));
 
-					$config['upload_path']   = './src/img/aset/';
+					$config['upload_path'] = './src/img/aset/';
 					$config['allowed_types'] = 'jpg|jpeg|png';
-					$config['max_size']      = 2048;
-					$config['file_name']     = 'aset_' . $id_aset . '.' . $ext;
-					$config['overwrite']     = TRUE;
+					$config['max_size'] = 2048;
+					$config['file_name'] = 'aset_' . $id_aset . '.' . $ext;
+					$config['overwrite'] = TRUE;
 
 					$this->load->library('upload', $config);
 
@@ -468,11 +498,11 @@ class Aset extends CI_Controller
 
 					$ext = strtolower(pathinfo($_FILES['foto_aset']['name'], PATHINFO_EXTENSION));
 
-					$config['upload_path']   = './src/img/aset/';
+					$config['upload_path'] = './src/img/aset/';
 					$config['allowed_types'] = 'jpg|jpeg|png';
-					$config['max_size']      = 2048;
-					$config['file_name']     = 'aset_' . $id_aset . '.' . $ext;
-					$config['overwrite']     = TRUE;
+					$config['max_size'] = 2048;
+					$config['file_name'] = 'aset_' . $id_aset . '.' . $ext;
+					$config['overwrite'] = TRUE;
 
 					$this->load->library('upload', $config);
 

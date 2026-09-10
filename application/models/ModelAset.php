@@ -152,25 +152,52 @@ class ModelAset extends CI_Model
 	}
 
 	public function getAsetWujudByUser($idUser)
-{
-    $user = $this->db
-                ->where('id_user', $idUser)
-                ->get('users')
-                ->row();
+	{
+		$user = $this->db
+			->where('id_user', $idUser)
+			->get('users')
+			->row();
 
-    $this->db->select('a.*, b.nama_barang, c.nama_lokasi');
-    $this->db->from('asets a');
-    $this->db->join('barang b', 'b.id_barang = a.id_barang');
-    $this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi');
+		$this->db->select('a.*, b.nama_barang, c.nama_lokasi');
+		$this->db->from('asets a');
+		$this->db->join('barang b', 'b.id_barang = a.id_barang');
+		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi');
 
-    if (!empty($user->user_kategori)) {
-        $this->db->where('b.id_kategori', $user->user_kategori);
-    }
+		if (!empty($user->user_kategori)) {
+			$this->db->where('b.id_kategori', $user->user_kategori);
+		}
 
-    $this->db->where('a.volume >', 0);
+		$this->db->where('a.volume >', 0);
 
-    return $this->db->get()->result_array();
-}
+		return $this->db->get()->result_array();
+	}
+	public function getDetailAsetPrint($id_aset)
+	{
+		$this->db->select('a.*, b.nama_barang, b.merek, c.nama_lokasi, d.nama_kategori');
+		$this->db->from('asets a');
+		$this->db->join('barang b', 'b.id_barang = a.id_barang', 'left');
+		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi', 'left');
+		$this->db->join('kategori_barang d', 'd.id_kategori = b.id_kategori', 'left');
+		$this->db->where('a.id_aset', $id_aset);
+
+		$query = $this->db->get();
+
+		return $query->row_array();
+	}
+	public function getAsetByIds($ids)
+	{
+		$this->db->select('a.*, b.nama_barang, b.merek, c.nama_lokasi, d.nama_kategori');
+		$this->db->from('asets a');
+		$this->db->join('barang b', 'b.id_barang = a.id_barang', 'left');
+		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi', 'left');
+		$this->db->join('kategori_barang d', 'd.id_kategori = b.id_kategori', 'left');
+		$this->db->where_in('a.id_aset', $ids);
+		$this->db->where('a.volume >', 0);
+
+		$query = $this->db->get();
+
+		return $query->result_array();
+	}
 }
 
 /* End of file ModelAset.php */
