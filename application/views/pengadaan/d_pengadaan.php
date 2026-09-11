@@ -55,6 +55,11 @@
                         <td width="50px">:</td>
                         <td><?=$d['nama_aset'] ?></td>
                       </tr>
+                       <tr>
+                        <td width="100px">Merek</td>
+                        <td width="50px">:</td>
+                        <td><?=$d['merek'] ?></td>
+                      </tr>
                       <tr>
                         <td width="100px">Volume</td>
                         <td width="50px">:</td>

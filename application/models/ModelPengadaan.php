@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class ModelPengadaan extends CI_Model {
+class ModelPengadaan extends CI_Model
+{
 
 	public function getSpesifikasi()
 	{
@@ -101,7 +102,7 @@ class ModelPengadaan extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function getFilterPengadaanAset($id_lokasi,$tahun_pengadaan)
+	public function getFilterPengadaanAset($id_lokasi, $tahun_pengadaan)
 	{
 		$this->db->select('*');
 		$this->db->from('pengadaan a');
@@ -131,37 +132,42 @@ class ModelPengadaan extends CI_Model {
 		return $query;
 	}
 
-	public function updateSpesifikasi($id_spesifikasi,$data){
-        $this->db->where(array('id_spesifikasi' => $id_spesifikasi));
-        $res = $this->db->update('kriteria_spesifikasi',$data);
-        return $res;
-    }
+	public function updateSpesifikasi($id_spesifikasi, $data)
+	{
+		$this->db->where(array('id_spesifikasi' => $id_spesifikasi));
+		$res = $this->db->update('kriteria_spesifikasi', $data);
+		return $res;
+	}
 
-    public function updateKualitas($id_kualitas,$data){
-        $this->db->where(array('id_kualitas' => $id_kualitas));
-        $res = $this->db->update('kriteria_kualitas',$data);
-        return $res;
-    }
+	public function updateKualitas($id_kualitas, $data)
+	{
+		$this->db->where(array('id_kualitas' => $id_kualitas));
+		$res = $this->db->update('kriteria_kualitas', $data);
+		return $res;
+	}
 
-    public function updateAset($id_aset,$data){
-        $this->db->where(array('id_aset' => $id_aset));
-        $res = $this->db->update('data_aset',$data);
-        return $res;
-    }
+	public function updateAset($id_aset, $data)
+	{
+		$this->db->where(array('id_aset' => $id_aset));
+		$res = $this->db->update('data_aset', $data);
+		return $res;
+	}
 
-    public function updatePenilaian($id_nilai,$data){
-        $this->db->where(array('id_nilai' => $id_nilai));
-        $res = $this->db->update('keputusan_pengadaan',$data);
-        return $res;
-    }
+	public function updatePenilaian($id_nilai, $data)
+	{
+		$this->db->where(array('id_nilai' => $id_nilai));
+		$res = $this->db->update('keputusan_pengadaan', $data);
+		return $res;
+	}
 
-    public function updatePengadaan($id_pengadaan,$data){
-        $this->db->where(array('id_pengadaan' => $id_pengadaan));
-        $res = $this->db->update('pengadaan',$data);
-        return $res;
-    }
+	public function updatePengadaan($id_pengadaan, $data)
+	{
+		$this->db->where(array('id_pengadaan' => $id_pengadaan));
+		$res = $this->db->update('pengadaan', $data);
+		return $res;
+	}
 
-    public function deleteAset($where)
+	public function deleteAset($where)
 	{
 		$this->db->where($where);
 		$res = $this->db->delete("data_aset");
@@ -183,10 +189,45 @@ class ModelPengadaan extends CI_Model {
 	}
 	public function getDetailPengadaan($id)
 	{
-		$this->db->select('a.*, b.nama_user, c.nama_lokasi');
+		$this->db->select('
+        a.id_pengadaan,
+        a.id_lokasi,
+        a.id_user,
+        a.nama_aset,
+        a.volume,
+        a.satuan,
+        a.harga_satuan,
+        a.tahun_pengadaan,
+        a.status,
+        b.nama_barang,
+        a.merek,
+        u.nama_user,
+        l.nama_lokasi
+    ');
+
 		$this->db->from('pengadaan a');
-		$this->db->join('users b', 'b.id_user = a.id_user', 'left');
-		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi', 'left');
+
+		// Join tabel barang
+		$this->db->join(
+			'barang b',
+			'b.nama_barang = a.nama_aset',
+			'left'
+		);
+
+		// Join tabel users
+		$this->db->join(
+			'users u',
+			'u.id_user = a.id_user',
+			'left'
+		);
+
+		// Join tabel lokasi
+		$this->db->join(
+			'lokasi_aset l',
+			'l.id_lokasi = a.id_lokasi',
+			'left'
+		);
+
 		$this->db->where('a.id_pengadaan', $id);
 
 		$query = $this->db->get();
@@ -195,11 +236,48 @@ class ModelPengadaan extends CI_Model {
 	}
 	public function getPengadaanByIds($ids)
 	{
-		$this->db->select('*');
+		$this->db->select('
+			a.id_pengadaan,
+			a.id_lokasi,
+			a.id_user,
+			a.nama_aset,
+			a.volume,
+			a.satuan,
+			a.harga_satuan,
+			a.tahun_pengadaan,
+			a.status,
+			b.nama_barang,
+			a.merek,
+			u.nama_user,
+			l.nama_lokasi
+		');
+
 		$this->db->from('pengadaan a');
-		$this->db->join('users b', 'b.id_user = a.id_user');
-		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi');
+
+		// Join ke tabel barang
+		$this->db->join(
+			'barang b',
+			'b.nama_barang = a.nama_aset',
+			'left'
+		);
+
+		// Join user
+		$this->db->join(
+			'users u',
+			'u.id_user = a.id_user',
+			'left'
+		);
+
+		// Join lokasi
+		$this->db->join(
+			'lokasi_aset l',
+			'l.id_lokasi = a.id_lokasi',
+			'left'
+		);
+
 		$this->db->where_in('a.id_pengadaan', $ids);
+
+		$this->db->order_by('a.id_pengadaan', 'ASC');
 
 		$query = $this->db->get();
 
