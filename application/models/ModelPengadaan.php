@@ -201,6 +201,8 @@ class ModelPengadaan extends CI_Model
         a.status,
         b.nama_barang,
         a.merek,
+		a.tujuan_pengadaan,
+		a.sifat_pengadaan,
         u.nama_user,
         l.nama_lokasi
     ');
@@ -248,6 +250,8 @@ class ModelPengadaan extends CI_Model
 			a.status,
 			b.nama_barang,
 			a.merek,
+			a.tujuan_pengadaan,
+			a.sifat_pengadaan,
 			u.nama_user,
 			l.nama_lokasi
 		');

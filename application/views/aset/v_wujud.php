@@ -167,18 +167,20 @@
                                                 class="btn btn-success btn-sm">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="<?= base_url('aset_wujud/edit/' . $row['id_aset']) ?>"
-                                                class="btn btn-info btn-sm">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a href="<?= base_url('aset_wujud/hapus/' . $row['id_aset']) ?>"
-                                                class="btn btn-danger btn-sm tombol-hapus">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                            <a href="<?= base_url('aset_wujud/print/' . $row['id_aset']) ?>"
-                                                class="btn btn-primary btn-sm" target="_blank" title="Print">
-                                                <i class="fas fa-print"></i>
-                                            </a>
+                                            <?php if ($this->session->userdata('role') == '1') { ?>
+                                                <a href="<?= base_url('aset_wujud/edit/' . $row['id_aset']) ?>"
+                                                    class="btn btn-info btn-sm">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="<?= base_url('aset_wujud/hapus/' . $row['id_aset']) ?>"
+                                                    class="btn btn-danger btn-sm tombol-hapus">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                                <a href="<?= base_url('aset_wujud/print/' . $row['id_aset']) ?>"
+                                                    class="btn btn-primary btn-sm" target="_blank" title="Print">
+                                                    <i class="fas fa-print"></i>
+                                                </a>
+                                            <?php } ?>
                                         </td>
                                     </tr>
                                 <?php endforeach ?>
@@ -199,7 +201,7 @@
                             </tfoot>
                         </table>
                     </div>
-                </form>
+                    </form>
             </div>
 
             <!-- /.card-body -->
@@ -233,7 +235,7 @@
 <script src="<?= base_url() ?>src/backend/plugins/datatables/jquery.dataTables.js"></script>
 <script src="<?= base_url() ?>src/backend/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script>
-    $(function () {
+    $(function() {
         $("#example1").DataTable({
             "language": {
                 "sSearch": "Cari"
@@ -241,7 +243,7 @@
         });
     });
 
-    document.getElementById("filterOption").addEventListener("change", function () {
+    document.getElementById("filterOption").addEventListener("change", function() {
         var url = this.value;
         if (url) {
             window.location.href = url;
@@ -276,7 +278,7 @@
     // ==========================================
     // CHECKBOX INDIVIDUAL
     // ==========================================
-    $('.checkItem').change(function () {
+    $('.checkItem').change(function() {
 
         cekPilihan();
 
@@ -294,7 +296,7 @@
     // ==========================================
     // CHECK ALL
     // ==========================================
-    $('#checkAll').click(function () {
+    $('#checkAll').click(function() {
 
         $('.checkItem').prop(
             'checked',
@@ -309,7 +311,7 @@
     // ==========================================
     // PILIH SEMUA
     // ==========================================
-    $('#pilihSemua').click(function () {
+    $('#pilihSemua').click(function() {
 
         $('.checkItem').prop('checked', true);
 
@@ -323,7 +325,7 @@
     // ==========================================
     // HAPUS PILIHAN
     // ==========================================
-    $('#hapusPilihan').click(function () {
+    $('#hapusPilihan').click(function() {
 
         $('.checkItem').prop('checked', false);
 
@@ -337,7 +339,7 @@
     // ==========================================
     // VALIDASI PRINT
     // ==========================================
-    $('#formPrint').submit(function (e) {
+    $('#formPrint').submit(function(e) {
 
         var jumlah = $('.checkItem:checked').length;
 

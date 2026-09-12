@@ -259,6 +259,8 @@ class Pengadaan extends CI_Controller {
 			'id_user' => $id_user,
 			'nama_aset' => $this->input->post('nama_aset'),
 			'merek' => $this->input->post('merek'),
+			'tujuan_pengadaan' => $this->input->post('tujuan_pengadaan'),
+			'sifat_pengadaan' => $this->input->post('sifat_pengadaan'),
 			'volume' => $this->input->post('volume'),
 			'satuan' => $this->input->post('satuan'),
 			'harga_satuan' => $this->input->post('harga_satuan'),

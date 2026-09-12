@@ -8,237 +8,237 @@
     <title>Print Data Pengadaan</title>
 
     <style>
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+
+    body {
+        font-family: "Times New Roman", Times, serif;
+        font-size: 13px;
+        color: #000;
+        margin: 0;
+    }
+
+
+    /* =========================
+       KOP SURAT
+    ========================= */
+
+    .kop {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    .kop td {
+        border: none;
+        padding: 0;
+        vertical-align: middle;
+    }
+
+
+    /* Kolom Logo */
+
+    .logo {
+        width: 105px;
+        text-align: center;
+    }
+
+    .logo img {
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+    }
+
+    /* Kolom Text Kop */
+    .kop-text {
+        width: calc(100% - 260px);
+        text-align: center;
+    }
+
+
+    /* Kolom Penyeimbang */
+
+    .kop-spacer {
+        width: 105px;
+    }
+
+    .yayasan {
+        font-size: 15px;
+        margin-bottom: 1px;
+    }
+
+    .sekolah {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 1px;
+    }
+
+    .akreditasi {
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 1px;
+    }
+
+    .program {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 1.3;
+        margin: 0 auto 5px auto;
+    }
+
+    .alamat {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10 px;
+        line-height: 1;
+        text-align: center;
+    }
+
+    /* =========================
+       GARIS KOP
+    ========================= */
+
+    .garis-kop {
+        border-top: 3px solid #000;
+        margin-top: 2px;
+        margin-bottom: 25px;
+    }
+
+
+    /* =========================
+       JUDUL
+    ========================= */
+
+    h2 {
+        text-align: center;
+        font-size: 16px;
+        margin-top: 0;
+        margin-bottom: 25px;
+        text-decoration: underline;
+    }
+
+    .isi-surat {
+        text-align: justify;
+        line-height: 1.6;
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+
+
+
+    /* =========================
+       TABEL DATA
+    ========================= */
+
+    table.data {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    table.data th,
+    table.data td {
+        border: 1px solid #000;
+        padding: 7px;
+        vertical-align: middle;
+    }
+
+    table.data th {
+        text-align: center;
+        font-weight: bold;
+    }
+
+    table.data td {
+        text-align: left;
+    }
+
+
+    /* Kolom tertentu rata tengah */
+
+    table.data td.no,
+    table.data td.tahun,
+    table.data td.status {
+        text-align: center;
+    }
+
+
+    /* =========================
+       TOMBOL PRINT
+    ========================= */
+
+    .no-print {
+        margin-bottom: 20px;
+    }
+
+    .btn-print {
+        padding: 8px 15px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .ttd {
+        width: 100%;
+        margin-top: 50px;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    .ttd td {
+        width: 33.33%;
+        text-align: center;
+        vertical-align: top;
+        border: none;
+    }
+
+    .jabatan,
+    .pemohon {
+        margin-bottom: 70px;
+        line-height: 1.5;
+    }
+
+    .nama-pejabat {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+
+    /* =========================
+       PRINT
+    ========================= */
+
+    @media print {
+
+        .no-print {
+            display: none;
+        }
+
         @page {
             size: A4;
             margin: 15mm;
         }
 
-        body {
-            font-family: "Times New Roman", Times, serif;
-            font-size: 13px;
-            color: #000;
-            margin: 0;
-        }
-
-
-        /* =========================
-       KOP SURAT
-    ========================= */
-
-        .kop {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-
-        .kop td {
-            border: none;
-            padding: 0;
-            vertical-align: middle;
-        }
-
-
-        /* Kolom Logo */
-
-        .logo {
-            width: 105px;
-            text-align: center;
-        }
-
-        .logo img {
-            width: 90px;
-            height: 90px;
-            object-fit: contain;
-        }
-
-        /* Kolom Text Kop */
-        .kop-text {
-            width: calc(100% - 260px);
-            text-align: center;
-        }
-
-
-        /* Kolom Penyeimbang */
-
-        .kop-spacer {
-            width: 105px;
-        }
-
-        .yayasan {
-            font-size: 15px;
-            margin-bottom: 1px;
-        }
-
-        .sekolah {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 1px;
-        }
-
-        .akreditasi {
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 1px;
-        }
-
-        .program {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 12px;
-            font-weight: bold;
-            line-height: 1.3;
-            margin: 0 auto 5px auto;
-        }
-
-        .alamat {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 10 px;
-            line-height: 1;
-            text-align: center;
-        }
-
-        /* =========================
-       GARIS KOP
-    ========================= */
-
-        .garis-kop {
-            border-top: 3px solid #000;
-            margin-top: 2px;
-            margin-bottom: 25px;
-        }
-
-
-        /* =========================
-       JUDUL
-    ========================= */
-
-        h2 {
-            text-align: center;
-            font-size: 16px;
-            margin-top: 0;
-            margin-bottom: 25px;
-            text-decoration: underline;
-        }
-
-        .isi-surat {
-            text-align: justify;
-            line-height: 1.6;
-            font-size: 15px;
-            margin-bottom: 20px;
-        }
-
-
-
-        /* =========================
-       TABEL DATA
-    ========================= */
-
-        table.data {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        table.data th,
-        table.data td {
-            border: 1px solid #000;
-            padding: 7px;
-            vertical-align: middle;
-        }
-
-        table.data th {
-            text-align: center;
-            font-weight: bold;
-        }
-
-        table.data td {
-            text-align: left;
-        }
-
-
-        /* Kolom tertentu rata tengah */
-
-        table.data td.no,
-        table.data td.tahun,
-        table.data td.status {
-            text-align: center;
-        }
-
-
-        /* =========================
-       TOMBOL PRINT
-    ========================= */
-
         .no-print {
-            margin-bottom: 20px;
+            display: none !important;
         }
 
-        .btn-print {
-            padding: 8px 15px;
-            background: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
+        html,
+        body {
+            margin: 0;
+            padding: 0;
         }
+    }
 
-        .ttd {
-            width: 100%;
-            margin-top: 50px;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-
-        .ttd td {
-            width: 33.33%;
-            text-align: center;
-            vertical-align: top;
-            border: none;
-        }
-
-        .jabatan,
-        .pemohon {
-            margin-bottom: 70px;
-            line-height: 1.5;
-        }
-
-        .nama-pejabat {
-            font-weight: bold;
-            text-decoration: underline;
-        }
-
-
-        /* =========================
-       PRINT
-    ========================= */
-
-        @media print {
-
-            .no-print {
-                display: none;
-            }
-
-            @page {
-                size: A4;
-                margin: 15mm;
-            }
-
-            .no-print {
-                display: none !important;
-            }
-
-            html,
-            body {
-                margin: 0;
-                padding: 0;
-            }
-        }
-
-        .penutup {
-            margin-top: 25px;
-            text-align: justify;
-            line-height: 1.6;
-            font-size: 15px;
-        }
+    .penutup {
+        margin-top: 25px;
+        text-align: justify;
+        line-height: 1.6;
+        font-size: 15px;
+    }
     </style>
 
 </head>
@@ -356,15 +356,14 @@ $tanggal = date('j') . ' ' . $bulan[(int) date('n')] . ' ' . date('Y');
             dengan rincian sebagai berikut:
 
         </p>
-        <span style="font-weight: bold; margin-left: 20px;">• Unit/Departemen Pengaju : </span> [Contoh: Laboratorium
-        Komputer / Program
-        Keahlian
-        TKJ] <br>
-        <span style="font-weight: bold; margin-left: 20px;">• Tujuan Pengadaan :</span> [Contoh: Peremajaan fasilitas
-        unit sarana praktik
-        siswa] <br>
-        <span style="font-weight: bold; margin-left: 20px;">• Sifat Pengadaan :</span> [ ] Biasa / [ ] Mendesak
-        </p>
+
+        <span style="font-weight: bold; margin-left: 20px;">• Unit/Departemen Pengaju :
+        </span><?php foreach ($pengadaan as $row): ?> <?= htmlspecialchars($row['nama_lokasi']); ?><?php endforeach; ?>
+        <br>
+        <span style="font-weight: bold; margin-left: 20px;">• Tujuan Pengadaan :</span>
+        <?= htmlspecialchars($row['tujuan_pengadaan']); ?><br>
+        <span style="font-weight: bold; margin-left: 20px;">• Sifat Pengadaan :</span>
+        <?= htmlspecialchars($row['sifat_pengadaan']); ?>
 
         <p>
             Rincian Kebutuhan Barang / Jasa:
@@ -393,43 +392,43 @@ $tanggal = date('j') . ' ' . $bulan[(int) date('n')] . ' ' . date('Y');
 
             <?php foreach ($pengadaan as $row): ?>
 
-                <?php
+            <?php
                 $total_harga = $row['volume'] * $row['harga_satuan'];
                 ?>
 
-                <tr>
-                    <td class="no">
-                        <?= $no++; ?>
-                    </td>
+            <tr>
+                <td class="no">
+                    <?= $no++; ?>
+                </td>
 
-                    <td>
-                        <?= htmlspecialchars($row['nama_aset']); ?>
-                    </td>
+                <td>
+                    <?= htmlspecialchars($row['nama_aset']); ?>
+                </td>
 
-                    <td>
-                        <?= htmlspecialchars($row['merek']); ?>
-                    </td>
+                <td>
+                    <?= htmlspecialchars($row['merek']); ?>
+                </td>
 
-                    <td>
-                        <?= htmlspecialchars($row['volume']); ?>
-                    </td>
+                <td>
+                    <?= htmlspecialchars($row['volume']); ?>
+                </td>
 
-                    <td>
-                        <?= htmlspecialchars($row['satuan']); ?>
-                    </td>
+                <td>
+                    <?= htmlspecialchars($row['satuan']); ?>
+                </td>
 
-                    <td>
-                        <?= 'Rp ' . number_format($row['harga_satuan'], 0, ',', '.'); ?>
-                    </td>
+                <td>
+                    <?= 'Rp ' . number_format($row['harga_satuan'], 0, ',', '.'); ?>
+                </td>
 
-                    <td>
-                        <?= 'Rp ' . number_format($total_harga, 0, ',', '.'); ?>
-                    </td>
+                <td>
+                    <?= 'Rp ' . number_format($total_harga, 0, ',', '.'); ?>
+                </td>
 
-                    <td>
+                <td>
 
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
             <?php endforeach; ?>
         </tbody>
@@ -476,7 +475,7 @@ $tanggal = date('j') . ' ' . $bulan[(int) date('n')] . ' ' . date('Y');
                     Pemohon
                 </div>
                 <div class="nama-pejabat">
-                    (__________________)
+                    <?= htmlspecialchars($row['nama_user']); ?>
                 </div>
             </td>
         </tr>
@@ -487,11 +486,11 @@ $tanggal = date('j') . ' ' . $bulan[(int) date('n')] . ' ' . date('Y');
 ========================= -->
 
     <script>
-        window.onload = function () {
+    window.onload = function() {
 
-            window.print();
+        window.print();
 
-        };
+    };
     </script>
 
 </body>

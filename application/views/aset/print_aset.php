@@ -6,222 +6,277 @@
     <meta charset="UTF-8">
     <title>Print Data Aset</title>
     <style>
-    @page {
-        size: A4;
-        margin: 15mm;
-    }
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
 
-    body {
-        font-family: "Times New Roman", Times, serif;
-        font-size: 13px;
-        color: #000;
-        margin: 0;
-    }
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 13px;
+            color: #000;
+            margin: 0;
+        }
 
+        /* =========================
+           KOP SURAT
+        ========================= */
 
-    /* =========================
-       KOP SURAT
-    ========================= */
+        .kop {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
 
-    .kop {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed;
-    }
+        .kop td {
+            border: none;
+            padding: 0;
+            vertical-align: middle;
+        }
 
-    .kop td {
-        border: none;
-        padding: 0;
-        vertical-align: middle;
-    }
+        /* Kolom logo */
+        .logo {
+            width: 105px;
+            text-align: center;
+        }
 
+        .logo img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+        }
 
-    /* Kolom Logo */
+        /* Kolom teks */
+        .kop-text {
+            width: calc(100% - 210px);
+            text-align: center;
+        }
 
-    .logo {
-        width: 105px;
-        text-align: center;
-    }
+        /* Kolom penyeimbang */
+        .kop-spacer {
+            width: 105px;
+        }
 
-    .logo img {
-        width: 90px;
-        height: 90px;
-        object-fit: contain;
-    }
+        .yayasan {
+            font-size: 15px;
+            margin-bottom: 1px;
+        }
 
+        .sekolah {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 1px;
+        }
 
-    /* Kolom Teks */
+        .akreditasi {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 1px;
+        }
 
-    .kop-text {
-        width: calc(100% - 210px);
-        text-align: center;
-    }
+        .program {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 1.3;
+            margin: 0 auto 5px auto;
+        }
 
+        .alamat {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 10 px;
+            line-height: 1;
+            text-align: center;
+        }
 
-    /* Kolom Penyeimbang */
-
-    .kop-spacer {
-        width: 105px;
-    }
-
-
-    .yayasan {
-        font-size: 15px;
-        margin-bottom: 1px;
-    }
-
-
-    .sekolah {
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 1px;
-    }
-
-
-    .akreditasi {
-        font-size: 12px;
-        font-weight: bold;
-        margin-bottom: 1px;
-    }
-
-
-    .program {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 12px;
-        font-weight: bold;
-        line-height: 1.3;
-        margin: 0 auto 5px auto;
-    }
-
-    .alamat {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 10px;
-        line-height: 1.2;
-        text-align: center;
-    }
-
-    /* =========================
+        /* =========================
        GARIS KOP
     ========================= */
 
-    .garis-kop {
-        border-top: 3px solid #000;
-        margin-top: 2px;
-        margin-bottom: 25px;
-    }
-
-    /* =========================
-       JUDUL
-    ========================= */
-    h2 {
-        text-align: center;
-        font-size: 16px;
-        margin-top: 0;
-        margin-bottom: 5px;
-        text-decoration: underline;
-    }
-
-    .subjudul {
-        text-align: center;
-        font-size: 13px;
-        font-weight: bold;
-        margin-top: 0;
-        margin-bottom: 25px;
-    }
-
-    /* =========================
-       DATA ASET
-    ========================= */
-    .data-table {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed;
-        margin-top: 15px;
-    }
-
-    .data-table th,
-    .data-table td {
-        border: 1px solid #000;
-        padding: 7px 5px;
-        vertical-align: middle;
-        text-align: center;
-        word-wrap: break-word;
-    }
-
-    .data-table th {
-        font-size: 10px;
-        font-weight: bold;
-        background: #f2f2f2;
-    }
-
-    .data-table td {
-        font-size: 10px;
-    }
-
-    /* =========================
-       FOOTER / TANDA TANGAN
-    ========================= */
-    .ttd {
-        width: 100%;
-        margin-top: 50px;
-        border-collapse: collapse;
-    }
-
-    .ttd td {
-        width: 50%;
-        text-align: center;
-        vertical-align: top;
-        border: none;
-    }
-
-    .jabatan {
-        margin-bottom: 70px;
-        line-height: 1.5;
-    }
-
-    .nama-pejabat {
-        font-weight: bold;
-        text-decoration: underline;
-    }
-
-    /* =========================
-       TANGGAL CETAK
-    ========================= */
-    .tanggal-cetak {
-        text-align: right;
-        margin-top: 30px;
-        margin-bottom: 0;
-        font-size: 11px;
-    }
-
-    /* =========================
-       TOMBOL PRINT
-    ========================= */
-    .no-print {
-        margin-bottom: 20px;
-    }
-
-    .btn-print {
-        padding: 8px 15px;
-        background: #007bff;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        border-radius: 4px;
-    }
-
-    /* =========================
-       PRINT
-    ========================= */
-    @media print {
-
-        .no-print {
-            display: none;
+        .garis-kop {
+            border-top: 3px solid #000;
+            margin-top: 2px;
+            margin-bottom: 25px;
         }
 
-    }
+        /* =========================
+           JUDUL
+        ========================= */
+        h2 {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 25px;
+            text-decoration: underline;
+        }
+
+        /* =========================
+           ISI SURAT
+        ========================= */
+        .isi-surat {
+            text-align: justify;
+            line-height: 1.6;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           TABEL
+        ========================= */
+
+        table.data {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table.data th,
+        table.data td {
+            border: 1px solid #000;
+            padding: 9px 6px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        table.data th {
+            background: #f2f2f2;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           PENUTUP
+        ========================= */
+
+        .penutup {
+            margin-top: 25px;
+            text-align: justify;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           TANDA TANGAN
+        ========================= */
+
+        .ttd {
+            width: 100%;
+            margin-top: 50px;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .ttd td {
+            width: 33.33%;
+            text-align: center;
+            vertical-align: top;
+            border: none;
+        }
+
+        .jabatan,
+        .pemohon {
+            margin-bottom: 70px;
+            line-height: 1.5;
+        }
+
+        .nama-pejabat {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* =========================
+           PRINT
+        ========================= */
+
+        .no-print {
+            margin-bottom: 20px;
+        }
+
+        .btn-print {
+            padding: 8px 15px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        @media print {
+
+            .no-print {
+                display: none;
+            }
+
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        }
     </style>
 </head>
+<?php
+$bulan = [
+    1 => 'Januari',
+    2 => 'Februari',
+    3 => 'Maret',
+    4 => 'April',
+    5 => 'Mei',
+    6 => 'Juni',
+    7 => 'Juli',
+    8 => 'Agustus',
+    9 => 'September',
+    10 => 'Oktober',
+    11 => 'November',
+    12 => 'Desember'
+];
+
+$tanggal = date('j') . ' ' . $bulan[(int) date('n')] . ' ' . date('Y');
+?>
+<?php
+// Set timezone Indonesia (WIB) 
+date_default_timezone_set('Asia/Jakarta');
+
+$hari = ['Sunday' => 'Minggu', 'Monday' => 'Senin', 'Tuesday' => 'Selasa', 'Wednesday' => 'Rabu', 'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu'];
+$bulan = [1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'];
+$tanggalSekarang = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
+$namaHari = $hari[$tanggalSekarang->format('l')];
+$angkaTanggal = (int) $tanggalSekarang->format('d');
+$namaBulan = $bulan[(int) $tanggalSekarang->format('m')];
+$angkaTahun = (int) $tanggalSekarang->format('Y');
+function angkaKeHuruf($angka)
+{
+    $huruf = ['', 'Satu', 'Dua', 'Tiga', 'Empat', 'Lima', 'Enam', 'Tujuh', 'Delapan', 'Sembilan', 'Sepuluh', 'Sebelas'];
+    if ($angka < 12) {
+        return $huruf[$angka];
+    } elseif ($angka < 20) {
+        return angkaKeHuruf($angka - 10) . ' Belas';
+    } elseif ($angka < 100) {
+        return angkaKeHuruf(intdiv($angka, 10)) . ' Puluh ' . angkaKeHuruf($angka % 10);
+    } elseif ($angka < 200) {
+        return 'Seratus ' . angkaKeHuruf($angka - 100);
+    } elseif ($angka < 1000) {
+        return angkaKeHuruf(intdiv($angka, 100)) . ' Ratus ' . angkaKeHuruf($angka % 100);
+    } elseif ($angka < 2000) {
+        return 'Seribu ' . angkaKeHuruf($angka - 1000);
+    } elseif ($angka < 1000000) {
+        return angkaKeHuruf(intdiv($angka, 1000)) . ' Ribu ' . angkaKeHuruf($angka % 1000);
+    }
+    return '';
+}
+$tanggalHuruf = angkaKeHuruf($angkaTanggal);
+$tahunHuruf = angkaKeHuruf($angkaTahun);
+?>
+
 
 <body>
     <div class="container">
@@ -235,36 +290,28 @@
                 <td class="logo">
                     <img src="<?= base_url('src/img/logo/logo.png'); ?>" alt="Logo SMK Fadilah">
                 </td>
-                <!-- TEXT KOP -->
                 <td class="kop-text">
-
                     <div class="yayasan">
                         YAYASAN FADILAH
                     </div>
-
                     <div class="sekolah">
                         SMK FADILAH
                     </div>
-
                     <div class="akreditasi">
                         STATUS : TERAKREDITASI "A", NPSN : 20615746
                     </div>
-
                     <div class="program">
                         PROGRAM KEAHLIAN : DESAIN KOMUNIKASI VISUAL, TEKNIK JARINGAN KOMPUTER DAN<br>
                         TELEKOMUNIKASI, TEKNIK OTOMOTIF DAN PERHOTELAN
                     </div>
-
                     <div class="alamat">
                         Jl. Pendidikan II No.80 RT 03/21 Kelurahan Parigi Kec. Pondok Aren,
                         Kota Tangerang Selatan Provinsi Banten Kode Pos 15227
                         Telp. (021) 22214499
                     </div>
-
                     <div class="alamat">
                         sekolahfadilah.sch.id, email : sekolahfadilah@gmail.com
                     </div>
-
                 </td>
                 <!-- PENYEIMBANG LOGO -->
                 <td class="kop-spacer"></td>
@@ -272,71 +319,111 @@
         </table>
         <div class="garis-kop"></div>
         <h2>
-            DATA ASET BERWUJUD
+            BERITA ACARA SERAH TERIMA BARANG <br>
+            NO: ...../BAST-BARANG/SMK-YF/...../2026
         </h2>
-        <div class="subjudul">
-            INVENTARIS ASET
+        <p style="text-align: justify; line-height: 1.5; font-size: 15px;">
+            Pada hari ini, <strong><?= $namaHari; ?></strong>, tanggal <strong><?= $tanggalHuruf; ?></strong>
+            <strong><?= $namaBulan; ?></strong> Tahun
+            <strong><?= $tahunHuruf; ?></strong>, kami yang bertanda tangan di
+            bawah ini:
+        </p>
+        <div style="margin-left: 20px;">
+            <span style="font-weight: bold; font-size: 15px;">Nama : </span> Dr. Jayadih, M.Kom
+            <br>
+            <span style="font-weight: bold; font-size: 15px;">Jabatan : </span> Kepala Sekolah
         </div>
-        <table class="data-table">
+
+        <p style="text-align: justify; line-height: 1.5; font-size: 15px;">
+            Dalam hal ini bertindak untuk dan atas nama SMK Fadilah, yang selanjutnya disebut sebagai <span
+                style="font-weight: bold;">PIHAK
+                PERTAMA
+                (Yang Menyerahkan).</span>
+        </p>
+        <div style="margin-left: 20px;">
+            <span style="font-weight: bold; font-size: 15px;">Nama : </span> Fadel Ahmad Ath Thariq,
+            S.E.
+            <br>
+            <span style="font-weight: bold; font-size: 15px;">Jabatan : </span> Perwakilan / Pengurus
+            Yayasan Fadilah
+        </div>
+
+        <p style="text-align: justify; line-height: 1.5; font-size: 15px;">
+            Dalam hal ini bertindak untuk dan atas nama Yayasan Fadilah, yang selanjutnya disebut sebagai <span
+                style="font-weight: bold;">PIHAK
+                KEDUA
+                (Yang Menerima)</span>.
+        </p>
+        <p style="text-align: justify; line-height: 1.5; font-size: 15px;">
+            PIHAK PERTAMA menyerahkan barang kepada PIHAK KEDUA, dan PIHAK KEDUA menyatakan telah menerima barang dari
+            PIHAK PERTAMA dalam keadaan baik dan lengkap dengan rincian sebagai berikut:
+        </p>
+        <table class="data">
             <!-- HEADER FIELD -->
             <tr>
-                <th>Kode Aset</th>
                 <th>Nama Aset</th>
-                <th>Kategori</th>
-                <th>Lokasi</th>
-                <th>Sumber Dana</th>
-                <th>Tahun Perolehan</th>
-                <th>Kondisi</th>
+                <th>Merek</th>
                 <th>Volume</th>
-                <th>Nilai Aset</th>
+                <th>Kondisi</th>
+                <th>Keterangan</th>
             </tr> <!-- ISI DATA -->
             <tr>
-                <td> <?= htmlspecialchars($aset['kode_aset'] ?? '-'); ?> </td>
                 <td> <?= htmlspecialchars($aset['nama_barang'] ?? '-'); ?> </td>
-                <td> <?= htmlspecialchars($aset['nama_kategori'] ?? '-'); ?> </td>
-                <td> <?= htmlspecialchars($aset['nama_lokasi'] ?? '-'); ?> </td>
-                <td> <?= htmlspecialchars($aset['jenis_bantuan'] ?? '-'); ?> </td>
-                <td> <?= htmlspecialchars($aset['tahun_perolehan'] ?? '-'); ?> </td>
-                <td> <?= htmlspecialchars($aset['kondisi'] ?? '-'); ?> </td>
+                <td> <?= htmlspecialchars($aset['merek'] ?? '-'); ?> </td>
                 <td> <?= htmlspecialchars($aset['volume'] ?? '-'); ?> </td>
-                <td> <?= isset($aset['harga']) ? rupiah($aset['harga']) : '-'; ?> </td>
+                <td> <?= htmlspecialchars($aset['kondisi'] ?? '-'); ?> </td>
+                <td><?= htmlspecialchars($aset['nama_lokasi'] ?? '-'); ?></td>
             </tr>
         </table>
-        <div class="tanggal-cetak">
-
-            Dicetak pada:
-            <?= date('d-m-Y H:i'); ?>
-
+        <div class="penutup">
+            <p>
+                Demikian Berita Acara Serah Terima Barang ini dibuat dengan sebenarnya dalam rangkap 2 (dua) untuk
+                dipergunakan sebagaimana mestinya.
+            </p>
         </div>
         <table class="ttd">
             <tr>
                 <td>
                     <div class="jabatan">
-                        Mengetahui,<br>
-                        Kepala Sekolah
+                        Menyetujui/Menyetujui<br>
+                        Ketua Yayasan Fadilah
                     </div>
+
                     <div class="nama-pejabat">
-                        Dr. Jayadih, M.Kom
+                        A.K. Jaelani, S.H,
                     </div>
                 </td>
+
                 <td>
                     <div class="jabatan">
                         <br>
-                        Kepala Sapras
+                        Pihak Kedua,
                     </div>
+
                     <div class="nama-pejabat">
-                        Abdul Rohman, S.Kom
+                        Fadel Ahmad Ath Thariq, S.E,
+                    </div>
+                </td>
+
+                <td>
+                    <div class="pemohon">
+                        Tangerang Selatan, <?= $tanggal ?><br>
+                        Pihak Pertama,
+                    </div>
+
+                    <div class="nama-pejabat">
+                        Dr. Jayadih, M.Kom.
                     </div>
                 </td>
             </tr>
         </table>
     </div>
     <script>
-    window.onload = function() {
+        window.onload = function() {
 
-        window.print();
+            window.print();
 
-    };
+        };
     </script>
 </body>
 

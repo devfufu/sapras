@@ -8,222 +8,222 @@
     <title>Print Pengadaan</title>
 
     <style>
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+
+    body {
+        font-family: "Times New Roman", Times, serif;
+        font-size: 13px;
+        color: #000;
+        margin: 0;
+    }
+
+    /* =========================
+           KOP SURAT
+        ========================= */
+
+    .kop {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    .kop td {
+        border: none;
+        padding: 0;
+        vertical-align: middle;
+    }
+
+    /* Kolom logo */
+    .logo {
+        width: 105px;
+        text-align: center;
+    }
+
+    .logo img {
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+    }
+
+    /* Kolom teks */
+    .kop-text {
+        width: calc(100% - 210px);
+        text-align: center;
+    }
+
+    /* Kolom penyeimbang */
+    .kop-spacer {
+        width: 105px;
+    }
+
+    .yayasan {
+        font-size: 15px;
+        margin-bottom: 1px;
+    }
+
+    .sekolah {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 1px;
+    }
+
+    .akreditasi {
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 1px;
+    }
+
+    .program {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 1.3;
+        margin: 0 auto 5px auto;
+    }
+
+    .alamat {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10 px;
+        line-height: 1;
+        text-align: center;
+    }
+
+    /* =========================
+       GARIS KOP
+    ========================= */
+
+    .garis-kop {
+        border-top: 3px solid #000;
+        margin-top: 2px;
+        margin-bottom: 25px;
+    }
+
+    /* =========================
+           JUDUL
+        ========================= */
+    h2 {
+        text-align: center;
+        font-size: 16px;
+        margin-bottom: 25px;
+        text-decoration: underline;
+    }
+
+    /* =========================
+           ISI SURAT
+        ========================= */
+    .isi-surat {
+        text-align: justify;
+        line-height: 1.6;
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+
+    /* =========================
+           TABEL
+        ========================= */
+
+    table.data {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    table.data th,
+    table.data td {
+        border: 1px solid #000;
+        padding: 9px 6px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    table.data th {
+        background: #f2f2f2;
+        font-weight: bold;
+    }
+
+
+    /* =========================
+           PENUTUP
+        ========================= */
+
+    .penutup {
+        margin-top: 25px;
+        text-align: justify;
+        line-height: 1.6;
+        font-size: 15px;
+    }
+
+
+    /* =========================
+           TANDA TANGAN
+        ========================= */
+
+    .ttd {
+        width: 100%;
+        margin-top: 50px;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    .ttd td {
+        width: 33.33%;
+        text-align: center;
+        vertical-align: top;
+        border: none;
+    }
+
+    .jabatan,
+    .pemohon {
+        margin-bottom: 70px;
+        line-height: 1.5;
+    }
+
+    .nama-pejabat {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+    /* =========================
+           PRINT
+        ========================= */
+
+    .no-print {
+        margin-bottom: 20px;
+    }
+
+    .btn-print {
+        padding: 8px 15px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    @media print {
+
+        .no-print {
+            display: none;
+        }
+
         @page {
             size: A4;
             margin: 15mm;
         }
 
-        body {
-            font-family: "Times New Roman", Times, serif;
-            font-size: 13px;
-            color: #000;
-            margin: 0;
-        }
-
-        /* =========================
-           KOP SURAT
-        ========================= */
-
-        .kop {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-
-        .kop td {
-            border: none;
-            padding: 0;
-            vertical-align: middle;
-        }
-
-        /* Kolom logo */
-        .logo {
-            width: 105px;
-            text-align: center;
-        }
-
-        .logo img {
-            width: 90px;
-            height: 90px;
-            object-fit: contain;
-        }
-
-        /* Kolom teks */
-        .kop-text {
-            width: calc(100% - 210px);
-            text-align: center;
-        }
-
-        /* Kolom penyeimbang */
-        .kop-spacer {
-            width: 105px;
-        }
-
-        .yayasan {
-            font-size: 15px;
-            margin-bottom: 1px;
-        }
-
-        .sekolah {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 1px;
-        }
-
-        .akreditasi {
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 1px;
-        }
-
-        .program {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 12px;
-            font-weight: bold;
-            line-height: 1.3;
-            margin: 0 auto 5px auto;
-        }
-
-        .alamat {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 10 px;
-            line-height: 1;
-            text-align: center;
-        }
-
-        /* =========================
-       GARIS KOP
-    ========================= */
-
-        .garis-kop {
-            border-top: 3px solid #000;
-            margin-top: 2px;
-            margin-bottom: 25px;
-        }
-
-        /* =========================
-           JUDUL
-        ========================= */
-        h2 {
-            text-align: center;
-            font-size: 16px;
-            margin-bottom: 25px;
-            text-decoration: underline;
-        }
-
-        /* =========================
-           ISI SURAT
-        ========================= */
-        .isi-surat {
-            text-align: justify;
-            line-height: 1.6;
-            font-size: 15px;
-            margin-bottom: 20px;
-        }
-
-        /* =========================
-           TABEL
-        ========================= */
-
-        table.data {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        table.data th,
-        table.data td {
-            border: 1px solid #000;
-            padding: 9px 6px;
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        table.data th {
-            background: #f2f2f2;
-            font-weight: bold;
-        }
-
-
-        /* =========================
-           PENUTUP
-        ========================= */
-
-        .penutup {
-            margin-top: 25px;
-            text-align: justify;
-            line-height: 1.6;
-            font-size: 15px;
-        }
-
-
-        /* =========================
-           TANDA TANGAN
-        ========================= */
-
-        .ttd {
-            width: 100%;
-            margin-top: 50px;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-
-        .ttd td {
-            width: 33.33%;
-            text-align: center;
-            vertical-align: top;
-            border: none;
-        }
-
-        .jabatan,
-        .pemohon {
-            margin-bottom: 70px;
-            line-height: 1.5;
-        }
-
-        .nama-pejabat {
-            font-weight: bold;
-            text-decoration: underline;
-        }
-
-        /* =========================
-           PRINT
-        ========================= */
-
         .no-print {
-            margin-bottom: 20px;
+            display: none !important;
         }
 
-        .btn-print {
-            padding: 8px 15px;
-            background: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
+        html,
+        body {
+            margin: 0;
+            padding: 0;
         }
-
-        @media print {
-
-            .no-print {
-                display: none;
-            }
-
-            @page {
-                size: A4;
-                margin: 15mm;
-            }
-
-            .no-print {
-                display: none !important;
-            }
-
-            html,
-            body {
-                margin: 0;
-                padding: 0;
-            }
-        }
+    }
     </style>
 
 </head>
@@ -304,14 +304,12 @@ $tanggal = date('j') . ' ' . $bulan[(int) date('n')] . ' ' . date('Y');
 
         </p>
 
-        <span style="font-weight: bold; margin-left: 20px;">• Unit/Departemen Pengaju : </span> [Contoh: Laboratorium
-        Komputer / Program
-        Keahlian
-        TKJ] <br>
-        <span style="font-weight: bold; margin-left: 20px;">• Tujuan Pengadaan :</span> [Contoh: Peremajaan fasilitas
-        unit sarana praktik
-        siswa] <br>
-        <span style="font-weight: bold; margin-left: 20px;">• Sifat Pengadaan :</span> [ ] Biasa / [ ] Mendesak
+        <span style="font-weight: bold; margin-left: 20px;">• Unit/Departemen Pengaju : </span>
+        <?= htmlspecialchars($pengadaan['nama_lokasi']); ?> <br>
+        <span style="font-weight: bold; margin-left: 20px;">• Tujuan Pengadaan :</span>
+        <?= htmlspecialchars($pengadaan['tujuan_pengadaan']); ?><br>
+        <span style="font-weight: bold; margin-left: 20px;">• Sifat Pengadaan :</span>
+        <?= htmlspecialchars($pengadaan['sifat_pengadaan']); ?>
 
         <p>
             Rincian Kebutuhan Barang / Jasa:
@@ -405,17 +403,17 @@ $tanggal = date('j') . ' ' . $bulan[(int) date('n')] . ' ' . date('Y');
                 </div>
 
                 <div class="nama-pejabat">
-                    (__________________)
+                    <?= htmlspecialchars($pengadaan['nama_user']); ?>
                 </div>
             </td>
         </tr>
     </table>
     <script>
-        window.onload = function () {
+    window.onload = function() {
 
-            window.print();
+        window.print();
 
-        };
+    };
     </script>
 </body>
 
