@@ -6,22 +6,11 @@ class ModelUser extends CI_Model
 
 	public function getDataUser()
 	{
-		$this->db->select('
-        users.*,
-        kategori_barang.nama_kategori
-    ');
-
+		$this->db->select('*');
 		$this->db->from('users');
-
-		$this->db->join(
-			'kategori_barang',
-			'kategori_barang.id_kategori = users.user_kategori',
-			'left'
-		);
-
-		$this->db->order_by('users.id_user', 'DESC');
-
-		return $this->db->get()->result_array();
+		$this->db->order_by('id_user', 'desc');
+		$query = $this->db->get();
+		return $query->result_array();
 	}
 
 	public function getDetailUser($id_user)
@@ -66,7 +55,6 @@ class ModelUser extends CI_Model
 	{
 		return $this->db->get_where('users', ['id_user' => $id_user])->row_array();
 	}
-
 }
 
 /* End of file ModelUser.php */
