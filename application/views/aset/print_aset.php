@@ -241,6 +241,10 @@ $bulan = [
 ];
 
 $tanggal = date('j') . ' ' . $bulan[(int) date('n')] . ' ' . date('Y');
+$tanggal1 = date('d');
+$bulan1 = date('m');
+$tahun1 = date('Y');
+
 ?>
 <?php
 // Set timezone Indonesia (WIB) 
@@ -320,7 +324,7 @@ $tahunHuruf = angkaKeHuruf($angkaTahun);
         <div class="garis-kop"></div>
         <h2>
             BERITA ACARA SERAH TERIMA BARANG <br>
-            NO: ...../BAST-BARANG/SMK-YF/...../2026
+            NO: <?= $tanggal1; ?>/<?= $bulan1; ?>/BAST-BARANG/FDL/<?= $tahun1; ?>
         </h2>
         <p style="text-align: justify; line-height: 1.5; font-size: 15px;">
             Pada hari ini, <strong><?= $namaHari; ?></strong>, tanggal <strong><?= $tanggalHuruf; ?></strong>
