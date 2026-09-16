@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class ModelPengadaan extends CI_Model
 {
@@ -132,6 +132,21 @@ class ModelPengadaan extends CI_Model
 		return $query;
 	}
 
+	public function getNamaUser($id_user)
+	{
+		$this->db->select('nama_user');
+		$this->db->from('users');
+		$this->db->where('id_user', $id_user);
+
+		$query = $this->db->get();
+
+		if ($query->num_rows() > 0) {
+			return $query->row()->nama_user;
+		}
+
+		return '';
+	}
+
 	public function updateSpesifikasi($id_spesifikasi, $data)
 	{
 		$this->db->where(array('id_spesifikasi' => $id_spesifikasi));
@@ -236,6 +251,7 @@ class ModelPengadaan extends CI_Model
 
 		return $query->row_array();
 	}
+
 	public function getPengadaanByIds($ids)
 	{
 		$this->db->select('
@@ -287,7 +303,6 @@ class ModelPengadaan extends CI_Model
 
 		return $query->result_array();
 	}
-
 }
 
 /* End of file ModelPengadaan.php */

@@ -84,6 +84,8 @@ $route['data_aset/hapus/(:any)'] = 'Pengadaan/hapusAset/(:any)';
 $route['penilaian/simpan'] = 'Pengadaan/simpanPenilaian';
 $route['penilaian/ubah'] = 'Pengadaan/ubahPenilaian';
 $route['penilaian/hapus/(:any)'] = 'Pengadaan/hapusPenilaian/(:any)';
+
+
 //spk
 $route['spk'] = 'Pengadaan/spk';
 $route['test'] = 'Pengadaan/testpk';
