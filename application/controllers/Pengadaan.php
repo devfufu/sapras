@@ -277,7 +277,7 @@ class Pengadaan extends CI_Controller
 
 			$nama_user = $this->mp->getNamaUser($id_user);
 
-			$email_tujuan = 'fuadramadon12@gmail.com';
+			$email_tujuan = 'smkfadilahsapras@gmail.com';
 			$nomor_wa = '6285777523577';
 
 			$this->kirimEmailPengadaan($data, $email_tujuan, $nama_user);
@@ -298,77 +298,75 @@ class Pengadaan extends CI_Controller
 
 		$this->email->from(
 			'fuadramadon12@gmail.com',
-			'Sistem Pengadaan'
+			'Sistem Sarpras'
 		);
 
 		$this->email->to($email_tujuan);
 
-		$this->email->subject('🔔 Pengadaan Baru - Sistem Aset');
+		$this->email->subject('Pengadaan Baru - Sistem Sarpras');
 
-		$pesan = '
-    <html>
-    <body>
+		$message = "
+        <h3>🔔 PENGADAAN BARU</h3>
 
-        <h2>🔔 Pengadaan Baru</h2>
+        <p>Ada pengajuan pengadaan baru yang masuk ke sistem.</p>
 
-        <p>
-            Telah masuk pengajuan pengadaan baru dengan detail berikut:
-        </p>
-
-        <table border="1" cellpadding="8" cellspacing="0"
-               style="border-collapse: collapse;">
-
+        <table border='1' cellpadding='8' cellspacing='0'>
             <tr>
-                <td><b>Nama Aset</b></td>
-                <td>' . $data['nama_aset'] . '</td>
+                <td><strong>Nama User</strong></td>
+                <td>{$nama_user}</td>
             </tr>
-
             <tr>
-                <td><b>Merek</b></td>
-                <td>' . $data['merek'] . '</td>
+                <td><strong>Nama Aset</strong></td>
+                <td>{$data['nama_aset']}</td>
             </tr>
-
             <tr>
-                <td><b>Volume</b></td>
-                <td>' . $data['volume'] . ' ' . $data['satuan'] . '</td>
+                <td><strong>Merek</strong></td>
+                <td>{$data['merek']}</td>
             </tr>
-
             <tr>
-                <td><b>Tujuan Pengadaan</b></td>
-                <td>' . $data['tujuan_pengadaan'] . '</td>
+                <td><strong>Volume</strong></td>
+                <td>{$data['volume']} {$data['satuan']}</td>
             </tr>
-
             <tr>
-                <td><b>Sifat Pengadaan</b></td>
-                <td>' . $data['sifat_pengadaan'] . '</td>
+                <td><strong>Tujuan</strong></td>
+                <td>{$data['tujuan_pengadaan']}</td>
             </tr>
-
             <tr>
-                <td><b>Tahun Pengadaan</b></td>
-                <td>' . $data['tahun_pengadaan'] . '</td>
+                <td><strong>Sifat</strong></td>
+                <td>{$data['sifat_pengadaan']}</td>
             </tr>
-
+            <tr>
+                <td><strong>Tahun</strong></td>
+                <td>{$data['tahun_pengadaan']}</td>
+            </tr>
         </table>
 
         <br>
 
         <p>
-            Silakan login ke sistem untuk melihat dan memproses
-            pengadaan tersebut.
+            Silakan login ke sistem untuk melihat dan memproses pengadaan tersebut.
         </p>
+    ";
 
-        <p>
-            <b>Sistem Pengadaan</b>
-        </p>
+		$this->email->message($message);
 
-    </body>
-    </html>
-    ';
+		if ($this->email->send()) {
 
-		$this->email->set_mailtype('html');
-		$this->email->message($pesan);
+			log_message(
+				'info',
+				'EMAIL BERHASIL DIKIRIM KE: ' . $email_tujuan
+			);
 
-		return $this->email->send();
+			return true;
+		} else {
+
+			log_message(
+				'error',
+				'EMAIL GAGAL: ' . $this->email->print_debugger()
+			);
+
+			return false;
+		}
 	}
 
 	private function kirimWhatsAppPengadaan($data, $nomor_wa, $nama_user)
