@@ -516,3 +516,31 @@ INFO - 2026-09-16 16:05:00 --> File loaded: C:\wamp64\www\ci\sapras\application\
 INFO - 2026-09-16 16:05:00 --> File loaded: C:\wamp64\www\ci\sapras\application\views\layouts/footer.php
 INFO - 2026-09-16 16:05:00 --> Final output sent to browser
 DEBUG - 2026-09-16 16:05:00 --> Total execution time: 0.0617
+INFO - 2026-09-16 16:53:43 --> Config Class Initialized
+INFO - 2026-09-16 16:53:43 --> Hooks Class Initialized
+DEBUG - 2026-09-16 16:53:43 --> UTF-8 Support Enabled
+INFO - 2026-09-16 16:53:43 --> Utf8 Class Initialized
+INFO - 2026-09-16 16:53:43 --> URI Class Initialized
+INFO - 2026-09-16 16:53:43 --> Router Class Initialized
+INFO - 2026-09-16 16:53:43 --> Output Class Initialized
+INFO - 2026-09-16 16:53:43 --> Security Class Initialized
+DEBUG - 2026-09-16 16:53:43 --> Global POST, GET and COOKIE data sanitized
+INFO - 2026-09-16 16:53:43 --> Input Class Initialized
+INFO - 2026-09-16 16:53:43 --> Language Class Initialized
+INFO - 2026-09-16 16:53:43 --> Loader Class Initialized
+INFO - 2026-09-16 16:53:43 --> Helper loaded: url_helper
+INFO - 2026-09-16 16:53:43 --> Helper loaded: form_helper
+INFO - 2026-09-16 16:53:43 --> Helper loaded: tanggal_helper
+INFO - 2026-09-16 16:53:43 --> Database Driver Class Initialized
+INFO - 2026-09-16 16:53:43 --> Form Validation Class Initialized
+DEBUG - 2026-09-16 16:53:43 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2026-09-16 16:53:43 --> Session: Class initialized using 'files' driver.
+INFO - 2026-09-16 16:53:43 --> Controller Class Initialized
+INFO - 2026-09-16 16:53:43 --> Model "ModelPengadaan" initialized
+INFO - 2026-09-16 16:53:43 --> Model "ModelLokasi" initialized
+INFO - 2026-09-16 16:53:43 --> Model "ModelMonitoring" initialized
+INFO - 2026-09-16 16:53:43 --> File loaded: C:\wamp64\www\ci\sapras\application\views\layouts/header.php
+INFO - 2026-09-16 16:53:43 --> File loaded: C:\wamp64\www\ci\sapras\application\views\pengadaan/c_pengadaan.php
+INFO - 2026-09-16 16:53:43 --> File loaded: C:\wamp64\www\ci\sapras\application\views\layouts/footer.php
+INFO - 2026-09-16 16:53:43 --> Final output sent to browser
+DEBUG - 2026-09-16 16:53:43 --> Total execution time: 0.4963
