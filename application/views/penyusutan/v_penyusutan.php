@@ -1,123 +1,125 @@
 <link rel="stylesheet" href="<?= base_url() ?>src/backend/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
 <div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-  <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>Penyusutan</h1>
-        </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?= base_url('home') ?>">Home</a></li>
-            <li class="breadcrumb-item active">Penyusutan</li>
-          </ol>
-        </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
-
-  <div class="flash-data" data-flashdata="<?= $this->session->flashdata('sukses'); ?>"></div>
-  <div class="flash-data-gagal" data-flashdatagagal="<?= $this->session->flashdata('gagal'); ?>"></div>
-
-  <!-- Main content -->
-  <section class="content">
-
-    <!-- Default box -->
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">
-          Data Penyusutan Aset
-        </h3>
-
-        <div class="card-tools">
-          <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
-            title="Collapse">
-            <i class="fas fa-minus"></i></button>
-          <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip"
-            title="Remove">
-            <i class="fas fa-times"></i></button>
-        </div>
-      </div>
-      <div class="card-body">
-        <form action="<?= base_url('penyusutan/filter') ?>" method="POST">
-          <div class="row">
-            <div class="col-md-4">
-              <select name="id_kategori" id="id_kategori" class="form-control">
-                <option value="">- Semua Kategori -</option>
-                <?php foreach ($kategori as $row): ?>
-                  <option value="<?= $row['id_kategori']; ?>"
-                    <?= set_select('id_kategori', $row['id_kategori']); ?>>
-                    <?= $row['kode_kategori']; ?> - <?= $row['nama_kategori']; ?>
-                  </option>
-                <?php endforeach ?>
-              </select>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Penyusutan</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="<?= base_url('home') ?>">Home</a></li>
+                        <li class="breadcrumb-item active">Penyusutan</li>
+                    </ol>
+                </div>
             </div>
+        </div><!-- /.container-fluid -->
+    </section>
 
-            <div class="col-md-4">
-              <select name="tahun_perolehan" id="tahun_perolehan" class="form-control">
-                <option value="">- Semua Tahun -</option>
-                <?php
+    <div class="flash-data" data-flashdata="<?= $this->session->flashdata('sukses'); ?>"></div>
+    <div class="flash-data-gagal" data-flashdatagagal="<?= $this->session->flashdata('gagal'); ?>"></div>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    Data Penyusutan Aset
+                </h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
+                        title="Collapse">
+                        <i class="fas fa-minus"></i></button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip"
+                        title="Remove">
+                        <i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="card-body">
+                <form action="<?= base_url('penyusutan/filter') ?>" method="POST">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <select name="id_kategori" id="id_kategori" class="form-control">
+                                <option value="">- Semua Kategori -</option>
+                                <?php foreach ($kategori as $row): ?>
+                                <option value="<?= $row['id_kategori']; ?>"
+                                    <?= set_select('id_kategori', $row['id_kategori']); ?>>
+                                    <?= $row['kode_kategori']; ?> - <?= $row['nama_kategori']; ?>
+                                </option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <select name="tahun_perolehan" id="tahun_perolehan" class="form-control">
+                                <option value="">- Semua Tahun -</option>
+                                <?php
                 for ($i = 2010; $i <= date('Y'); $i++) {
                   echo "<option value='$i' " . set_select('tahun_perolehan', $i) . ">$i</option>";
                 }
                 ?>
-              </select>
-            </div>
+                            </select>
+                        </div>
 
-            <div class="col-md-2">
-              <button type="submit" class="btn btn-block btn-outline-primary">
-                Filter
-              </button>
-            </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-block btn-outline-primary">
+                                Filter
+                            </button>
+                        </div>
 
-            <div class="col-md-2">
-              <a href="<?= base_url('penyusutan') ?>" class="btn btn-block btn-outline-danger">
-                Reset
-              </a>
-            </div>
-          </div>
-        </form>
-        <div class="text-left mt-3">
-          <button type="button" onclick="printPenyusutan()" class="btn btn-outline-success">
-            <i class="fas fa-print"></i> Print
-          </button>
-        </div>
-        <br />
-        <div class="table-responsive">
-          <table id="example1" class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Nama Aset</th>
-                <th>Perolehan</th>
-                <th>Masa Manfaat</th>
-                <th>Pemakaian</th>
-                <th>Penyusutan</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php $no = 1;
+                        <div class="col-md-2">
+                            <a href="<?= base_url('penyusutan') ?>" class="btn btn-block btn-outline-danger">
+                                Reset
+                            </a>
+                        </div>
+                    </div>
+                </form>
+                <div class="text-left mt-3">
+                    <button type="button" onclick="printPenyusutan()" class="btn btn-outline-success">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                </div>
+                <br />
+                <div class="table-responsive">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Nama Aset</th>
+                                <th>Perolehan</th>
+                                <th>Masa Manfaat</th>
+                                <th>Pemakaian</th>
+                                <th>Penyusutan</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $no = 1;
               foreach ($pys as $row): ?>
-                <tr>
-                  <td><?= $no++; ?></td>
-                  <td><?= $row['nama_barang']; ?></td>
-                  <td><?= $row['tahun_perolehan']; ?></td>
-                  <td><?= $row['umur_ekonomis']; ?> Tahun</td>
-                  <td>
-                    <?php
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td><?= $row['nama_barang']; ?></td>
+                                <td><?= $row['tahun_perolehan']; ?></td>
+                                <td><?= $row['umur_ekonomis']; ?> Tahun</td>
+                                <td>
+                                    <?php
                     $usia = date('Y') - ($row['tahun_perolehan'] - 1);
 
                     if ($usia > $row['umur_ekonomis']) {
-                      echo "<font color='red'>", $usia, " Tahun</font>";
+                      echo '<span class="text-danger font-weight-bold">';
+                      echo $usia . ' Tahun';
+                      echo '</span>';
                     } else {
-                      echo $usia, " Tahun";
+                      echo $usia . ' Tahun';
                     }
                     ?>
-                  </td>
-                  <td>
-                    <?php
+                                </td>
+                                <td>
+                                    <?php
                     $i = 0;
                     $tahun_skrg = date("Y");
                     $rentang = ($tahun_skrg - $row['tahun_perolehan']) + 1;
@@ -138,48 +140,48 @@
 
                     echo rupiah($akumulasi_penyusutan);
                     ?>
-                  </td>
-                  <td>
-                    <a href="<?= base_url('penyusutan/detail/' . $row['id_aset']) ?>"
-                      class="btn btn-success btn-sm">
-                      <i class="fas fa-eye"></i>
-                    </a>
-                    <!--      <a href="<?= base_url('penyusutan/hapuskan/' . $row['id_aset']) ?>" class="btn btn-danger btn-sm tombol-penghapusan">
+                                </td>
+                                <td>
+                                    <a href="<?= base_url('penyusutan/detail/' . $row['id_aset']) ?>"
+                                        class="btn btn-success btn-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <!--      <a href="<?= base_url('penyusutan/hapuskan/' . $row['id_aset']) ?>" class="btn btn-danger btn-sm tombol-penghapusan">
                       <i class="fas fa-power-off"></i>
                     </a> -->
-                  </td>
-                </tr>
-              <?php endforeach ?>
-            </tbody>
-            <tfoot>
-              <tr>
-                <th>No.</th>
-                <th>Nama Aset</th>
-                <th>Perolehan</th>
-                <th>Masa Manfaat</th>
-                <th>Pemakaian</th>
-                <th>Penyusutan</th>
-                <th>Aksi</th>
-              </tr>
-            </tfoot>
-          </table>
+                                </td>
+                            </tr>
+                            <?php endforeach ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>No.</th>
+                                <th>Nama Aset</th>
+                                <th>Perolehan</th>
+                                <th>Masa Manfaat</th>
+                                <th>Pemakaian</th>
+                                <th>Penyusutan</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+
+            </div>
+            <!-- /.card-footer-->
         </div>
-      </div>
-      <!-- /.card-body -->
-      <div class="card-footer">
+        <!-- /.card -->
 
-      </div>
-      <!-- /.card-footer-->
-    </div>
-    <!-- /.card -->
-
-  </section>
-  <!-- /.content -->
+    </section>
+    <!-- /.content -->
 </div>
 <script src="<?= base_url() ?>src/backend/plugins/datatables/jquery.dataTables.js"></script>
 <script src="<?= base_url() ?>src/backend/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script>
-  function printPenyusutan() {
+function printPenyusutan() {
     var kategori = document.getElementById('id_kategori').value;
     var tahun = document.getElementById('tahun_perolehan').value;
 
@@ -188,48 +190,48 @@
     var params = [];
 
     if (kategori !== '') {
-      params.push('id_kategori=' + encodeURIComponent(kategori));
+        params.push('id_kategori=' + encodeURIComponent(kategori));
     }
 
     if (tahun !== '') {
-      params.push('tahun_perolehan=' + encodeURIComponent(tahun));
+        params.push('tahun_perolehan=' + encodeURIComponent(tahun));
     }
 
     if (params.length > 0) {
-      url += '?' + params.join('&');
+        url += '?' + params.join('&');
     }
 
     window.open(url, '_blank');
-  }
+}
 </script>
 <script>
-  $(function() {
+$(function() {
     $("#example1").DataTable({
-      "language": {
-        "sSearch": "Cari"
-      }
+        "language": {
+            "sSearch": "Cari"
+        }
     });
-  });
+});
 </script>
 <script>
-  $('.tombol-penghapusan').on('click', function(e) {
+$('.tombol-penghapusan').on('click', function(e) {
 
     e.preventDefault();
     const href = $(this).attr('href');
 
     Swal.fire({
-      title: 'Apakah anda yakin?',
-      text: "Aset akan dihapuskan",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Hapus Aset!',
-      cancelButtonText: 'Batal'
+        title: 'Apakah anda yakin?',
+        text: "Aset akan dihapuskan",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Hapus Aset!',
+        cancelButtonText: 'Batal'
     }).then((result) => {
-      if (result.value) {
-        document.location.href = href;
-      }
+        if (result.value) {
+            document.location.href = href;
+        }
     })
-  });
+});
 </script>
