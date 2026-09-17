@@ -1,18 +1,19 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Penyusutan extends CI_Controller {
+class Penyusutan extends CI_Controller
+{
 
 	public function __construct()
 	{
 		parent::__construct();
 
-		if ($this->session->userdata("logged")<>1) {
-	      redirect(site_url('login'));
-	    }
-		
-		$this->load->model('ModelPenyusutan','mp');
-		$this->load->model('ModelKategori','mk');
+		if ($this->session->userdata("logged") <> 1) {
+			redirect(site_url('login'));
+		}
+
+		$this->load->model('ModelPenyusutan', 'mp');
+		$this->load->model('ModelKategori', 'mk');
 	}
 
 	public function index()
@@ -21,10 +22,10 @@ class Penyusutan extends CI_Controller {
 			'title' => 'Penyusutan',
 			'active_menu_pys' => 'active',
 			'pys' => $this->mp->getAsetWujud(),
-			'kategori' => $this->mk->getKategoriBarang()  
+			'kategori' => $this->mk->getKategoriBarang()
 		);
-		$this->load->view('layouts/header',$data);
-		$this->load->view('penyusutan/v_penyusutan',$data);
+		$this->load->view('layouts/header', $data);
+		$this->load->view('penyusutan/v_penyusutan', $data);
 		$this->load->view('layouts/footer');
 	}
 
@@ -35,10 +36,10 @@ class Penyusutan extends CI_Controller {
 			'title' => 'Penyusutan',
 			'active_menu_pys' => 'active',
 			'd' => $this->mp->getDetailAsetWujud($id_aset),
-			'item' => $this->mp->getDetailAsetWujud1($id_aset) 
+			'item' => $this->mp->getDetailAsetWujud1($id_aset)
 		);
-		$this->load->view('layouts/header',$data);
-		$this->load->view('penyusutan/d_penyusutan',$data);
+		$this->load->view('layouts/header', $data);
+		$this->load->view('penyusutan/d_penyusutan', $data);
 		$this->load->view('layouts/footer');
 	}
 
@@ -50,35 +51,79 @@ class Penyusutan extends CI_Controller {
 		$data = array(
 			'title' => 'Penyusutan',
 			'active_menu_pys' => 'active',
-			'pys' => $this->mp->getFilterAsetWujud($id_kategori,$tahun_perolehan),
-			'kategori' => $this->mk->getKategoriBarang()  
+			'pys' => $this->mp->getFilterAsetWujud($id_kategori, $tahun_perolehan),
+			'kategori' => $this->mk->getKategoriBarang()
 		);
 
-		if (count($data['pys'])>0) {
-			$this->load->view('layouts/header',$data);
-			$this->load->view('penyusutan/v_penyusutan',$data);
+		if (count($data['pys']) > 0) {
+
+			$this->load->view('layouts/header', $data);
+			$this->load->view('penyusutan/v_penyusutan', $data);
 			$this->load->view('layouts/footer');
 		} else {
-			$this->session->set_flashdata('gagal', 'Ditemukan');
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Data penyusutan tidak ditemukan.'
+			);
+
 			redirect('penyusutan');
 		}
+	}
+
+	public function print()
+	{
+		$id_kategori = $this->input->get('id_kategori', true);
+		$tahun_perolehan = $this->input->get('tahun_perolehan', true);
+
+		// Jika tidak ada filter
+		if (empty($id_kategori) && empty($tahun_perolehan)) {
+			$data['pys'] = $this->mp->getAsetWujud();
+		} else {
+			// Jika ada filter
+			$data['pys'] = $this->mp->getFilterAsetWujud(
+				$id_kategori,
+				$tahun_perolehan
+			);
+		}
+
+		// Untuk menampilkan informasi filter di laporan
+		$data['filter_digunakan'] =
+			!empty($id_kategori) || !empty($tahun_perolehan);
+
+		$data['nama_kategori'] = '';
+
+		if (!empty($id_kategori)) {
+			$kategori = $this->mk->getKategoriBarang();
+
+			foreach ($kategori as $row) {
+				if ($row['id_kategori'] == $id_kategori) {
+					$data['nama_kategori'] =
+						$row['kode_kategori'] . ' - ' . $row['nama_kategori'];
+					break;
+				}
+			}
+		}
+
+		$data['tahun_perolehan'] = $tahun_perolehan;
+
+		$this->load->view('penyusutan/v_print', $data);
 	}
 
 	public function penghapusanAset($id_aset)
 	{
 		$id_aset = $this->uri->segment(3);
-		$data['status_aset'] = 'Dihapuskan'; 
+		$data['status_aset'] = 'Dihapuskan';
 		unset($data['id_aset']);
-		$result = $this->mp->updateAset($id_aset,$data);
-		if($result>=1){
+		$result = $this->mp->updateAset($id_aset, $data);
+		if ($result >= 1) {
 			$this->session->set_flashdata('sukses', 'Dihapuskan');
 			redirect('penyusutan');
-		}else{
+		} else {
 			$this->session->set_flashdata('gagal', 'Dihapuskan');
 			redirect('penyusutan');
 		}
 	}
-
 }
 
 /* End of file Penyusutan.php */

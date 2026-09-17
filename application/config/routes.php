@@ -116,6 +116,7 @@ $route['penyusutan'] = 'Penyusutan/index';
 $route['penyusutan/detail/(:any)'] = 'Penyusutan/detailPenyusutan/(:any)';
 $route['penyusutan/hapuskan/(:any)'] = 'Penyusutan/penghapusanAset/(:any)';
 $route['penyusutan/filter'] = 'Penyusutan/filterPenyusutan';
+$route['penyusutan/print'] = 'Penyusutan/print';
 
 //Penghapusan
 $route['penghapusan'] = 'Penghapusan/index';
