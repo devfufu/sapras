@@ -6,13 +6,19 @@ class ModelUser extends CI_Model
 
 	public function getDataUser()
 	{
-		$this->db->select('*');
+		$this->db->select('users.*, lokasi_aset.nama_lokasi');
 		$this->db->from('users');
-		$this->db->order_by('id_user', 'desc');
+		$this->db->join(
+			'lokasi_aset',
+			'lokasi_aset.id_lokasi = users.id_lokasi',
+			'left'
+		);
+		$this->db->order_by('users.id_user', 'desc');
+
 		$query = $this->db->get();
+
 		return $query->result_array();
 	}
-
 	public function getDetailUser($id_user)
 	{
 		$this->db->select('*');

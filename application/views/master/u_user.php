@@ -86,28 +86,37 @@
                         <div class="form-group row">
                             <label class="col-sm-6 col-form-label">Role</label>
                             <div class="col-sm-12">
-
                                 <select name="role" class="form-control" required>
-
                                     <option value="1" <?= $users['role'] == 1 ? 'selected' : '' ?>>Administrator
                                     </option>
-
                                     <option value="2" <?= $users['role'] == 2 ? 'selected' : '' ?>>Manager</option>
-
                                     <option value="3" <?= $users['role'] == 3 ? 'selected' : '' ?>>Staf</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-6 col-form-label">Lokasi Aset</label>
+                            <div class="col-sm-12">
+                                <select name="id_lokasi" class="form-control">
+                                    <option value="">- Pilih Lokasi Aset -</option>
+
+                                    <?php foreach ($lokasi as $row): ?>
+                                        <option value="<?= $row['id_lokasi']; ?>"
+                                            <?= (isset($users['id_lokasi']) && $users['id_lokasi'] == $row['id_lokasi']) ? 'selected' : ''; ?>>
+                                            <?= $row['nama_lokasi']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
 
                                 </select>
-
                             </div>
                         </div>
 
                     </div>
-
                     <div class="card-footer">
                         <a href="<?= base_url('users') ?>" class="btn btn-danger">Kembali</a>
                         <button type="submit" class="btn btn-info">Simpan</button>
                     </div>
-
                 </form>
             </div>
             <!-- /.card-body -->

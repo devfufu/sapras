@@ -18,6 +18,7 @@ class User extends CI_Controller
 		//load model user
 		$this->load->model('ModelUser', 'mu');
 		$this->load->library('upload');
+		$this->load->model('ModelLokasi', 'ml');
 	}
 
 	//menampilkan data user
@@ -241,7 +242,8 @@ class User extends CI_Controller
 	{
 		$data = array(
 			'title' => 'Edit User',
-			'users' => $this->mu->getUserById($id_user)
+			'users' => $this->mu->getUserById($id_user),
+			'lokasi' => $this->ml->getLokasi()
 		);
 
 		$this->load->view('layouts/header', $data);
@@ -252,16 +254,40 @@ class User extends CI_Controller
 	public function updateUsers()
 	{
 		$id_user = $this->input->post('id_user');
+		$role    = $this->input->post('role', true);
+
+		// Administrator tidak perlu memiliki lokasi
+		if ($role == '1') {
+			$id_lokasi = NULL;
+		} else {
+			$id_lokasi = $this->input->post('id_lokasi', true);
+
+			// Manager/Staf wajib memilih lokasi
+			if (empty($id_lokasi)) {
+				$this->session->set_flashdata(
+					'gagal',
+					'Lokasi aset wajib dipilih untuk Manager/Staf.'
+				);
+
+				redirect('users/editUsers/' . $id_user);
+				return;
+			}
+		}
 
 		$data = [
 			'nama_user' => $this->input->post('nama_user', true),
 			'username'  => $this->input->post('username', true),
 			'jabatan'   => $this->input->post('jabatan', true),
-			'role'      => $this->input->post('role', true)
+			'role'      => $role,
+			'id_lokasi' => $id_lokasi
 		];
 
+		// Password hanya diubah jika diisi
 		if ($this->input->post('password') != '') {
-			$data['password'] = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
+			$data['password'] = password_hash(
+				$this->input->post('password'),
+				PASSWORD_DEFAULT
+			);
 		}
 
 		$this->db->where('id_user', $id_user);

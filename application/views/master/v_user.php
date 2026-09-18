@@ -28,12 +28,12 @@
         <div class="card">
             <div class="card-header">
                 <?php if ($this->session->flashdata('gagal_store')) { ?>
-                <div class="alert alert-danger col-md-12">
-                    <?= $this->session->flashdata('gagal_store') ?>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+                    <div class="alert alert-danger col-md-12">
+                        <?= $this->session->flashdata('gagal_store') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 <?php } ?>
 
                 <?= form_error('username', '<div class="alert alert-danger" role="alert">', '</div>') ?>
@@ -66,34 +66,52 @@
                                 <th>Username</th>
                                 <th>Jabatan</th>
                                 <th>Role</th>
+                                <th>Lokasi Aset</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-              $no = 1;
-              foreach ($user as $row): ?>
-                            <tr>
-                                <td><?= $no++; ?></td>
-                                <td><?= $row['nama_user']; ?></td>
-                                <td><?= $row['username']; ?></td>
-                                <td><?= $row['jabatan']; ?></td>
-                                <td><?= $row['role']; ?></td>
-                                <td>
-                                    <a href="<?= base_url('users/editUsers/' . $row['id_user']) ?>"
-                                        class="btn btn-info btn-sm">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <a href="<?= base_url('users/hapus/' . $row['id_user']) ?>"
-                                        class="btn btn-danger btn-sm tombol-hapus">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                    <a href="<?= base_url('users/resetPassword/' . $row['id_user']) ?>"
-                                        class="btn btn-primary btn-sm">
-                                        <i class="fas fa-sync"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                            $no = 1;
+                            foreach ($user as $row): ?>
+                                <tr>
+                                    <td><?= $no++; ?></td>
+                                    <td><?= $row['nama_user']; ?></td>
+                                    <td><?= $row['username']; ?></td>
+                                    <td><?= $row['jabatan']; ?></td>
+                                    <td>
+                                        <?php
+                                        if ($row['role'] == '1') {
+                                            echo 'Administrator';
+                                        } elseif ($row['role'] == '2') {
+                                            echo 'Manager';
+                                        } elseif ($row['role'] == '3') {
+                                            echo 'Staf';
+                                        } else {
+                                            echo $row['role'];
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?= !empty($row['nama_lokasi']) ? $row['nama_lokasi'] : '-'; ?>
+                                    </td>
+                                    <td>
+                                        <a href="<?= base_url('users/editUsers/' . $row['id_user']) ?>"
+                                            class="btn btn-info btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+
+                                        <a href="<?= base_url('users/hapus/' . $row['id_user']) ?>"
+                                            class="btn btn-danger btn-sm tombol-hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+
+                                        <a href="<?= base_url('users/resetPassword/' . $row['id_user']) ?>"
+                                            class="btn btn-primary btn-sm">
+                                            <i class="fas fa-sync"></i>
+                                        </a>
+                                    </td>
+                                </tr>
                             <?php endforeach ?>
                         </tbody>
                         <tfoot>
@@ -102,6 +120,8 @@
                                 <th>Nama User</th>
                                 <th>Username</th>
                                 <th>Jabatan</th>
+                                <th>Role</th>
+                                <th>Lokasi Aset</th>
                                 <th>Aksi</th>
                             </tr>
                         </tfoot>
@@ -214,6 +234,18 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label>Lokasi Aset</label>
+                            <select name="id_lokasi" class="form-control">
+                                <option value="">- Pilih Lokasi Aset -</option>
+
+                                <?php foreach ($lokasi as $row): ?>
+                                    <option value="<?= $row['id_lokasi']; ?>">
+                                        <?= $row['nama_lokasi']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                         <!-- /.card-body -->
                 </div>
                 <div class="modal-footer content-between">
@@ -231,11 +263,11 @@
 <script src="<?= base_url() ?>src/backend/plugins/datatables/jquery.dataTables.js"></script>
 <script src="<?= base_url() ?>src/backend/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script>
-$(function() {
-    $("#example1").DataTable({
-        "language": {
-            "sSearch": "Cari"
-        }
+    $(function() {
+        $("#example1").DataTable({
+            "language": {
+                "sSearch": "Cari"
+            }
+        });
     });
-});
 </script>

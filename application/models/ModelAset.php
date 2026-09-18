@@ -163,14 +163,27 @@ class ModelAset extends CI_Model
 		$this->db->join('barang b', 'b.id_barang = a.id_barang');
 		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi');
 
-		if (!empty($user->user_kategori)) {
-			$this->db->where('b.id_kategori', $user->user_kategori);
+		// Administrator
+		if ($user && $user->role == '1') {
+
+			// Semua aset
+
+		} else {
+
+			// Manager/user lainnya hanya lokasi miliknya
+			if ($user && !empty($user->id_lokasi)) {
+				$this->db->where('a.id_lokasi', $user->id_lokasi);
+			} else {
+				// Belum diberi lokasi
+				$this->db->where('a.id_aset', 0);
+			}
 		}
 
 		$this->db->where('a.volume >', 0);
 
 		return $this->db->get()->result_array();
 	}
+
 	public function getDetailAsetPrint($id_aset)
 	{
 		$this->db->select('a.*, b.nama_barang, b.merek, c.nama_lokasi, d.nama_kategori');

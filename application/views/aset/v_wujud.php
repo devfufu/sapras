@@ -49,80 +49,78 @@
                 </div>
             </div>
             <div class="card-body">
-                <?php if ($this->session->userdata('role') == '1') { ?>
-                    <form action="<?= base_url('aset_wujud/filter') ?>" method="POST">
-                        <div class="row">
-                            <div class="col-3">
-                                <select name="id_kategori" class="form-control">
-                                    <option value="">- Pilih Kategori --</option>
-                                    <?php foreach ($kategori as $row): ?>
-                                        <option value="<?= $row['id_kategori']; ?>"><?= $row['kode_kategori']; ?> -
-                                            <?= $row['nama_kategori']; ?>
-                                        </option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
-                            <div class="col-3">
-                                <select name="tahun_perolehan" class="form-control">
-                                    <option value="">- Tahun Perolehan --</option>
-                                    <?php
-                                    for ($i = 2008; $i <= date('Y'); $i++) {
-                                        echo "<option value='$i'>$i</option>";
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="col-3">
-                                <select name="jenis_bantuan" class="form-control">
-                                    <option value="">- Pilih Sumber Dana --</option>
-                                    <option value="Yayasan">Yayasan</option>
-                                    <option value="Tk">TK</option>
-                                    <option value="Sd">SD</option>
-                                    <option value="Smk">SMK</option>
-                                    <option value="BospTK">BOSP TK</option>
-                                    <option value="BospSD">BOSP SD</option>
-                                    <option value="BospSMK">BOSP SMK</option>
-                                    <option value="Hibah">HIBAH</option>
-                                    <option value="hibahUmum">HIBAH UMUM</option>
-                                </select>
-                            </div>
-                            <div class="col-3">
-                                <select name="kondisi" class="form-control">
-                                    <option value="">- Kondisi --</option>
-                                    <option value="Baik">Baik</option>
-                                    <option value="Renovasi">Renovasi</option>
-                                    <option value="Rusak">Rusak</option>
-                                </select>
-                            </div>
-                            <div class="col-3 mt-2">
-                                <button type="submit" class="btn btn-block btn-outline-primary">Filter</button>
-                            </div>
-                            <div class="col-3 mt-2">
-                                <button type="submit" class="btn btn-block btn-outline-danger">Reset</button>
-                            </div>
+                <form action="<?= base_url('aset_wujud/filter') ?>" method="POST">
+                    <div class="row">
+                        <div class="col-3">
+                            <select name="id_kategori" class="form-control">
+                                <option value="">- Pilih Kategori --</option>
+                                <?php foreach ($kategori as $row): ?>
+                                    <option value="<?= $row['id_kategori']; ?>"><?= $row['kode_kategori']; ?> -
+                                        <?= $row['nama_kategori']; ?>
+                                    </option>
+                                <?php endforeach ?>
+                            </select>
                         </div>
-                    </form>
-                    <form action="<?= base_url('aset_wujud/print_multiple') ?>" method="POST" target="_blank"
-                        id="formPrint">
-                        <div class="mt-2">
-                            <!-- Print Data Terpilih -->
-                            <button type="submit" class="btn btn-primary btn-sm" id="btnPrintMultiple"
-                                style="display: none;">
-                                <i class="fas fa-print"></i> Print Data Terpilih
-                            </button>
-
-                            <!-- Pilih Semua -->
-                            <button type="button" class="btn btn-secondary btn-sm" id="pilihSemua">
-                                <i class="fas fa-check-square"></i> Pilih Semua
-                            </button>
-
-                            <!-- Hapus Pilihan -->
-                            <button type="button" class="btn btn-warning btn-sm" id="hapusPilihan">
-                                <i class="fas fa-times"></i> Hapus Pilihan
-                            </button>
-
+                        <div class="col-3">
+                            <select name="tahun_perolehan" class="form-control">
+                                <option value="">- Tahun Perolehan --</option>
+                                <?php
+                                for ($i = 2008; $i <= date('Y'); $i++) {
+                                    echo "<option value='$i'>$i</option>";
+                                }
+                                ?>
+                            </select>
                         </div>
-                    <?php } ?>
+                        <div class="col-3">
+                            <select name="jenis_bantuan" class="form-control">
+                                <option value="">- Pilih Sumber Dana --</option>
+                                <option value="Yayasan">Yayasan</option>
+                                <option value="Tk">TK</option>
+                                <option value="Sd">SD</option>
+                                <option value="Smk">SMK</option>
+                                <option value="BospTK">BOSP TK</option>
+                                <option value="BospSD">BOSP SD</option>
+                                <option value="BospSMK">BOSP SMK</option>
+                                <option value="Hibah">HIBAH</option>
+                                <option value="hibahUmum">HIBAH UMUM</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <select name="kondisi" class="form-control">
+                                <option value="">- Kondisi --</option>
+                                <option value="Baik">Baik</option>
+                                <option value="Renovasi">Renovasi</option>
+                                <option value="Rusak">Rusak</option>
+                            </select>
+                        </div>
+                        <div class="col-3 mt-2">
+                            <button type="submit" class="btn btn-block btn-outline-primary">Filter</button>
+                        </div>
+                        <div class="col-3 mt-2">
+                            <button type="submit" class="btn btn-block btn-outline-danger">Reset</button>
+                        </div>
+                    </div>
+                </form>
+                <form action="<?= base_url('aset_wujud/print_multiple') ?>" method="POST" target="_blank"
+                    id="formPrint">
+                    <div class="mt-2">
+                        <!-- Print Data Terpilih -->
+                        <button type="submit" class="btn btn-primary btn-sm" id="btnPrintMultiple"
+                            style="display: none;">
+                            <i class="fas fa-print"></i> Print Data Terpilih
+                        </button>
+
+                        <!-- Pilih Semua -->
+                        <button type="button" class="btn btn-secondary btn-sm" id="pilihSemua">
+                            <i class="fas fa-check-square"></i> Pilih Semua
+                        </button>
+
+                        <!-- Hapus Pilihan -->
+                        <button type="button" class="btn btn-warning btn-sm" id="hapusPilihan">
+                            <i class="fas fa-times"></i> Hapus Pilihan
+                        </button>
+
+                    </div>
                     <br />
                     <div class="table-responsive">
                         <table id="example1" class="table table-bordered table-striped">
@@ -201,7 +199,7 @@
                             </tfoot>
                         </table>
                     </div>
-                    </form>
+                </form>
             </div>
 
             <!-- /.card-body -->
