@@ -41,40 +41,40 @@
             <ul class="navbar-nav ml-auto">
                 <?php if ($this->session->userdata('role') == '1') { ?>
 
-                <?php
+                    <?php
 
-          $sql = "SELECT * FROM pengadaan WHERE status='0'";
-          $jml_pengadaan = $this->db->query($sql)->num_rows();
+                    $sql = "SELECT * FROM pengadaan WHERE status='0'";
+                    $jml_pengadaan = $this->db->query($sql)->num_rows();
 
-          ?>
-                <!-- Notifications Dropdown Menu -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-bell"></i>
-                        <span class="badge badge-warning navbar-badge"><?= $jml_pengadaan; ?></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header"><?= $jml_pengadaan; ?> Pemberitahuan</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="<?= base_url('pengadaan') ?>" class="dropdown-item">
-                            <i class="nav-icon fas fa-luggage-cart"></i> <?= $jml_pengadaan; ?> Pengadaan baru
-                            <span class="float-right text-muted text-sm"></span>
+                    ?>
+                    <!-- Notifications Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#">
+                            <i class="far fa-bell"></i>
+                            <span class="badge badge-warning navbar-badge"><?= $jml_pengadaan; ?></span>
                         </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="<?= base_url('pengadaan') ?>" class="dropdown-item dropdown-footer">Lihat</a>
-                    </div>
-                </li>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            <span class="dropdown-item dropdown-header"><?= $jml_pengadaan; ?> Pemberitahuan</span>
+                            <div class="dropdown-divider"></div>
+                            <a href="<?= base_url('pengadaan') ?>" class="dropdown-item">
+                                <i class="nav-icon fas fa-luggage-cart"></i> <?= $jml_pengadaan; ?> Pengadaan baru
+                                <span class="float-right text-muted text-sm"></span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="<?= base_url('pengadaan') ?>" class="dropdown-item dropdown-footer">Lihat</a>
+                        </div>
+                    </li>
 
                 <?php } ?>
                 <li class="nav-item dropdown user-menu">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
 
                         <?php if ($this->session->userdata('foto') == NULL): ?>
-                        <img src="<?= base_url() ?>src/backend/dist/img/profile.png"
-                            class="user-image img-circle elevation-2">
+                            <img src="<?= base_url() ?>src/backend/dist/img/profile.png"
+                                class="user-image img-circle elevation-2">
                         <?php else: ?>
-                        <img src="<?= base_url() ?>src/img/profile/<?= $this->session->userdata('foto') ?>"
-                            class="user-image img-circle elevation-2">
+                            <img src="<?= base_url() ?>src/img/profile/<?= $this->session->userdata('foto') ?>"
+                                class="user-image img-circle elevation-2">
                         <?php endif ?>
 
                         <span class="d-none d-md-inline">Hi, <?php echo $this->session->userdata('nama_user'); ?></span>
@@ -84,10 +84,10 @@
                         <li class="user-header bg-info">
 
                             <?php if ($this->session->userdata('foto') == NULL): ?>
-                            <img src="<?= base_url() ?>src/backend/dist/img/profile.png" class="img-circle elevation-2">
+                                <img src="<?= base_url() ?>src/backend/dist/img/profile.png" class="img-circle elevation-2">
                             <?php else: ?>
-                            <img src="<?= base_url() ?>src/img/profile/<?= $this->session->userdata('foto') ?>"
-                                class="img-circle elevation-2">
+                                <img src="<?= base_url() ?>src/img/profile/<?= $this->session->userdata('foto') ?>"
+                                    class="img-circle elevation-2">
                             <?php endif ?>
 
                             <p>
@@ -128,271 +128,271 @@
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <?php if ($this->session->userdata('role') == '1' || $this->session->userdata('role') == '2'): ?>
-                        <li class="nav-item has-treeview">
-                            <a href="<?= base_url('home') ?>"
-                                class="nav-link <?= isset($active_menu_db) ? $active_menu_db : '' ?>">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>Dashboard</p>
-                            </a>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="<?= base_url('statistik') ?>"
-                                class="nav-link <?= isset($active_menu_statistik) ? $active_menu_statistik : '' ?>">
-                                <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>Statistik</p>
-                            </a>
-                        </li>
+                            <li class="nav-item has-treeview">
+                                <a href="<?= base_url('home') ?>"
+                                    class="nav-link <?= isset($active_menu_db) ? $active_menu_db : '' ?>">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a href="<?= base_url('statistik') ?>"
+                                    class="nav-link <?= isset($active_menu_statistik) ? $active_menu_statistik : '' ?>">
+                                    <i class="nav-icon fas fa-chart-pie"></i>
+                                    <p>Statistik</p>
+                                </a>
+                            </li>
 
-                        <li class="nav-item has-treeview <?= isset($active_menu_master) ? $active_menu_master : '' ?>">
-                            <a href="#" class="nav-link <?= isset($active_menu_mst) ? $active_menu_mst : '' ?>">
-                                <i class="nav-icon fa fa-database"></i>
-                                <p>Master Data
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
+                            <li class="nav-item has-treeview <?= isset($active_menu_master) ? $active_menu_master : '' ?>">
+                                <a href="#" class="nav-link <?= isset($active_menu_mst) ? $active_menu_mst : '' ?>">
+                                    <i class="nav-icon fa fa-database"></i>
+                                    <p>Master Data
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
 
-                                    <a href="<?= base_url('barang') ?>"
-                                        class="nav-link <?= isset($active_menu_brg) ? $active_menu_brg : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Barang</p>
-                                    </a>
-                                </li>
-                                <?php if ($this->session->userdata('role') == '1'): ?>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('kategori') ?>"
-                                        class="nav-link <?= isset($active_menu_jb) ? $active_menu_jb : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Kategori Barang</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('lokasi') ?>"
-                                        class="nav-link <?= isset($active_menu_lokasi) ? $active_menu_lokasi : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Lokasi Aset</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('users') ?>"
-                                        class="nav-link <?= isset($active_menu_user) ? $active_menu_user : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>User</p>
-                                    </a>
-                                </li>
-                                <?php endif ?>
-                            </ul>
+                                        <a href="<?= base_url('barang') ?>"
+                                            class="nav-link <?= isset($active_menu_brg) ? $active_menu_brg : '' ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Barang</p>
+                                        </a>
+                                    </li>
+                                    <?php if ($this->session->userdata('role') == '1'): ?>
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('kategori') ?>"
+                                                class="nav-link <?= isset($active_menu_jb) ? $active_menu_jb : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Kategori Barang</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('lokasi') ?>"
+                                                class="nav-link <?= isset($active_menu_lokasi) ? $active_menu_lokasi : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Lokasi Aset</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('users') ?>"
+                                                class="nav-link <?= isset($active_menu_user) ? $active_menu_user : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>User</p>
+                                            </a>
+                                        </li>
+                                    <?php endif ?>
+                                </ul>
 
-                        </li>
+                            </li>
 
-                        <li class="nav-item has-treeview <?= isset($active_menu_open) ? $active_menu_open : '' ?>">
-                            <a href="#" class="nav-link <?= isset($active_menu_aset) ? $active_menu_aset : '' ?>">
-                                <i class="nav-icon fa fa-building"></i>
-                                <p>Data Aset
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= base_url('aset_wujud') ?>"
-                                        class="nav-link <?= isset($active_menu_wujud) ? $active_menu_wujud : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Berwujud</p>
+                            <li class="nav-item has-treeview <?= isset($active_menu_open) ? $active_menu_open : '' ?>">
+                                <a href="#" class="nav-link <?= isset($active_menu_aset) ? $active_menu_aset : '' ?>">
+                                    <i class="nav-icon fa fa-building"></i>
+                                    <p>Data Aset
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('aset_wujud') ?>"
+                                            class="nav-link <?= isset($active_menu_wujud) ? $active_menu_wujud : '' ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Berwujud</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('aset_dihapuskan') ?>"
+                                            class="nav-link <?= isset($active_menu_hapuskan) ? $active_menu_hapuskan : '' ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Dihapuskan</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <?php if ($this->session->userdata('role') == '1'): ?>
+                                <li class="nav-item has-treeview <?= isset($active_menu_kp) ? $active_menu_kp : '' ?>">
+                                    <a href="#" class="nav-link <?= isset($active_menu_kpn) ? $active_menu_kpn : '' ?>">
+                                        <i class="nav-icon fa fa-balance-scale"></i>
+                                        <p>Keputusan Pengadaan
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
                                     </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('kriteria') ?>"
+                                                class="nav-link <?= isset($active_menu_dk) ? $active_menu_dk : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Data Kriteria</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('data_aset') ?>"
+                                                class="nav-link <?= isset($active_menu_da) ? $active_menu_da : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Data Aset</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('spk') ?>"
+                                                class="nav-link <?= isset($active_menu_spk) ? $active_menu_spk : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Nilai / Proses SPK</p>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('aset_dihapuskan') ?>"
-                                        class="nav-link <?= isset($active_menu_hapuskan) ? $active_menu_hapuskan : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dihapuskan</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <?php if ($this->session->userdata('role') == '1'): ?>
-                        <li class="nav-item has-treeview <?= isset($active_menu_kp) ? $active_menu_kp : '' ?>">
-                            <a href="#" class="nav-link <?= isset($active_menu_kpn) ? $active_menu_kpn : '' ?>">
-                                <i class="nav-icon fa fa-balance-scale"></i>
-                                <p>Keputusan Pengadaan
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= base_url('kriteria') ?>"
-                                        class="nav-link <?= isset($active_menu_dk) ? $active_menu_dk : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Data Kriteria</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('data_aset') ?>"
-                                        class="nav-link <?= isset($active_menu_da) ? $active_menu_da : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Data Aset</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('spk') ?>"
-                                        class="nav-link <?= isset($active_menu_spk) ? $active_menu_spk : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Nilai / Proses SPK</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <?php endif ?>
-                        <li
-                            class="nav-item has-treeview <?= isset($active_menu_open_pnd) ? $active_menu_open_pnd : '' ?>">
-                            <a href="#" class="nav-link <?= isset($active_pengadaan) ? $active_pengadaan : '' ?>">
-                                <i class="nav-icon fas fa-luggage-cart"></i>
-                                <p>Pengadaan
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= base_url('pengajuan') ?>"
-                                        class="nav-link <?= isset($active_menu_pnd) ? $active_menu_pnd : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Pengajuan</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('pengadaan') ?>"
-                                        class="nav-link <?= isset($active_menu_pgd) ? $active_menu_pgd : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Lihat Data</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            <?php endif ?>
+                            <li
+                                class="nav-item has-treeview <?= isset($active_menu_open_pnd) ? $active_menu_open_pnd : '' ?>">
+                                <a href="#" class="nav-link <?= isset($active_pengadaan) ? $active_pengadaan : '' ?>">
+                                    <i class="nav-icon fas fa-luggage-cart"></i>
+                                    <p>Pengadaan
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('pengajuan') ?>"
+                                            class="nav-link <?= isset($active_menu_pnd) ? $active_menu_pnd : '' ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Pengajuan</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('pengadaan') ?>"
+                                            class="nav-link <?= isset($active_menu_pgd) ? $active_menu_pgd : '' ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Lihat Data</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
 
-                        <li class="nav-item has-treeview">
-                            <a href="<?= base_url('monitoring') ?>"
-                                class="nav-link <?= isset($active_menu_mt) ? $active_menu_mt : '' ?>">
-                                <i class="nav-icon fa fa-heartbeat"></i>
-                                <p>Monitoring</p>
-                            </a>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="<?= base_url('penyusutan') ?>"
-                                class="nav-link <?= isset($active_menu_pys) ? $active_menu_pys : '' ?>">
-                                <i class="nav-icon fas fa-chart-area"></i>
-                                <p>Penyusutan</p>
-                            </a>
-                        </li>
-                        <?php if ($this->session->userdata('role') == '1'): ?>
-                        <li class="nav-item has-treeview">
-                            <a href="<?= base_url('penghapusan') ?>"
-                                class="nav-link <?= isset($active_menu_penghapusan) ? $active_menu_penghapusan : '' ?>">
-                                <i class="nav-icon fas fa-exclamation-triangle"></i>
-                                <p>Penghapusan</p>
-                            </a>
-                        </li>
-                        <?php endif ?>
-                        <?php if ($this->session->userdata('role') == '1'): ?>
-                        <li class="nav-item has-treeview <?= isset($active_menu_lp) ? $active_menu_lp : '' ?>">
-                            <a href="#" class="nav-link <?= isset($active_menu_lpr) ? $active_menu_lpr : '' ?>">
-                                <i class="nav-icon fa fa-file"></i>
-                                <p>Laporan
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= base_url('laporan/aset') ?>"
-                                        class="nav-link <?= isset($active_menu_ast) ? $active_menu_ast : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Data Aset</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('laporan/notifikasi') ?>"
-                                        class="nav-link <?= isset($active_menu_ntf) ? $active_menu_ntf : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Notifikasi Terkirim</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('laporan/pengadaan') ?>"
-                                        class="nav-link <?= isset($active_menu_lpnd) ? $active_menu_lpnd : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Pengadaan</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('laporan/penghapusan') ?>"
-                                        class="nav-link <?= isset($active_menu_php) ? $active_menu_php : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
+                            <li class="nav-item has-treeview">
+                                <a href="<?= base_url('monitoring') ?>"
+                                    class="nav-link <?= isset($active_menu_mt) ? $active_menu_mt : '' ?>">
+                                    <i class="nav-icon fa fa-heartbeat"></i>
+                                    <p>Monitoring</p>
+                                </a>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a href="<?= base_url('penyusutan') ?>"
+                                    class="nav-link <?= isset($active_menu_pys) ? $active_menu_pys : '' ?>">
+                                    <i class="nav-icon fas fa-chart-area"></i>
+                                    <p>Penyusutan</p>
+                                </a>
+                            </li>
+                            <?php if ($this->session->userdata('role') == '1'): ?>
+                                <li class="nav-item has-treeview">
+                                    <a href="<?= base_url('penghapusan') ?>"
+                                        class="nav-link <?= isset($active_menu_penghapusan) ? $active_menu_penghapusan : '' ?>">
+                                        <i class="nav-icon fas fa-exclamation-triangle"></i>
                                         <p>Penghapusan</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('laporan/qr_code') ?>"
-                                        class="nav-link <?= isset($active_menu_qr) ? $active_menu_qr : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>QR Code</p>
+                            <?php endif ?>
+                            <?php if ($this->session->userdata('role') == '1'): ?>
+                                <li class="nav-item has-treeview <?= isset($active_menu_lp) ? $active_menu_lp : '' ?>">
+                                    <a href="#" class="nav-link <?= isset($active_menu_lpr) ? $active_menu_lpr : '' ?>">
+                                        <i class="nav-icon fa fa-file"></i>
+                                        <p>Laporan
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
                                     </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('laporan/aset') ?>"
+                                                class="nav-link <?= isset($active_menu_ast) ? $active_menu_ast : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Data Aset</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('laporan/notifikasi') ?>"
+                                                class="nav-link <?= isset($active_menu_ntf) ? $active_menu_ntf : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Notifikasi</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('laporan/pengadaan') ?>"
+                                                class="nav-link <?= isset($active_menu_lpnd) ? $active_menu_lpnd : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Pengadaan</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('laporan/penghapusan') ?>"
+                                                class="nav-link <?= isset($active_menu_php) ? $active_menu_php : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Penghapusan</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('laporan/qr_code') ?>"
+                                                class="nav-link <?= isset($active_menu_qr) ? $active_menu_qr : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>QR Code</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('laporan/printLabel') ?>"
+                                                class="nav-link <?= isset($active_print_label) ? $active_print_label : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Print Label</p>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('laporan/printLabel') ?>"
-                                        class="nav-link <?= isset($active_print_label) ? $active_print_label : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Print Label</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <?php endif ?>
-                        <li class="nav-item has-treeview">
-                            <a href="<?= base_url('pengaturan') ?>"
-                                class="nav-link <?= isset($active_menu_png) ? $active_menu_png : '' ?>">
-                                <i class="nav-icon fas fa-cog"></i>
-                                <p>Pengaturan</p>
-                            </a>
-                        </li>
+                            <?php endif ?>
+                            <li class="nav-item has-treeview">
+                                <a href="<?= base_url('pengaturan') ?>"
+                                    class="nav-link <?= isset($active_menu_png) ? $active_menu_png : '' ?>">
+                                    <i class="nav-icon fas fa-cog"></i>
+                                    <p>Pengaturan</p>
+                                </a>
+                            </li>
                         <?php else: ?>
-                        <li class="nav-item has-treeview">
-                            <a href="<?= base_url('home') ?>"
-                                class="nav-link <?= isset($active_menu_db) ? $active_menu_db : '' ?>">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>Dashboard</p>
-                            </a>
-                        </li>
-                        <li
-                            class="nav-item has-treeview <?= isset($active_menu_open_pnd) ? $active_menu_open_pnd : '' ?>">
-                            <a href="#" class="nav-link <?= isset($active_pengadaan) ? $active_pengadaan : '' ?>">
-                                <i class="nav-icon fas fa-luggage-cart"></i>
-                                <p>Pengadaan
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= base_url('pengajuan') ?>"
-                                        class="nav-link <?= isset($active_menu_pnd) ? $active_menu_pnd : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Pengajuan</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('pengadaan') ?>"
-                                        class="nav-link <?= isset($active_menu_pgd) ? $active_menu_pgd : '' ?>">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Lihat Data</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="<?= base_url('pengaturan') ?>"
-                                class="nav-link <?= isset($active_menu_png) ? $active_menu_png : '' ?>">
-                                <i class="nav-icon fas fa-cog"></i>
-                                <p>Pengaturan</p>
-                            </a>
-                        </li>
+                            <li class="nav-item has-treeview">
+                                <a href="<?= base_url('home') ?>"
+                                    class="nav-link <?= isset($active_menu_db) ? $active_menu_db : '' ?>">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+                            <li
+                                class="nav-item has-treeview <?= isset($active_menu_open_pnd) ? $active_menu_open_pnd : '' ?>">
+                                <a href="#" class="nav-link <?= isset($active_pengadaan) ? $active_pengadaan : '' ?>">
+                                    <i class="nav-icon fas fa-luggage-cart"></i>
+                                    <p>Pengadaan
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('pengajuan') ?>"
+                                            class="nav-link <?= isset($active_menu_pnd) ? $active_menu_pnd : '' ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Pengajuan</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('pengadaan') ?>"
+                                            class="nav-link <?= isset($active_menu_pgd) ? $active_menu_pgd : '' ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Lihat Data</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a href="<?= base_url('pengaturan') ?>"
+                                    class="nav-link <?= isset($active_menu_png) ? $active_menu_png : '' ?>">
+                                    <i class="nav-icon fas fa-cog"></i>
+                                    <p>Pengaturan</p>
+                                </a>
+                            </li>
                         <?php endif ?>
 
                     </ul>

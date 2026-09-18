@@ -102,6 +102,7 @@ $route['pengadaan/filter'] = 'Pengadaan/filterPengadaan';
 $route['pengadaan/print/(:any)'] = 'Pengadaan/printPengadaan/$1';
 $route['pengadaan/print_multiple'] = 'Pengadaan/printMultiple';
 
+
 //Monitoring
 $route['monitoring'] = 'Monitoring/index';
 $route['monitoring/tambah'] = 'Monitoring/tambahMonitoring';
@@ -153,6 +154,8 @@ $route['laporan/filterLabel'] = 'Laporan/filterLabel';
 $route['laporan/printLabelAll'] = 'Laporan/printLabelAll';
 $route['laporan/cetakLabel/(:any)/(:any)'] = 'Laporan/cetakLabel/$1/$2';
 
+//Laporan Notifikasi
+$route['laporan/notifikasi'] = 'Laporan/notifikasi';
 
 //Settingan 
 $route['(:any)'] = 'errors/show_404';

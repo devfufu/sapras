@@ -592,6 +592,21 @@ class Laporan extends CI_Controller
 
 		$this->load->view('laporan/v_label_print', $data);
 	}
+
+	public function notifikasi()
+	{
+		$data = array(
+			'title' => 'Notifikasi',
+			'active_menu_lp' => 'menu-open',
+			'active_menu_lpr' => 'active',
+			'active_menu_ntf' => 'active',
+			'notifikasi' => $this->ml->getNotifikasiTerkirim()
+		);
+
+		$this->load->view('layouts/header', $data);
+		$this->load->view('laporan/n_terkirim', $data);
+		$this->load->view('layouts/footer');
+	}
 }
 
 /* End of file Laporan.php */

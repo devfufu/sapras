@@ -159,6 +159,31 @@ class ModelLaporan extends CI_Model
 			->get_where('lokasi_aset', ['id_lokasi' => $id_lokasi])
 			->row();
 	}
+
+	public function getNotifikasiTerkirim()
+	{
+		$this->db->select('
+        notifikasi_aset.id_notifikasi,
+        asets.kode_aset,
+        notifikasi_aset.tahun_notifikasi,
+        notifikasi_aset.jenis_notifikasi,
+        notifikasi_aset.status,
+        notifikasi_aset.tanggal_kirim,
+        notifikasi_aset.pesan
+    ');
+
+		$this->db->from('notifikasi_aset');
+
+		$this->db->join(
+			'asets',
+			'asets.id_aset = notifikasi_aset.id_aset',
+			'left'
+		);
+
+		$this->db->order_by('notifikasi_aset.id_notifikasi', 'DESC');
+
+		return $this->db->get()->result_array();
+	}
 }
 
 /* End of file ModelLaporan.php */
