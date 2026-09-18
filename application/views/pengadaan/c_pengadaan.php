@@ -33,22 +33,22 @@
                         <!-- /.card-header -->
                         <div class="card-body">
                             <?php
-              $no = 1;
-              $arr = array();
+                            $no = 1;
+                            $arr = array();
 
-              foreach ($nilai as $row) {
-                $spek = ($row['nilai_spek'] / $maxspek['maks_spek']);
-                $kual = ($row['nilai_kualitas'] / $maxkual['maks_kualitas']);
-                $hrg = ($row['harga'] / $minharga['min_harga']);
-                $nilai = round(($spek * 0.3) + ($kual * 0.3) + ($hrg * 0.4), 3);
+                            foreach ($nilai as $row) {
+                                $spek = ($row['nilai_spek'] / $maxspek['maks_spek']);
+                                $kual = ($row['nilai_kualitas'] / $maxkual['maks_kualitas']);
+                                $hrg = ($row['harga'] / $minharga['min_harga']);
+                                $nilai = round(($spek * 0.3) + ($kual * 0.3) + ($hrg * 0.4), 3);
 
-                $arr[] = '<b>' . $row['nama_aset'] . '</b>';
-              }
+                                $arr[] = '<b>' . $row['nama_aset'] . '</b>';
+                            }
 
-              $output = max($arr);
+                            $output = max($arr);
 
-              echo "<p>Berdasarkan hasil perhitungan, maka pemilihan aset terbaik untuk pengadaan  adalah " . $output;
-              ?>
+                            echo "<p>Berdasarkan hasil perhitungan, maka pemilihan aset terbaik untuk pengadaan  adalah " . $output;
+                            ?>
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -63,9 +63,9 @@
                             <select name="id_lokasi" class="id_lokasi form-control" required>
                                 <option value="">- Cari --</option>
                                 <?php foreach ($mt as $x): ?>
-                                <option><?= $x['nama_barang']; ?> | Jumlah Kerusakan : <?= $x['jml_rusak']; ?>
-                                    <?= $x['satuan']; ?>
-                                </option>
+                                    <option><?= $x['nama_barang']; ?> | Jumlah Kerusakan : <?= $x['jml_rusak']; ?>
+                                        <?= $x['satuan']; ?>
+                                    </option>
                                 <?php endforeach ?>
                             </select>
                         </div>
@@ -94,8 +94,8 @@
                                             <select name="id_lokasi" class="id_lokasi form-control" required>
                                                 <option value="">- Pilih --</option>
                                                 <?php foreach ($lokasi as $x): ?>
-                                                <option value="<?= $x['id_lokasi']; ?>"><?= $x['nama_lokasi']; ?>
-                                                </option>
+                                                    <option value="<?= $x['id_lokasi']; ?>"><?= $x['nama_lokasi']; ?>
+                                                    </option>
                                                 <?php endforeach ?>
                                             </select>
                                         </div>
@@ -156,8 +156,13 @@
                                     <div class="form-group row">
                                         <label for="harga_satuan" class="col-sm-2 col-form-label">Harga Satuan</label>
                                         <div class="col-sm-6">
-                                            <input type="number" class="form-control" name="harga_satuan"
-                                                placeholder="Masukan Harga.." required>
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Rp.</span>
+                                                </div>
+                                                <input type="text" class="form-control" name="harga_satuan"
+                                                    id="harga_satuan" placeholder="Masukan Harga.." required>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -165,8 +170,20 @@
                                             Pengadaan</label>
                                         <div class="col-sm-6">
                                             <div class="input-group mb-3">
-                                                <input type="text" name="tahun_pengadaan" placeholder="20XX"
-                                                    class="form-control" required>
+                                                <select name="tahun_pengadaan" class="form-control">
+
+                                                    <option value="">-- Pilih Tahun Pengadaan --</option>
+
+                                                    <?php
+                                                    $tahun_sekarang = date('Y');
+                                                    for ($i = $tahun_sekarang; $i >= 2000; $i--) {
+                                                    ?>
+
+                                                        <option value="<?= $i ?>"><?= $i ?></option>
+
+                                                    <?php } ?>
+
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -196,9 +213,45 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script>
-$(document).ready(function() {
-    $('.id_lokasi').select2({
-        theme: "classic"
+    $(document).ready(function() {
+        $('.id_lokasi').select2({
+            theme: "classic"
+        });
     });
-});
+
+    var harga_satuan = document.getElementById("harga_satuan");
+
+    harga_satuan.addEventListener("keyup", function(e) {
+
+        this.value = formatRupiah(this.value);
+
+    });
+
+    function formatRupiah(angka) {
+
+        let number_string = angka.replace(/[^,\d]/g, "").toString(),
+            split = number_string.split(","),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+
+            separator = sisa ? "." : "";
+            rupiah += separator + ribuan.join(".");
+
+        }
+
+        return rupiah;
+
+    }
+
+
+    $("form").submit(function() {
+
+        let harga_satuan = $("#harga_satuan").val().replace(/\./g, '');
+
+        $("#harga_satuan").val(harga_satuan);
+
+    });
 </script>
