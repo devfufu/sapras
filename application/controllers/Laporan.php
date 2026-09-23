@@ -37,8 +37,8 @@ class Laporan extends CI_Controller
 
 	public function searchAsetRange()
 	{
-		$tahun_awal  = $this->input->post('tahun_awal');
-		$tahun_akhir = $this->input->post('tahun_akhir');
+		$tahun_awal    = $this->input->post('tahun_awal');
+		$tahun_akhir   = $this->input->post('tahun_akhir');
 		$jenis_bantuan = $this->input->post('jenis_bantuan', true);
 
 		$data = array(
@@ -46,9 +46,19 @@ class Laporan extends CI_Controller
 			'active_menu_lp' => 'menu-open',
 			'active_menu_lpr' => 'active',
 			'active_menu_ast' => 'active',
+
 			'lokasi' => $this->ml->getLokasi(),
-			'aset' => $this->ml->getAsetRangeTahun($tahun_awal, $tahun_akhir, $jenis_bantuan),
-			'range' => $tahun_awal . " - " . $tahun_akhir
+
+			'aset' => $this->ml->getAsetRangeTahun(
+				$tahun_awal,
+				$tahun_akhir,
+				$jenis_bantuan
+			),
+
+			'range' => $tahun_awal . " - " . $tahun_akhir,
+
+			// Tambahkan ini
+			'filter_tahun' => true
 		);
 
 		if (count($data['aset']) > 0) {
@@ -605,6 +615,22 @@ class Laporan extends CI_Controller
 
 		$this->load->view('layouts/header', $data);
 		$this->load->view('laporan/n_terkirim', $data);
+		$this->load->view('layouts/footer');
+	}
+
+	public function dataAsetPrint()
+	{
+		$data = array(
+			'title' => 'Data Print Aset',
+			'active_menu_lp' => 'menu-open',
+			'active_menu_lpr' => 'active',
+			'active_menu_dpa' => 'active',
+			'aset' => $this->ml->getDataAsetPrint()
+
+		);
+
+		$this->load->view('layouts/header', $data);
+		$this->load->view('laporan/v_data_aset_print', $data);
 		$this->load->view('layouts/footer');
 	}
 }

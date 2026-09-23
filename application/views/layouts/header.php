@@ -309,6 +309,13 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
+                                            <a href="<?= base_url('laporan/dataAsetPrint') ?>"
+                                                class="nav-link <?= isset($active_menu_dpa) ? $active_menu_dpa : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Data Print Aset</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
                                             <a href="<?= base_url('laporan/notifikasi') ?>"
                                                 class="nav-link <?= isset($active_menu_ntf) ? $active_menu_ntf : '' ?>">
                                                 <i class="far fa-circle nav-icon"></i>

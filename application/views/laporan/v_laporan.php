@@ -181,15 +181,18 @@
           <thead>
             <tr>
               <th>No.</th>
+              <th>Foto</th>
+              <th>Kode Aset</th>
               <th>Nama</th>
-              <th>Satuan</th>
+              <th>Lokasi</th>
+              <th>Sumber Pembelian</th>
               <th>Volume</th>
-              <th>Harga</th>
+              <th>Satuan</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td colspan="5" align="center">Data tidak tersedia.. silahkan cari data</td>
+              <td colspan="8" align="center">Data tidak tersedia.. silahkan cari data</td>
             </tr>
           </tbody>
         </table>

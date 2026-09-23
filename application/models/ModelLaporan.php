@@ -184,6 +184,38 @@ class ModelLaporan extends CI_Model
 
 		return $this->db->get()->result_array();
 	}
+
+	public function getDataAsetPrint()
+	{
+		$this->db->select('
+        asets.id_aset,
+        asets.kode_aset,
+        asets.foto_aset,
+        asets.jenis_bantuan,
+        asets.volume,
+        asets.satuan,
+        barang.nama_barang,
+        lokasi_aset.nama_lokasi
+    ');
+
+		$this->db->from('asets');
+
+		$this->db->join(
+			'barang',
+			'barang.id_barang = asets.id_barang',
+			'left'
+		);
+
+		$this->db->join(
+			'lokasi_aset',
+			'lokasi_aset.id_lokasi = asets.id_lokasi',
+			'left'
+		);
+
+		$this->db->order_by('asets.id_aset', 'DESC');
+
+		return $this->db->get()->result_array();
+	}
 }
 
 /* End of file ModelLaporan.php */

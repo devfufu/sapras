@@ -14,6 +14,7 @@ class ModelAset extends CI_Model
 
 		return $this->db->get()->result_array();
 	}
+
 	public function getAsetDihapuskan()
 	{
 		$this->db->select('*');

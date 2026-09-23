@@ -157,6 +157,9 @@ $route['laporan/cetakLabel/(:any)/(:any)'] = 'Laporan/cetakLabel/$1/$2';
 //Laporan Notifikasi
 $route['laporan/notifikasi'] = 'Laporan/notifikasi';
 
+//Laporan data aset
+$route['laporan/dataAsetPrint'] = 'Laporan/dataAsetPrint';
+
 //Settingan 
 $route['(:any)'] = 'errors/show_404';
 $route['(:any)/(:any)'] = 'errors/show_404';

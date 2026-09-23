@@ -68,9 +68,9 @@
 
                                     <?php foreach ($lokasi as $l) { ?>
 
-                                    <option value="<?= $l['id_lokasi'] ?>">
-                                        <?= $l['nama_lokasi'] ?>
-                                    </option>
+                                        <option value="<?= $l['id_lokasi'] ?>">
+                                            <?= $l['nama_lokasi'] ?>
+                                        </option>
 
                                     <?php } ?>
 
@@ -116,11 +116,11 @@
                                     <option value="">-- Pilih Tahun Awal --</option>
 
                                     <?php
-                  $tahun_sekarang = date('Y');
-                  for ($i = $tahun_sekarang; $i >= 2000; $i--) {
-                  ?>
+                                    $tahun_sekarang = date('Y');
+                                    for ($i = $tahun_sekarang; $i >= 2000; $i--) {
+                                    ?>
 
-                                    <option value="<?= $i ?>"><?= $i ?></option>
+                                        <option value="<?= $i ?>"><?= $i ?></option>
 
                                     <?php } ?>
 
@@ -134,11 +134,11 @@
                                     <option value="">-- Pilih Tahun Akhir --</option>
 
                                     <?php
-                  $tahun_sekarang = date('Y');
-                  for ($i = $tahun_sekarang; $i >= 2000; $i--) {
-                  ?>
+                                    $tahun_sekarang = date('Y');
+                                    for ($i = $tahun_sekarang; $i >= 2000; $i--) {
+                                    ?>
 
-                                    <option value="<?= $i ?>"><?= $i ?></option>
+                                        <option value="<?= $i ?>"><?= $i ?></option>
 
                                     <?php } ?>
 
@@ -174,37 +174,39 @@
                     </form>
                 </div>
                 <?php if (isset($lok)) { ?>
-                <a href="<?= base_url('laporan/print_aset?id_lokasi=' . $this->input->post('id_lokasi') . '&jenis_bantuan=' . $this->input->post('jenis_bantuan')) ?>"
-                    class="btn btn-danger mt-4">
-                    <i class="fa fa-print"></i> Print
-                </a>
-                <a href="<?= base_url('laporan/export_aset?id_lokasi=' . $id_lokasi . '&jenis_bantuan=' . $jenis_bantuan) ?>"
-                    class="btn btn-success mt-4">
-                    <i class="fa fa-file"></i> Export Excel
-                </a>
+                    <a href="<?= base_url('laporan/print_aset?id_lokasi=' . $this->input->post('id_lokasi') . '&jenis_bantuan=' . $this->input->post('jenis_bantuan')) ?>"
+                        class="btn btn-danger mt-4">
+                        <i class="fa fa-print"></i> Print
+                    </a>
+                    <a href="<?= base_url('laporan/export_aset?id_lokasi=' . $id_lokasi . '&jenis_bantuan=' . $jenis_bantuan) ?>"
+                        class="btn btn-success mt-4">
+                        <i class="fa fa-file"></i> Export Excel
+                    </a>
                 <?php } else { ?>
-                <a href="<?= base_url('laporan/print_aset_range/'
-                      . $this->input->post('tahun_awal') . '/'
-                      . $this->input->post('tahun_akhir'))
-                      . '?jenis_bantuan=' . $this->input->post('jenis_bantuan') ?>" class="btn btn-danger mt-4">
-                    <i class="fa fa-print"></i> Print
-                </a>
-                <a href="<?= base_url('laporan/export_aset_range/')
-                      . $this->input->post('tahun_awal') . '/'
-                      . $this->input->post('tahun_akhir')
-                      . '?jenis_bantuan=' . $this->input->post('jenis_bantuan') ?>" class="btn btn-success mt-4">
-                    <i class="fa fa-file"></i> Export Excel
-                </a>
+                    <a href="<?= base_url('laporan/print_aset_range/'
+                                    . $this->input->post('tahun_awal') . '/'
+                                    . $this->input->post('tahun_akhir'))
+                                    . '?jenis_bantuan=' . $this->input->post('jenis_bantuan') ?>"
+                        class="btn btn-danger mt-4">
+                        <i class="fa fa-print"></i> Print
+                    </a>
+                    <a href="<?= base_url('laporan/export_aset_range/')
+                                    . $this->input->post('tahun_awal') . '/'
+                                    . $this->input->post('tahun_akhir')
+                                    . '?jenis_bantuan=' . $this->input->post('jenis_bantuan') ?>"
+                        class="btn btn-success mt-4">
+                        <i class="fa fa-file"></i> Export Excel
+                    </a>
                 <?php } ?>
                 <div class="mt-4">
                     <div class="col">
                         <?php if (isset($lok)) { ?>
 
-                        <b>Lokasi Aset :</b> <?= $lok['nama_lokasi'] ?>
+                            <b>Lokasi Aset :</b> <?= $lok['nama_lokasi'] ?>
 
                         <?php } elseif (isset($range)) { ?>
 
-                        <b>Tahun Perolehan :</b> <?= $range ?>
+                            <b>Tahun Perolehan :</b> <?= $range ?>
 
                         <?php } ?>
                     </div>
@@ -226,31 +228,31 @@
                     </thead>
                     <tbody>
                         <?php
-            $no = 1;
-            $sum = 0;
-            foreach ($aset as $row):
-              $sum += $row['total_harga'];
-            ?>
-                        <tr>
-                            <td><?= $no++; ?></td>
-                            <td align="center">
-                                <?php if (!empty($row['foto_aset'])): ?>
-                                <img src="<?= base_url('src/img/aset/' . $row['foto_aset']) ?>" width="60" height="60"
-                                    style="object-fit: cover; cursor:pointer;" data-toggle="modal"
-                                    data-target="#modalFoto" onclick="showFoto(this.src)">
-                                <?php else: ?>
-                                <span class="text-muted">-</span>
-                                <?php endif; ?>
-                            </td>
-                            <td><?= $row['kode_aset'] ?></td>
-                            <td><?= $row['nama_barang'] ?></td>
-                            <td><?= $row['nama_lokasi'] ?></td>
-                            <td><?= $row['jenis_bantuan'] ?></td>
-                            <td><?= $row['volume'] ?></td>
-                            <td><?= $row['satuan'] ?></td>
-                            <td><?= laporan($row['harga']) ?></td>
-                            <td><?= laporan($row['total_harga']) ?></td>
-                        </tr>
+                        $no = 1;
+                        $sum = 0;
+                        foreach ($aset as $row):
+                            $sum += $row['total_harga'];
+                        ?>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td align="center">
+                                    <?php if (!empty($row['foto_aset'])): ?>
+                                        <img src="<?= base_url('src/img/aset/' . $row['foto_aset']) ?>" width="60" height="60"
+                                            style="object-fit: cover; cursor:pointer;" data-toggle="modal"
+                                            data-target="#modalFoto" onclick="showFoto(this.src)">
+                                    <?php else: ?>
+                                        <span class="text-muted">-</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?= $row['kode_aset'] ?></td>
+                                <td><?= $row['nama_barang'] ?></td>
+                                <td><?= $row['nama_lokasi'] ?></td>
+                                <td><?= $row['jenis_bantuan'] ?></td>
+                                <td><?= $row['volume'] ?></td>
+                                <td><?= $row['satuan'] ?></td>
+                                <td><?= laporan($row['harga']) ?></td>
+                                <td><?= laporan($row['total_harga']) ?></td>
+                            </tr>
                         <?php endforeach ?>
                         <tr>
                             <td colspan="9"><b>JUMLAH TOTAL</b></td>
@@ -271,12 +273,12 @@
     <!-- /.content -->
 </div>
 <script>
-function previewImg(src) {
-    let win = window.open("");
-    win.document.write('<img src="' + src + '" style="width:100%">');
-}
+    function previewImg(src) {
+        let win = window.open("");
+        win.document.write('<img src="' + src + '" style="width:100%">');
+    }
 
-function showFoto(src) {
-    document.getElementById('imgPreview').src = src;
-}
+    function showFoto(src) {
+        document.getElementById('imgPreview').src = src;
+    }
 </script>
