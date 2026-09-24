@@ -6,20 +6,41 @@ class ModelLaporan extends CI_Model
 
 	public function getAsetWujud($id_lokasi = null, $jenis_bantuan = null)
 	{
-		$this->db->select('*');
-		$this->db->from('asets a');
-		$this->db->join('barang b', 'b.id_barang = a.id_barang');
-		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi');
+		$this->db->select('
+        asets.id_aset,
+        asets.kode_aset,
+        asets.foto_aset,
+        asets.jenis_bantuan,
+        asets.volume,
+        asets.satuan,
+        barang.nama_barang,
+        lokasi_aset.id_lokasi,
+        lokasi_aset.nama_lokasi
+    ');
 
-		$this->db->where('a.volume >', 0);
+		$this->db->from('asets');
+
+		$this->db->join(
+			'barang',
+			'barang.id_barang = asets.id_barang',
+			'left'
+		);
+
+		$this->db->join(
+			'lokasi_aset',
+			'lokasi_aset.id_lokasi = asets.id_lokasi',
+			'left'
+		);
 
 		if (!empty($id_lokasi)) {
-			$this->db->where('a.id_lokasi', $id_lokasi);
+			$this->db->where('asets.id_lokasi', $id_lokasi);
 		}
 
 		if (!empty($jenis_bantuan)) {
-			$this->db->where('a.jenis_bantuan', $jenis_bantuan);
+			$this->db->where('asets.jenis_bantuan', $jenis_bantuan);
 		}
+
+		$this->db->order_by('asets.id_aset', 'DESC');
 
 		return $this->db->get()->result_array();
 	}
@@ -189,6 +210,7 @@ class ModelLaporan extends CI_Model
 	{
 		$this->db->select('
         asets.id_aset,
+        asets.id_lokasi,
         asets.kode_aset,
         asets.foto_aset,
         asets.jenis_bantuan,

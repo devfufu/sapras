@@ -26,7 +26,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    Data Notifikasi Terkirim
+                    Data Lokasi Aset
                 </h3>
 
                 <div class="card-tools">
@@ -41,6 +41,28 @@
             <div class="card-body">
                 <br />
                 <div class="table-responsive">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="filterLokasi">Filter Lokasi</label>
+
+                            <select id="filterLokasi" class="form-control">
+                                <option value="">-- Semua Lokasi --</option>
+
+                                <?php foreach ($lokasi as $l) : ?>
+                                    <option value="<?= $l['id_lokasi']; ?>">
+                                        <?= $l['nama_lokasi']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label>&nbsp;</label>
+                            <button type="button" id="btnPrint" class="btn btn-primary btn-block">
+                                <i class="fa fa-print"></i> Print
+                            </button>
+                        </div>
+                    </div>
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
@@ -58,7 +80,9 @@
                             <?php $no = 1; ?>
 
                             <?php foreach ($aset as $row) : ?>
-                                <tr>
+
+                                <tr data-id-lokasi="<?= $row['id_lokasi']; ?>">
+
                                     <td><?= $no++; ?></td>
 
                                     <td>
@@ -69,13 +93,21 @@
                                             <span>Tidak ada foto</span>
                                         <?php endif; ?>
                                     </td>
+
                                     <td><?= $row['kode_aset']; ?></td>
+
                                     <td><?= $row['nama_barang']; ?></td>
+
                                     <td><?= $row['nama_lokasi']; ?></td>
+
                                     <td><?= $row['jenis_bantuan']; ?></td>
+
                                     <td><?= $row['volume']; ?></td>
+
                                     <td><?= $row['satuan']; ?></td>
+
                                 </tr>
+
                             <?php endforeach; ?>
                         </tbody>
                         <tfoot>
@@ -112,5 +144,53 @@
                 "sSearch": "Cari"
             }
         });
+    });
+
+    $(document).ready(function() {
+
+        var table = $('#example1').DataTable();
+
+        // FILTER LOKASI
+        $('#filterLokasi').on('change', function() {
+
+            var id_lokasi = $(this).val();
+
+            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+
+                if (settings.nTable.id !== 'example1') {
+                    return true;
+                }
+
+                if (id_lokasi === '') {
+                    return true;
+                }
+
+                var row = table.row(dataIndex).node();
+                var idLokasiRow = $(row).attr('data-id-lokasi');
+
+                return idLokasiRow == id_lokasi;
+            });
+
+            table.draw();
+
+            $.fn.dataTable.ext.search.pop();
+        });
+
+
+        // PRINT
+        $('#btnPrint').on('click', function() {
+
+            var id_lokasi = $('#filterLokasi').val();
+
+            var url = "<?= base_url('laporan/printDataAset'); ?>";
+
+            if (id_lokasi !== '') {
+                url += '?id_lokasi=' + id_lokasi;
+            }
+
+            window.open(url, '_blank');
+
+        });
+
     });
 </script>

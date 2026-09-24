@@ -159,6 +159,7 @@ $route['laporan/notifikasi'] = 'Laporan/notifikasi';
 
 //Laporan data aset
 $route['laporan/dataAsetPrint'] = 'Laporan/dataAsetPrint';
+$route['laporan/printDataAset'] = 'Laporan/printDataAset';
 
 //Settingan 
 $route['(:any)'] = 'errors/show_404';

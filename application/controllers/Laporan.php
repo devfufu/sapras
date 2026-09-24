@@ -625,13 +625,35 @@ class Laporan extends CI_Controller
 			'active_menu_lp' => 'menu-open',
 			'active_menu_lpr' => 'active',
 			'active_menu_dpa' => 'active',
-			'aset' => $this->ml->getDataAsetPrint()
+			'aset' => $this->ml->getDataAsetPrint(),
+			'lokasi' => $this->ml->getLokasi()
 
 		);
 
 		$this->load->view('layouts/header', $data);
 		$this->load->view('laporan/v_data_aset_print', $data);
 		$this->load->view('layouts/footer');
+	}
+
+	public function printDataAset()
+	{
+		$id_lokasi = $this->input->get('id_lokasi');
+		$jenis_bantuan = $this->input->get('jenis_bantuan');
+
+		$data['aset'] = $this->ml->getAsetWujud($id_lokasi, $jenis_bantuan);
+
+		if (!empty($id_lokasi)) {
+			$data['lokasi'] = $this->ml->getLokasiId($id_lokasi);
+		} else {
+			$data['lokasi'] = [];
+		}
+
+		if (count($data['aset']) > 0) {
+			$this->load->view('laporan/p_data_aset_print', $data);
+		} else {
+			$this->session->set_flashdata('gagal', 'Data Tidak Ditemukan');
+			redirect('laporan/dataAsetPrint');
+		}
 	}
 }
 
