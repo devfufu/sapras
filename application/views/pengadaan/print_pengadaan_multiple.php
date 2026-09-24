@@ -352,7 +352,7 @@ $tahun1 = date('Y');
 
     <!-- =========================
      JUDUL
-========================= -->dasdasd
+========================= -->
 
     <h2>
         SURAT PENGAJUAN PENGADAAN BARANG/JASA (SP2BJ) <br>
