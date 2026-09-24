@@ -181,11 +181,24 @@
             border-radius: 4px;
         }
 
+        .ttd-wrapper {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
         .ttd {
             width: 100%;
             margin-top: 50px;
             border-collapse: collapse;
             table-layout: fixed;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        .ttd tr,
+        .ttd td {
+            page-break-inside: avoid;
+            break-inside: avoid;
         }
 
         .ttd td {
@@ -205,7 +218,6 @@
             font-weight: bold;
             text-decoration: underline;
         }
-
 
         /* =========================
        PRINT
@@ -361,17 +373,17 @@ $tahun1 = date('Y');
         </p>
 
         <span style="font-weight: bold; margin-left: 20px;">• Unit/Departemen Pengaju :
-        </span><?php foreach ($pengadaan as $row): ?> <?= htmlspecialchars($row['nama_lokasi']); ?><?php endforeach; ?>
-            <br>
-            <span style="font-weight: bold; margin-left: 20px;">• Tujuan Pengadaan :</span>
-            <?= htmlspecialchars($row['tujuan_pengadaan']); ?><br>
-            <span style="font-weight: bold; margin-left: 20px;">• Sifat Pengadaan :</span>
-            <?= htmlspecialchars($row['sifat_pengadaan']); ?>
+        </span><?php foreach ($pengadaan as $row): ?> <?php endforeach; ?>
+        <?= htmlspecialchars($row['nama_lokasi']); ?>
+        <br>
+        <span style="font-weight: bold; margin-left: 20px;">• Tujuan Pengadaan :</span>
+        <?= htmlspecialchars($row['tujuan_pengadaan']); ?><br>
+        <span style="font-weight: bold; margin-left: 20px;">• Sifat Pengadaan :</span>
+        <?= htmlspecialchars($row['sifat_pengadaan']); ?>
 
-            <p>
-                Rincian Kebutuhan Barang / Jasa:
-            </p>
-
+        <p>
+            Rincian Kebutuhan Barang / Jasa:
+        </p>
     </div>
 
     <!-- =========================
@@ -388,15 +400,23 @@ $tahun1 = date('Y');
                 <th>Satuan</th>
                 <th>Est.Harga Satuan</th>
                 <th>Est.Total Harga</th>
-                <th>Keterangan/alasan</th>
+                <!-- <th>Keterangan/alasan</th> -->
             </tr>
         </thead>
-        <tbody> <?php $no = 1; ?>
+        <tbody>
+
+            <?php
+            $no = 1;
+            $grand_total = 0;
+            ?>
 
             <?php foreach ($pengadaan as $row): ?>
 
                 <?php
                 $total_harga = $row['volume'] * $row['harga_satuan'];
+
+                // Tambahkan total harga setiap barang
+                $grand_total += $total_harga;
                 ?>
 
                 <tr>
@@ -427,13 +447,21 @@ $tahun1 = date('Y');
                     <td>
                         <?= 'Rp ' . number_format($total_harga, 0, ',', '.'); ?>
                     </td>
-
-                    <td>
-
-                    </td>
                 </tr>
 
             <?php endforeach; ?>
+
+            <!-- TOTAL KESELURUHAN -->
+            <tr class="grand-total">
+                <td colspan="6" style="text-align: right; font-weight: bold;">
+                    TOTAL
+                </td>
+
+                <td style="font-weight: bold;">
+                    <?= 'Rp ' . number_format($grand_total, 0, ',', '.'); ?>
+                </td>
+            </tr>
+
         </tbody>
     </table>
     <div class="penutup">
@@ -450,39 +478,24 @@ $tahun1 = date('Y');
             terima kasih.
         </p>
     </div>
-    <table class="ttd">
-        <tr>
-            <td>
-                <div class="jabatan">
-                    Menyetujui,<br>
-                    Kepala Sekolah
-                </div>
-                <div class="nama-pejabat">
-                    Dr. Jayadih, M.Kom
-                </div>
-            </td>
-            <td>
-                <div class="jabatan">
-                    Mengetahui,<br>
-                    Kepala Sapras
-                </div>
-                <div class="nama-pejabat">
-                    Abdul Rohman, S.Kom
-                </div>
-            </td>
-            <td>
-                <div class="pemohon">
-
-
-                    Tangerang Selatan, <?= $tanggal ?><br>
-                    Pemohon
-                </div>
-                <div class="nama-pejabat">
-                    <?= htmlspecialchars($row['nama_user']); ?>
-                </div>
-            </td>
-        </tr>
-    </table>
+    <div class="ttd-wrapper">
+        <table class="ttd">
+            <tr>
+                <td>
+                    <div class="jabatan"> Menyetujui,<br> Kepala Sekolah </div>
+                    <div class="nama-pejabat"> Dr. Jayadih, M.Kom </div>
+                </td>
+                <td>
+                    <div class="jabatan"> Mengetahui,<br> Kepala Sapras </div>
+                    <div class="nama-pejabat"> Abdul Rohman, S.Kom </div>
+                </td>
+                <td>
+                    <div class="pemohon"> Tangerang Selatan, <?= $tanggal ?><br> Pemohon </div>
+                    <div class="nama-pejabat"> <?= htmlspecialchars($row['nama_user']); ?> </div>
+                </td>
+            </tr>
+        </table>
+    </div>
 
     <!-- =========================
      AUTO PRINT
