@@ -102,15 +102,23 @@ class ModelPengadaan extends CI_Model
 		return $query->result_array();
 	}
 
-	public function getFilterPengadaanAset($id_lokasi, $tahun_pengadaan)
+	public function getFilterPengadaanAset($id_lokasi = null, $tahun_pengadaan = null)
 	{
 		$this->db->select('*');
 		$this->db->from('pengadaan a');
 		$this->db->join('users b', 'b.id_user = a.id_user');
 		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi');
-		$this->db->where('a.id_lokasi', $id_lokasi);
-		$this->db->where('tahun_pengadaan', $tahun_pengadaan);
+
+		if (!empty($id_lokasi)) {
+			$this->db->where('a.id_lokasi', $id_lokasi);
+		}
+
+		if (!empty($tahun_pengadaan)) {
+			$this->db->where('a.tahun_pengadaan', $tahun_pengadaan);
+		}
+
 		$query = $this->db->get();
+
 		return $query->result_array();
 	}
 

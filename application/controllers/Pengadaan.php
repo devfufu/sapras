@@ -527,7 +527,7 @@ class Pengadaan extends CI_Controller
 			$this->load->view('pengadaan/v_pengadaan', $data);
 			$this->load->view('layouts/footer');
 		} else {
-			$this->session->set_flashdata('gagal', 'Ditemukan');
+			$this->session->set_flashdata('gagal', 'Data pengadaan tidak ditemukan');
 			redirect('pengadaan');
 		}
 	}
