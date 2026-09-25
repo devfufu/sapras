@@ -82,9 +82,10 @@ class User extends CI_Controller
 					$data = array(
 						'nama_user' => $this->input->post('nama_user'),
 						'username' => $this->input->post('username'),
-						'password' => md5($this->input->post('password')),
+						'password' => PASSWORD_DEFAULT($this->input->post('password')),
 						'jabatan' => $this->input->post('jabatan'),
 						'role' => $this->input->post('role'),
+						'no_hp' => $this->input->post('no_hp'),
 						'id_lokasi' => $this->input->post('id_lokasi')
 					);
 
@@ -310,6 +311,7 @@ class User extends CI_Controller
 			'nama_user' => $this->input->post('nama_user', true),
 			'username'  => $this->input->post('username', true),
 			'jabatan'   => $this->input->post('jabatan', true),
+			'no_hp'     => $this->input->post('no_hp', true),
 			'role'      => $role,
 			'id_lokasi' => $id_lokasi
 		];

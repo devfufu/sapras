@@ -234,6 +234,12 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="no_hp" class="col-sm-6 col-form-label">No. HP</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" placeholder="No. HP.." name="no_hp" required>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label>Lokasi Aset</label>
                             <select name="id_lokasi" class="form-control">

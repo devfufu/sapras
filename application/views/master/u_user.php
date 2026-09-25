@@ -96,6 +96,14 @@
                         </div>
 
                         <div class="form-group row">
+                            <label class="col-sm-6 col-form-label">No. HP</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" name="no_hp"
+                                    value="<?= isset($users['no_hp']) ? $users['no_hp'] : ''; ?>" placeholder="No. HP">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label class="col-sm-6 col-form-label">Lokasi Aset</label>
                             <div class="col-sm-12">
                                 <select name="id_lokasi" class="form-control">
