@@ -29,7 +29,8 @@ class User extends CI_Controller
 			'active_menu_master' => 'menu-open',
 			'active_menu_mst' => 'active',
 			'active_menu_user' => 'active',
-			'user' => $this->mu->getDataUser()
+			'user' => $this->mu->getDataUser(),
+			'lokasi' => $this->ml->getLokasi()
 		);
 		$this->load->view('layouts/header', $data);
 		$this->load->view('master/v_user', $data);
@@ -47,6 +48,7 @@ class User extends CI_Controller
 				'min_length' => "<p>Username minimal 5 Karakter</p>"
 			)
 		);
+
 		$this->form_validation->set_rules(
 			'password',
 			'Password',
@@ -61,41 +63,71 @@ class User extends CI_Controller
 
 			$username = $this->input->post('username');
 			$cek = $this->mu->cekUsername($username);
+
 			if ($cek == 1) {
-				$this->session->set_flashdata('gagal_store', 'Username sudah digunakan..');
+
+				$this->session->set_flashdata(
+					'gagal_store',
+					'Username sudah digunakan..'
+				);
+
 				redirect('users');
 			} else {
+
 				$password = $this->input->post('password');
 				$password_confirm = $this->input->post('password_confirm');
+
 				if ($password == $password_confirm) {
+
 					$data = array(
 						'nama_user' => $this->input->post('nama_user'),
 						'username' => $this->input->post('username'),
 						'password' => md5($this->input->post('password')),
 						'jabatan' => $this->input->post('jabatan'),
-						'role' => $this->input->post('role')
+						'role' => $this->input->post('role'),
+						'id_lokasi' => $this->input->post('id_lokasi')
 					);
+
 					$res = $this->mu->store_user($data);
+
 					if ($res >= 1) {
-						$this->session->set_flashdata('sukses', 'Disimpan');
+
+						$this->session->set_flashdata(
+							'sukses',
+							'Disimpan'
+						);
+
 						redirect('users');
 					} else {
-						$this->session->set_flashdata('gagal', 'Disimpan');
+
+						$this->session->set_flashdata(
+							'gagal',
+							'Disimpan'
+						);
+
 						redirect('users');
 					}
 				} else {
-					$this->session->set_flashdata('gagal_store', 'Password yang anda masukan tidak sama..');
+
+					$this->session->set_flashdata(
+						'gagal_store',
+						'Password yang anda masukan tidak sama..'
+					);
+
 					redirect('users');
 				}
 			}
 		} else {
+
 			$data = array(
 				'title' => 'Data User',
 				'active_menu_master' => 'menu-open',
 				'active_menu_mst' => 'active',
 				'active_menu_user' => 'active',
-				'user' => $this->mu->getDataUser()
+				'user' => $this->mu->getDataUser(),
+				'lokasi' => $this->ml->getLokasi()
 			);
+
 			$this->load->view('layouts/header', $data);
 			$this->load->view('master/v_user', $data);
 			$this->load->view('layouts/footer');
