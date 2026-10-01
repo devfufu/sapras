@@ -91,6 +91,34 @@ class ModelPengadaan extends CI_Model
 		return $query->result_array();
 	}
 
+	public function getPengadaanAsetByLokasi($id_user)
+	{
+		// Ambil lokasi user yang sedang login
+		$user = $this->db
+			->select('id_lokasi')
+			->from('users')
+			->where('id_user', $id_user)
+			->get()
+			->row();
+
+		// Kalau user belum punya lokasi
+		if (!$user || empty($user->id_lokasi)) {
+			return array();
+		}
+
+		$this->db->select('*');
+		$this->db->from('pengadaan a');
+		$this->db->join('users b', 'b.id_user = a.id_user');
+		$this->db->join('lokasi_aset c', 'c.id_lokasi = a.id_lokasi');
+
+		// Filter berdasarkan lokasi user
+		$this->db->where('a.id_lokasi', $user->id_lokasi);
+
+		$query = $this->db->get();
+
+		return $query->result_array();
+	}
+
 	public function getDetailPengadaanAset($id_pengadaan)
 	{
 		$this->db->select('*');

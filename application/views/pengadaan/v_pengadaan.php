@@ -42,50 +42,50 @@
             </div>
             <div class="card-body">
                 <?php if ($this->session->userdata('role') == '1' || $this->session->userdata('role') == '2'): ?>
-                    <form action="<?= base_url('pengadaan/filter') ?>" method="POST" autocomplete="off">
-                        <div class="row">
+                <form action="<?= base_url('pengadaan/filter') ?>" method="POST" autocomplete="off">
+                    <div class="row">
 
-                            <div class="col-4">
-                                <select name="id_lokasi" class="form-control">
-                                    <option value="">- Pilih Lokasi -</option>
+                        <div class="col-4">
+                            <select name="id_lokasi" class="form-control">
+                                <option value="">- Pilih Lokasi -</option>
 
-                                    <?php foreach ($lokasi as $row): ?>
-                                        <option value="<?= $row['id_lokasi']; ?>">
-                                            <?= $row['nama_lokasi']; ?>
-                                        </option>
-                                    <?php endforeach ?>
+                                <?php foreach ($lokasi as $row): ?>
+                                <option value="<?= $row['id_lokasi']; ?>">
+                                    <?= $row['nama_lokasi']; ?>
+                                </option>
+                                <?php endforeach ?>
 
-                                </select>
-                            </div>
-
-                            <div class="col-4">
-                                <select name="tahun_pengadaan" class="form-control">
-                                    <option value="">- Pilih Tahun -</option>
-
-                                    <?php for ($tahun = 2008; $tahun <= date('Y'); $tahun++): ?>
-                                        <option value="<?= $tahun; ?>">
-                                            <?= $tahun; ?>
-                                        </option>
-                                    <?php endfor; ?>
-
-                                </select>
-                            </div>
-
-                            <div class="col">
-                                <button type="submit" class="btn btn-block btn-outline-primary">
-                                    Filter
-                                </button>
-                            </div>
-
-                            <div class="col">
-                                <a href="<?= base_url('pengadaan'); ?>" class="btn btn-block btn-outline-danger">
-                                    Reset
-                                </a>
-                            </div>
-
+                            </select>
                         </div>
-                    </form>
-                    <br />
+
+                        <div class="col-4">
+                            <select name="tahun_pengadaan" class="form-control">
+                                <option value="">- Pilih Tahun -</option>
+
+                                <?php for ($tahun = 2008; $tahun <= date('Y'); $tahun++): ?>
+                                <option value="<?= $tahun; ?>">
+                                    <?= $tahun; ?>
+                                </option>
+                                <?php endfor; ?>
+
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <button type="submit" class="btn btn-block btn-outline-primary">
+                                Filter
+                            </button>
+                        </div>
+
+                        <div class="col">
+                            <a href="<?= base_url('pengadaan'); ?>" class="btn btn-block btn-outline-danger">
+                                Reset
+                            </a>
+                        </div>
+
+                    </div>
+                </form>
+                <br />
                 <?php endif ?>
                 <div class="table-responsive">
 
@@ -129,159 +129,216 @@
 
                                 <?php if ($this->session->userdata('role') == '1' || $this->session->userdata('role') == '2'): ?>
 
-                                    <?php $no = 1;
+                                <?php $no = 1;
                                     foreach ($item as $row): ?>
 
-                                        <tr>
+                                <tr>
 
-                                            <!-- CHECKBOX -->
-                                            <td>
-                                                <input type="checkbox" name="id_pengadaan[]"
-                                                    value="<?= $row['id_pengadaan']; ?>" class="checkItem">
-                                            </td>
+                                    <!-- CHECKBOX -->
+                                    <td>
+                                        <input type="checkbox" name="id_pengadaan[]"
+                                            value="<?= $row['id_pengadaan']; ?>" class="checkItem">
+                                    </td>
 
-                                            <td><?= $no++; ?></td>
+                                    <td><?= $no++; ?></td>
 
-                                            <td><?= $row['nama_user']; ?></td>
+                                    <td><?= $row['nama_user']; ?></td>
 
-                                            <td><?= $row['nama_lokasi']; ?></td>
+                                    <td><?= $row['nama_lokasi']; ?></td>
 
-                                            <td><?= $row['nama_aset']; ?></td>
+                                    <td><?= $row['nama_aset']; ?></td>
 
-                                            <td><?= $row['tahun_pengadaan']; ?></td>
+                                    <td><?= $row['tahun_pengadaan']; ?></td>
 
-                                            <td>
+                                    <td>
 
-                                                <?php if ($row['status'] == '0'): ?>
+                                        <?php $role = $this->session->userdata('role'); ?>
 
-                                                    <a class="btn btn-primary btn-sm"
-                                                        href="<?= base_url('pengadaan/setujui/' . $row['id_pengadaan']) ?>">
-                                                        <i class="fa fa-check"></i> Setujui
-                                                    </a>
+                                        <?php if ($role == '1'): ?>
 
-                                                    <a class="btn btn-danger btn-sm"
-                                                        href="<?= base_url('pengadaan/tolak/' . $row['id_pengadaan']) ?>">
-                                                        <i class="fa fa-times"></i> Tolak
-                                                    </a>
+                                        <!-- ================================= -->
+                                        <!-- ADMINISTRATOR / ROLE 1 -->
+                                        <!-- ================================= -->
 
-                                                <?php else: ?>
+                                        <?php if ($row['status'] == '0'): ?>
 
-                                                    <?php if ($row['status'] == '1'): ?>
+                                        <a class="btn btn-primary btn-sm"
+                                            href="<?= base_url('pengadaan/proses/' . $row['id_pengadaan']) ?>">
+                                            <i class="fa fa-play"></i> Proses
+                                        </a>
 
-                                                        <span class="badge badge-success">
-                                                            Disetujui
-                                                        </span>
+                                        <?php elseif ($row['status'] == '1'): ?>
 
-                                                    <?php else: ?>
+                                        <span class="badge badge-info">
+                                            Diproses
+                                        </span>
 
-                                                        <span class="badge badge-danger">
-                                                            Ditolak
-                                                        </span>
+                                        <a class="btn btn-success btn-sm"
+                                            href="<?= base_url('pengadaan/setujuiPengadaan/' . $row['id_pengadaan']) ?>">
+                                            <i class="fa fa-check"></i> Setuju
+                                        </a>
 
-                                                    <?php endif ?>
+                                        <a class="btn btn-danger btn-sm"
+                                            href="<?= base_url('pengadaan/tolakPengadaan/' . $row['id_pengadaan']) ?>">
+                                            <i class="fa fa-times"></i> Tolak
+                                        </a>
 
-                                                <?php endif ?>
 
-                                            </td>
+                                        <?php elseif ($row['status'] == '2'): ?>
 
-                                            <td>
+                                        <span class="badge badge-success">
+                                            Disetujui
+                                        </span>
 
-                                                <!-- DETAIL -->
-                                                <a href="<?= base_url('pengadaan/detail/' . $row['id_pengadaan']) ?>"
-                                                    class="btn btn-success btn-sm">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
+                                        <?php elseif ($row['status'] == '3'): ?>
 
-                                                <!-- PRINT SATU DATA -->
-                                                <a href="<?= base_url('pengadaan/print/' . $row['id_pengadaan']) ?>"
-                                                    class="btn btn-info btn-sm" target="_blank" title="Print">
-                                                    <i class="fas fa-print"></i>
-                                                </a>
+                                        <span class="badge badge-danger">
+                                            Ditolak
+                                        </span>
 
-                                                <!-- HAPUS -->
-                                                <a href="<?= base_url('pengadaan/hapus/' . $row['id_pengadaan']) ?>"
-                                                    class="btn btn-danger btn-sm tombol-hapus">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
+                                        <?php endif; ?>
 
-                                            </td>
 
-                                        </tr>
+                                        <?php elseif ($role == '2'): ?>
 
-                                    <?php endforeach ?>
+                                        <!-- ================================= -->
+                                        <!-- MANAGER / ROLE 2 -->
+                                        <!-- ================================= -->
+
+                                        <?php if ($row['status'] == '0'): ?>
+
+                                        <span class="badge badge-secondary">
+                                            Belum Diproses
+                                        </span>
+
+                                        <?php elseif ($row['status'] == '1'): ?>
+
+                                        <span class="badge badge-warning">
+                                            Menunggu
+                                        </span>
+
+                                        <?php elseif ($row['status'] == '2'): ?>
+
+                                        <span class="badge badge-success">
+                                            Disetujui
+                                        </span>
+
+                                        <?php elseif ($row['status'] == '3'): ?>
+
+                                        <span class="badge badge-danger">
+                                            Ditolak
+                                        </span>
+
+                                        <?php endif; ?>
+
+                                        <?php endif; ?>
+
+                                    </td>
+
+                                    <td>
+
+                                        <!-- DETAIL -->
+                                        <a href="<?= base_url('pengadaan/detail/' . $row['id_pengadaan']) ?>"
+                                            class="btn btn-success btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <?php if ($this->session->userdata('role') == '1'): ?>
+                                        <!-- PRINT SATU DATA -->
+                                        <a href="<?= base_url('pengadaan/print/' . $row['id_pengadaan']) ?>"
+                                            class="btn btn-info btn-sm" target="_blank" title="Print">
+                                            <i class="fas fa-print"></i>
+                                        </a>
+
+                                        <!-- HAPUS -->
+                                        <a href="<?= base_url('pengadaan/hapus/' . $row['id_pengadaan']) ?>"
+                                            class="btn btn-danger btn-sm tombol-hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                        <?php endif ?>
+                                    </td>
+
+                                </tr>
+
+                                <?php endforeach ?>
 
                                 <?php else: ?>
 
-                                    <?php $no = 1;
+                                <?php $no = 1;
                                     foreach ($item_user as $row): ?>
 
-                                        <tr>
+                                <tr>
 
-                                            <!-- CHECKBOX -->
-                                            <td>
-                                                <input type="checkbox" name="id_pengadaan[]"
-                                                    value="<?= $row['id_pengadaan']; ?>" class="checkItem">
-                                            </td>
+                                    <td>
+                                        <input type="checkbox" name="id_pengadaan[]"
+                                            value="<?= $row['id_pengadaan']; ?>" class="checkItem">
+                                    </td>
 
-                                            <td><?= $no++; ?></td>
+                                    <td><?= $no++; ?></td>
 
-                                            <td><?= $row['nama_user']; ?></td>
+                                    <td><?= $row['nama_user']; ?></td>
 
-                                            <td><?= $row['nama_lokasi']; ?></td>
+                                    <td><?= $row['nama_lokasi']; ?></td>
 
-                                            <td><?= $row['nama_aset']; ?></td>
+                                    <td><?= $row['nama_aset']; ?></td>
 
-                                            <td><?= $row['tahun_pengadaan']; ?></td>
+                                    <td><?= $row['tahun_pengadaan']; ?></td>
 
-                                            <td>
+                                    <td>
 
-                                                <?php if ($row['status'] == '0') { ?>
+                                        <?php if ($row['status'] == '0') { ?>
 
-                                                    <span class="badge badge-danger">
-                                                        Belum Disetujui
-                                                    </span>
+                                        <span class="badge badge-secondary">
+                                            Belum Diproses
+                                        </span>
 
-                                                <?php } else if ($row['status'] == '1') { ?>
+                                        <?php } elseif ($row['status'] == '1') { ?>
 
-                                                    <span class="badge badge-success">
-                                                        Disetujui
-                                                    </span>
+                                        <span class="badge badge-warning">
+                                            Menunggu
+                                        </span>
 
-                                                <?php } else { ?>
+                                        <?php } elseif ($row['status'] == '2') { ?>
 
-                                                    <span class="badge badge-danger">
-                                                        Ditolak
-                                                    </span>
+                                        <span class="badge badge-success">
+                                            Disetujui
+                                        </span>
 
-                                                <?php } ?>
+                                        <?php } elseif ($row['status'] == '3') { ?>
 
-                                            </td>
+                                        <span class="badge badge-danger">
+                                            Ditolak
+                                        </span>
 
-                                            <td>
+                                        <?php } ?>
 
-                                                <!-- DETAIL -->
-                                                <a href="<?= base_url('pengadaan/detail/' . $row['id_pengadaan']) ?>"
-                                                    class="btn btn-success btn-sm">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
+                                    </td>
 
-                                                <!-- PRINT SATU DATA -->
-                                                <a href="<?= base_url('pengadaan/print/' . $row['id_pengadaan']) ?>"
-                                                    class="btn btn-info btn-sm" target="_blank" title="Print">
-                                                    <i class="fas fa-print"></i>
-                                                </a>
+                                    <td>
 
-                                                <!-- HAPUS -->
-                                                <a href="<?= base_url('pengadaan/hapus/' . $row['id_pengadaan']) ?>"
-                                                    class="btn btn-danger btn-sm tombol-hapus">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
+                                        <!-- DETAIL -->
+                                        <a href="<?= base_url('pengadaan/detail/' . $row['id_pengadaan']) ?>"
+                                            class="btn btn-success btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <?php if ($this->session->userdata('role') == '1'): ?>
+                                        <!-- PRINT -->
+                                        <a href="<?= base_url('pengadaan/print/' . $row['id_pengadaan']) ?>"
+                                            class="btn btn-info btn-sm" target="_blank" title="Print">
+                                            <i class="fas fa-print"></i>
+                                        </a>
 
-                                            </td>
+                                        <!-- HAPUS -->
+                                        <a href="<?= base_url('pengadaan/hapus/' . $row['id_pengadaan']) ?>"
+                                            class="btn btn-danger btn-sm tombol-hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
 
-                                        </tr>
+                                        <?php endif ?>
+                                    </td>
 
-                                    <?php endforeach ?>
+                                </tr>
+
+                                <?php endforeach ?>
 
                                 <?php endif ?>
 
@@ -320,121 +377,121 @@
 <script src="<?= base_url() ?>src/backend/plugins/datatables/jquery.dataTables.js"></script>
 <script src="<?= base_url() ?>src/backend/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script>
-    $(function() {
-        $("#example1").DataTable({
-            "language": {
-                "sSearch": "Cari"
-            }
-        });
+$(function() {
+    $("#example1").DataTable({
+        "language": {
+            "sSearch": "Cari"
+        }
     });
+});
 
-    $(document).ready(function() {
+$(document).ready(function() {
 
-        // ==========================================
-        // FUNGSI SHOW / HIDE TOMBOL PRINT
-        // ==========================================
-        function cekPilihan() {
+    // ==========================================
+    // FUNGSI SHOW / HIDE TOMBOL PRINT
+    // ==========================================
+    function cekPilihan() {
 
-            var jumlah = $('.checkItem:checked').length;
+        var jumlah = $('.checkItem:checked').length;
 
-            if (jumlah > 0) {
-                $('#btnPrintMultiple').show();
-            } else {
-                $('#btnPrintMultiple').hide();
-            }
-
+        if (jumlah > 0) {
+            $('#btnPrintMultiple').show();
+        } else {
+            $('#btnPrintMultiple').hide();
         }
 
-
-        // ==========================================
-        // CHECKBOX INDIVIDUAL
-        // ==========================================
-        $('.checkItem').change(function() {
-
-            // Cek tombol print
-            cekPilihan();
-
-            // Cek apakah semua checkbox terpilih
-            var total = $('.checkItem').length;
-            var terpilih = $('.checkItem:checked').length;
-
-            $('#checkAll').prop(
-                'checked',
-                total > 0 && total === terpilih
-            );
-
-        });
+    }
 
 
-        // ==========================================
-        // CHECK ALL
-        // ==========================================
-        $('#checkAll').click(function() {
+    // ==========================================
+    // CHECKBOX INDIVIDUAL
+    // ==========================================
+    $('.checkItem').change(function() {
 
-            $('.checkItem').prop(
-                'checked',
-                $(this).prop('checked')
-            );
+        // Cek tombol print
+        cekPilihan();
 
-            // Tampilkan / sembunyikan tombol print
-            cekPilihan();
+        // Cek apakah semua checkbox terpilih
+        var total = $('.checkItem').length;
+        var terpilih = $('.checkItem:checked').length;
 
-        });
+        $('#checkAll').prop(
+            'checked',
+            total > 0 && total === terpilih
+        );
 
-
-        // ==========================================
-        // PILIH SEMUA
-        // ==========================================
-        $('#pilihSemua').click(function() {
-
-            $('.checkItem').prop('checked', true);
-
-            $('#checkAll').prop('checked', true);
-
-            // Tampilkan tombol print
-            cekPilihan();
-
-        });
+    });
 
 
-        // ==========================================
-        // HAPUS SEMUA PILIHAN
-        // ==========================================
-        $('#hapusPilihan').click(function() {
+    // ==========================================
+    // CHECK ALL
+    // ==========================================
+    $('#checkAll').click(function() {
 
-            $('.checkItem').prop('checked', false);
+        $('.checkItem').prop(
+            'checked',
+            $(this).prop('checked')
+        );
 
-            $('#checkAll').prop('checked', false);
-
-            // Sembunyikan tombol print
-            cekPilihan();
-
-        });
-
-
-        // ==========================================
-        // VALIDASI SEBELUM PRINT
-        // ==========================================
-        $('#formPrint').submit(function(e) {
-
-            var jumlah = $('.checkItem:checked').length;
-
-            if (jumlah == 0) {
-
-                e.preventDefault();
-
-                alert('Silakan pilih minimal 1 data yang ingin dicetak.');
-
-                return false;
-            }
-
-        });
-
-
-        // ==========================================
-        // KONDISI AWAL
-        // ==========================================
+        // Tampilkan / sembunyikan tombol print
         cekPilihan();
 
     });
+
+
+    // ==========================================
+    // PILIH SEMUA
+    // ==========================================
+    $('#pilihSemua').click(function() {
+
+        $('.checkItem').prop('checked', true);
+
+        $('#checkAll').prop('checked', true);
+
+        // Tampilkan tombol print
+        cekPilihan();
+
+    });
+
+
+    // ==========================================
+    // HAPUS SEMUA PILIHAN
+    // ==========================================
+    $('#hapusPilihan').click(function() {
+
+        $('.checkItem').prop('checked', false);
+
+        $('#checkAll').prop('checked', false);
+
+        // Sembunyikan tombol print
+        cekPilihan();
+
+    });
+
+
+    // ==========================================
+    // VALIDASI SEBELUM PRINT
+    // ==========================================
+    $('#formPrint').submit(function(e) {
+
+        var jumlah = $('.checkItem:checked').length;
+
+        if (jumlah == 0) {
+
+            e.preventDefault();
+
+            alert('Silakan pilih minimal 1 data yang ingin dicetak.');
+
+            return false;
+        }
+
+    });
+
+
+    // ==========================================
+    // KONDISI AWAL
+    // ==========================================
+    cekPilihan();
+
+});
 </script>

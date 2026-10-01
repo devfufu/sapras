@@ -196,6 +196,7 @@ class User extends CI_Controller
 					'nama_user' => $this->input->post('nama_user'),
 					'username' => $this->input->post('username'),
 					'jabatan' => $this->input->post('jabatan'),
+					'no_hp' => $this->input->post('no_hp'),
 					'foto' => $gbr['file_name']
 				);
 
@@ -211,6 +212,7 @@ class User extends CI_Controller
 				'nama_user' => $this->input->post('nama_user'),
 				'username' => $this->input->post('username'),
 				'jabatan' => $this->input->post('jabatan'),
+				'no_hp' => $this->input->post('no_hp')
 			);
 
 			$id_user = $this->session->userdata('id_user');

@@ -95,13 +95,13 @@ $route['pengajuan'] = 'Pengadaan/pengajuan';
 $route['pengadaan'] = 'Pengadaan/pengadaan';
 $route['pengadaan/simpan'] = 'Pengadaan/simpanPengadaan';
 $route['pengadaan/detail/(:any)'] = 'Pengadaan/detailPengadaan/(:any)';
-$route['pengadaan/setujui/(:any)'] = 'Pengadaan/setujuiPengadaan/(:any)';
-$route['pengadaan/tolak/(:any)'] = 'Pengadaan/tolakPengadaan/(:any)';
+$route['pengadaan/proses/(:num)'] = 'Pengadaan/proses/$1';
+$route['pengadaan/setujuiPengadaan/(:num)'] = 'Pengadaan/setujuiPengadaan/$1';
+$route['pengadaan/tolakPengadaan/(:num)'] = 'Pengadaan/tolakPengadaan/$1';
 $route['pengadaan/hapus/(:any)'] = 'Pengadaan/hapusPengadaan/(:any)';
 $route['pengadaan/filter'] = 'Pengadaan/filterPengadaan';
 $route['pengadaan/print/(:any)'] = 'Pengadaan/printPengadaan/$1';
 $route['pengadaan/print_multiple'] = 'Pengadaan/printMultiple';
-
 
 //Monitoring
 $route['monitoring'] = 'Monitoring/index';

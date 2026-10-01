@@ -238,15 +238,29 @@ class Pengadaan extends CI_Controller
 	public function pengadaan()
 	{
 		$id_user = $this->session->userdata('id_user');
+		$role    = $this->session->userdata('role');
+
 		$data = array(
 			'title' => 'Pengadaan',
 			'active_menu_open_pnd' => 'menu-open',
 			'active_pengadaan' => 'active',
 			'active_menu_pgd' => 'active',
 			'lokasi' => $this->ml->getLokasi(),
-			'item' => $this->mp->getPengadaanAset(),
-			'item_user' => $this->mp->getPengadaanAsetUser($id_user)
 		);
+
+		// ADMIN = tampilkan semua data
+		if ($role == '1') {
+
+			$data['item'] = $this->mp->getPengadaanAset();
+		} else {
+
+			// USER / MANAGER = hanya data sesuai lokasi user
+			$data['item'] = $this->mp->getPengadaanAsetByLokasi($id_user);
+		}
+
+		// Kalau bagian ini masih digunakan untuk tabel user biasa
+		$data['item_user'] = $this->mp->getPengadaanAsetUser($id_user);
+
 		$this->load->view('layouts/header', $data);
 		$this->load->view('pengadaan/v_pengadaan', $data);
 		$this->load->view('layouts/footer');
@@ -464,34 +478,69 @@ class Pengadaan extends CI_Controller
 		$this->load->view('layouts/footer');
 	}
 
+	public function proses($id_pengadaan)
+	{
+		$data['status'] = '1';
+
+		$result = $this->mp->updatePengadaan($id_pengadaan, $data);
+
+		if ($result) {
+			$this->session->set_flashdata(
+				'sukses',
+				'Data pengadaan berhasil diproses dan menunggu persetujuan.'
+			);
+		} else {
+			$this->session->set_flashdata(
+				'gagal',
+				'Data pengadaan gagal diproses.'
+			);
+		}
+
+		redirect('pengadaan');
+	}
+
+
 	public function setujuiPengadaan($id_pengadaan)
 	{
-		$id_pengadaan = $this->uri->segment(3);
-		$data['status'] = '1';
-		unset($data['id_pengadaan']);
+		$data['status'] = '2';
+
 		$result = $this->mp->updatePengadaan($id_pengadaan, $data);
-		if ($result >= 1) {
-			$this->session->set_flashdata('sukses', 'Disetujui');
-			redirect('pengadaan');
+
+		if ($result) {
+			$this->session->set_flashdata(
+				'sukses',
+				'Data pengadaan berhasil disetujui.'
+			);
 		} else {
-			$this->session->set_flashdata('gagal', 'Disetujui');
-			redirect('pengadaan');
+			$this->session->set_flashdata(
+				'gagal',
+				'Data pengadaan gagal disetujui.'
+			);
 		}
+
+		redirect('pengadaan');
 	}
+
 
 	public function tolakPengadaan($id_pengadaan)
 	{
-		$id_pengadaan = $this->uri->segment(3);
-		$data['status'] = '2';
-		unset($data['id_pengadaan']);
+		$data['status'] = '3';
+
 		$result = $this->mp->updatePengadaan($id_pengadaan, $data);
-		if ($result >= 1) {
-			$this->session->set_flashdata('sukses', 'Disetujui');
-			redirect('pengadaan');
+
+		if ($result) {
+			$this->session->set_flashdata(
+				'sukses',
+				'Data pengadaan berhasil ditolak.'
+			);
 		} else {
-			$this->session->set_flashdata('gagal', 'Disetujui');
-			redirect('pengadaan');
+			$this->session->set_flashdata(
+				'gagal',
+				'Data pengadaan gagal ditolak.'
+			);
 		}
+
+		redirect('pengadaan');
 	}
 
 	public function hapusPengadaan($id_pengadaan)
