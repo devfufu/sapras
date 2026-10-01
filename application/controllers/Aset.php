@@ -23,17 +23,47 @@ class Aset extends CI_Controller
 		$this->load->library('uuid');
 	}
 
+	private function getUrlQrAset($id_aset)
+	{
+		return base_url('ai/ai_aset/detail/' . $id_aset);
+	}
+
 	public function index()
 	{
 		$idUser = $this->session->userdata('id_user');
+
+		// Ambil filter terakhir dari session
+		$filter = $this->session->userdata('filter_aset_wujud');
+
+		// Jika ada filter tersimpan
+		if (!empty($filter)) {
+
+			$aset = $this->ma->getFilterAsetWujud(
+				$filter['id_kategori'],
+				$filter['tahun_perolehan'],
+				$filter['kondisi'],
+				$filter['jenis_bantuan']
+			);
+		} else {
+
+			// Jika tidak ada filter, tampilkan normal
+			$aset = $this->ma->getAsetWujudByUser($idUser);
+		}
+
 		$data = array(
 			'title' => 'Aset Berwujud',
 			'active_menu_open' => 'menu-open',
 			'active_menu_aset' => 'active',
 			'active_menu_wujud' => 'active',
-			'aset' => $this->ma->getAsetWujudByUser($idUser),
-			'kategori' => $this->mk->getKategoriBarang()
+
+			'aset' => $aset,
+
+			'kategori' => $this->mk->getKategoriBarang(),
+
+			// Kirim filter ke view
+			'filter' => $filter
 		);
+
 		$this->load->view('layouts/header', $data);
 		$this->load->view('aset/v_wujud', $data);
 		$this->load->view('layouts/footer');
@@ -185,7 +215,7 @@ class Aset extends CI_Controller
 
 				$image_name = 'qr_' . $id_aset . '.png';
 
-				$url = 'http://aset.smkfadilah.sch.id/ai/ai_aset/detail/' . $id_aset;
+				$url = $this->getUrlQrAset($id_aset);
 
 				$params['data'] = $url;
 				$params['level'] = 'H';
@@ -306,7 +336,7 @@ class Aset extends CI_Controller
 
 				$image_name = 'qr_' . $id_aset . '.png';
 
-				$url = 'http://aset.smkfadilah.sch.id/ai/ai_aset/detail/' . $id_aset;
+				$url = $this->getUrlQrAset($id_aset);
 
 				$params['data'] = $url;
 				$params['level'] = 'H';
@@ -412,7 +442,7 @@ class Aset extends CI_Controller
 
 				$image_name = 'qr_' . $id_aset . '.png'; //buat name dari qr code sesuai dengan nim
 
-				$url = 'https://aset.smkfadilah.sch.id/ai/ai_aset/detail/' . $id_aset;
+				$url = $this->getUrlQrAset($id_aset);
 
 				$params['data'] = $url; //data yang akan di jadikan QR CODE
 				$params['level'] = 'H'; //H=High
@@ -617,13 +647,33 @@ class Aset extends CI_Controller
 		$kondisi = $this->input->post('kondisi', true);
 		$jenis_bantuan = $this->input->post('jenis_bantuan', true);
 
+		// Simpan filter ke session
+		$filter = array(
+			'id_kategori' => $id_kategori,
+			'tahun_perolehan' => $tahun_perolehan,
+			'kondisi' => $kondisi,
+			'jenis_bantuan' => $jenis_bantuan
+		);
+
+		$this->session->set_userdata('filter_aset_wujud', $filter);
+
 		$data = array(
 			'title' => 'Aset Berwujud',
 			'active_menu_open' => 'menu-open',
 			'active_menu_aset' => 'active',
 			'active_menu_wujud' => 'active',
-			'aset' => $this->ma->getFilterAsetWujud($id_kategori, $tahun_perolehan, $kondisi, $jenis_bantuan),
-			'kategori' => $this->mk->getKategoriBarang()
+
+			'aset' => $this->ma->getFilterAsetWujud(
+				$id_kategori,
+				$tahun_perolehan,
+				$kondisi,
+				$jenis_bantuan
+			),
+
+			'kategori' => $this->mk->getKategoriBarang(),
+
+			// Kirim filter ke view
+			'filter' => $filter
 		);
 
 		$this->load->view('layouts/header', $data);
@@ -631,6 +681,12 @@ class Aset extends CI_Controller
 		$this->load->view('layouts/footer');
 	}
 
+	public function reset_filter()
+	{
+		$this->session->unset_userdata('filter_aset_wujud');
+
+		redirect('aset_wujud');
+	}
 	public function dihapuskanAset()
 	{
 		$data = array(
@@ -765,7 +821,7 @@ class Aset extends CI_Controller
 			$image_name = 'qr_' . $id_aset . '.png';
 
 			// URL BARU
-			$url = 'http://aset.smkfadilah.sch.id/ai/ai_aset/detail/' . $id_aset;
+			$url = $this->getUrlQrAset($id_aset);
 
 			$params = array(
 				'data' => $url,

@@ -55,50 +55,117 @@
                             <div class="col-3">
                                 <select name="id_kategori" class="form-control">
                                     <option value="">- Pilih Kategori --</option>
+
                                     <?php foreach ($kategori as $row): ?>
-                                        <option value="<?= $row['id_kategori']; ?>"><?= $row['kode_kategori']; ?> -
+                                        <option value="<?= $row['id_kategori']; ?>"
+                                            <?= (!empty($filter['id_kategori']) && $filter['id_kategori'] == $row['id_kategori']) ? 'selected' : ''; ?>>
+
+                                            <?= $row['kode_kategori']; ?> -
                                             <?= $row['nama_kategori']; ?>
+
                                         </option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
                             <div class="col-3">
                                 <select name="tahun_perolehan" class="form-control">
+
                                     <option value="">- Tahun Perolehan --</option>
-                                    <?php
-                                    for ($i = 2008; $i <= date('Y'); $i++) {
-                                        echo "<option value='$i'>$i</option>";
-                                    }
-                                    ?>
+
+                                    <?php for ($i = 2008; $i <= date('Y'); $i++): ?>
+
+                                        <option value="<?= $i ?>"
+                                            <?= (!empty($filter['tahun_perolehan']) && $filter['tahun_perolehan'] == $i) ? 'selected' : ''; ?>>
+
+                                            <?= $i ?>
+
+                                        </option>
+
+                                    <?php endfor; ?>
+
                                 </select>
                             </div>
                             <div class="col-3">
                                 <select name="jenis_bantuan" class="form-control">
+
                                     <option value="">- Pilih Sumber Dana --</option>
-                                    <option value="Yayasan">Yayasan</option>
-                                    <option value="Tk">TK</option>
-                                    <option value="Sd">SD</option>
-                                    <option value="Smk">SMK</option>
-                                    <option value="BospTK">BOSP TK</option>
-                                    <option value="BospSD">BOSP SD</option>
-                                    <option value="BospSMK">BOSP SMK</option>
-                                    <option value="Hibah">HIBAH</option>
-                                    <option value="hibahUmum">HIBAH UMUM</option>
+
+                                    <option value="Yayasan"
+                                        <?= (!empty($filter['jenis_bantuan']) && $filter['jenis_bantuan'] == 'Yayasan') ? 'selected' : ''; ?>>
+                                        Yayasan
+                                    </option>
+
+                                    <option value="Tk"
+                                        <?= (!empty($filter['jenis_bantuan']) && $filter['jenis_bantuan'] == 'Tk') ? 'selected' : ''; ?>>
+                                        TK
+                                    </option>
+
+                                    <option value="Sd"
+                                        <?= (!empty($filter['jenis_bantuan']) && $filter['jenis_bantuan'] == 'Sd') ? 'selected' : ''; ?>>
+                                        SD
+                                    </option>
+
+                                    <option value="Smk"
+                                        <?= (!empty($filter['jenis_bantuan']) && $filter['jenis_bantuan'] == 'Smk') ? 'selected' : ''; ?>>
+                                        SMK
+                                    </option>
+
+                                    <option value="BospTK"
+                                        <?= (!empty($filter['jenis_bantuan']) && $filter['jenis_bantuan'] == 'BospTK') ? 'selected' : ''; ?>>
+                                        BOSP TK
+                                    </option>
+
+                                    <option value="BospSD"
+                                        <?= (!empty($filter['jenis_bantuan']) && $filter['jenis_bantuan'] == 'BospSD') ? 'selected' : ''; ?>>
+                                        BOSP SD
+                                    </option>
+
+                                    <option value="BospSMK"
+                                        <?= (!empty($filter['jenis_bantuan']) && $filter['jenis_bantuan'] == 'BospSMK') ? 'selected' : ''; ?>>
+                                        BOSP SMK
+                                    </option>
+
+                                    <option value="Hibah"
+                                        <?= (!empty($filter['jenis_bantuan']) && $filter['jenis_bantuan'] == 'Hibah') ? 'selected' : ''; ?>>
+                                        HIBAH
+                                    </option>
+
+                                    <option value="hibahUmum"
+                                        <?= (!empty($filter['jenis_bantuan']) && $filter['jenis_bantuan'] == 'hibahUmum') ? 'selected' : ''; ?>>
+                                        HIBAH UMUM
+                                    </option>
+
                                 </select>
                             </div>
                             <div class="col-3">
                                 <select name="kondisi" class="form-control">
+
                                     <option value="">- Kondisi --</option>
-                                    <option value="Baik">Baik</option>
-                                    <option value="Renovasi">Renovasi</option>
-                                    <option value="Rusak">Rusak</option>
+
+                                    <option value="Baik"
+                                        <?= (!empty($filter['kondisi']) && $filter['kondisi'] == 'Baik') ? 'selected' : ''; ?>>
+                                        Baik
+                                    </option>
+
+                                    <option value="Renovasi"
+                                        <?= (!empty($filter['kondisi']) && $filter['kondisi'] == 'Renovasi') ? 'selected' : ''; ?>>
+                                        Renovasi
+                                    </option>
+
+                                    <option value="Rusak"
+                                        <?= (!empty($filter['kondisi']) && $filter['kondisi'] == 'Rusak') ? 'selected' : ''; ?>>
+                                        Rusak
+                                    </option>
+
                                 </select>
                             </div>
                             <div class="col-3 mt-2">
                                 <button type="submit" class="btn btn-block btn-outline-primary">Filter</button>
                             </div>
                             <div class="col-3 mt-2">
-                                <button type="submit" class="btn btn-block btn-outline-danger">Reset</button>
+                                <button type="button" class="btn btn-block btn-outline-danger" onclick="resetFilter()">
+                                    Reset
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -282,12 +349,33 @@
 <script src="<?= base_url() ?>src/backend/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script>
     $(function() {
+
         $("#example1").DataTable({
+
             "language": {
                 "sSearch": "Cari"
-            }
+            },
+
+            // Simpan posisi DataTables
+            "stateSave": true,
+
+            // Simpan state di browser
+            "stateDuration": -1
+
         });
+
     });
+
+    function resetFilter() {
+
+        // Hapus state DataTables
+        if ($.fn.DataTable.isDataTable('#example1')) {
+            $('#example1').DataTable().state.clear();
+        }
+
+        // Hapus filter session
+        window.location.href = "<?= base_url('aset_wujud/reset_filter'); ?>";
+    }
 
     document.getElementById("filterOption").addEventListener("change", function() {
         var url = this.value;
