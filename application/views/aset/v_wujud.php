@@ -104,7 +104,7 @@
                     </form>
                     <form action="<?= base_url('aset_wujud/print_multiple') ?>" method="POST" target="_blank"
                         id="formPrint">
-                        <div class="mt-2">
+                        <div class="mt-2 mb-2">
                             <!-- Print Data Terpilih -->
                             <button type="submit" class="btn btn-primary btn-sm" id="btnPrintMultiple"
                                 style="display: none;">
@@ -120,9 +120,55 @@
                             <button type="button" class="btn btn-warning btn-sm" id="hapusPilihan">
                                 <i class="fas fa-times"></i> Hapus Pilihan
                             </button>
-
+                            <button type="button" class="btn btn-success btn-sm" id="btnSinkronBarcode">
+                                <i class="fas fa-sync-alt"></i> Sinkronisasi Semua Barcode
+                            </button>
                         </div>
-                        <br />
+                        <!-- Modal Sinkronisasi Barcode -->
+                        <div class="modal fade" id="modalSinkronBarcode" tabindex="-1" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+
+                                    <div class="modal-header bg-success">
+                                        <h5 class="modal-title text-white">
+                                            <i class="fas fa-sync-alt"></i>
+                                            Sinkronisasi Barcode
+                                        </h5>
+                                    </div>
+
+                                    <div class="modal-body">
+
+                                        <p id="statusSinkronBarcode">
+                                            Menyiapkan proses...
+                                        </p>
+
+                                        <div class="progress">
+                                            <div id="progressSinkronBarcode"
+                                                class="progress-bar progress-bar-striped progress-bar-animated"
+                                                role="progressbar" style="width: 0%">
+                                                0%
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center mt-2">
+                                            <small id="jumlahSinkronBarcode">
+                                                0 / 0 barcode
+                                            </small>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" id="btnTutupSinkronBarcode"
+                                            style="display:none;" onclick="location.reload();">
+                                            Tutup
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
                     <?php endif ?>
                     <div class="table-responsive">
                         <table id="example1" class="table table-bordered table-striped">
@@ -357,4 +403,129 @@
 
     // Kondisi awal
     cekPilihan();
+</script>
+<script>
+    $(document).ready(function() {
+
+        $('#btnSinkronBarcode').click(function() {
+
+            if (!confirm(
+                    'Yakin ingin melakukan sinkronisasi SEMUA barcode aset?\n\n' +
+                    'Semua QR Code akan dibuat ulang menggunakan URL terbaru.'
+                )) {
+                return;
+            }
+
+            $.ajax({
+                url: "<?= base_url('aset_wujud/mulai_sinkronisasi_barcode'); ?>",
+                type: "POST",
+                dataType: "json",
+
+                success: function(response) {
+
+                    if (response.status === 'success') {
+
+                        $('#modalSinkronBarcode').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+
+                        $('#btnSinkronBarcode').prop('disabled', true);
+
+                        prosesSinkronBarcode();
+
+                    }
+
+                }
+
+            });
+
+        });
+
+
+        function prosesSinkronBarcode() {
+
+            $.ajax({
+                url: "<?= base_url('aset_wujud/sinkronisasi_barcode_batch'); ?>",
+                type: "POST",
+                dataType: "json",
+
+                success: function(response) {
+
+                    if (response.status === 'success') {
+
+                        let persen = response.total > 0 ?
+                            Math.round((response.selesai / response.total) * 100) :
+                            100;
+
+                        $('#progressSinkronBarcode')
+                            .css('width', persen + '%')
+                            .text(persen + '%');
+
+                        $('#jumlahSinkronBarcode').text(
+                            response.selesai + ' / ' + response.total + ' barcode'
+                        );
+
+                        $('#statusSinkronBarcode').html(
+                            '<i class="fas fa-sync-alt fa-spin"></i> ' +
+                            'Sedang memproses barcode...'
+                        );
+
+                        if (response.selesai >= response.total) {
+
+                            $('#progressSinkronBarcode')
+                                .removeClass('progress-bar-animated')
+                                .addClass('bg-success')
+                                .css('width', '100%')
+                                .text('100%');
+
+                            $('#statusSinkronBarcode').html(
+                                '<i class="fas fa-check-circle text-success"></i> ' +
+                                '<strong>Sinkronisasi selesai!</strong><br>' +
+                                'Berhasil: ' + response.berhasil + '<br>' +
+                                'Gagal: ' + response.gagal
+                            );
+
+                            $('#btnTutupSinkronBarcode').show();
+
+                        } else {
+
+                            // Lanjut batch berikutnya
+                            setTimeout(function() {
+                                prosesSinkronBarcode();
+                            }, 300);
+
+                        }
+
+                    } else {
+
+                        $('#statusSinkronBarcode').html(
+                            '<span class="text-danger">' +
+                            '<i class="fas fa-times-circle"></i> ' +
+                            response.message +
+                            '</span>'
+                        );
+
+                        $('#btnTutupSinkronBarcode').show();
+                    }
+                },
+
+                error: function(xhr) {
+
+                    console.log(xhr.responseText);
+
+                    $('#statusSinkronBarcode').html(
+                        '<span class="text-danger">' +
+                        '<i class="fas fa-times-circle"></i> ' +
+                        'Terjadi kesalahan saat sinkronisasi.' +
+                        '</span>'
+                    );
+
+                    $('#btnTutupSinkronBarcode').show();
+                }
+            });
+
+        }
+
+    });
 </script>

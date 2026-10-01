@@ -67,6 +67,8 @@ $route['aset_wujud/hapus/(:any)'] = 'Aset/hapusAset/(:any)';
 $route['aset_wujud/filter'] = 'Aset/filterAset';
 $route['aset_wujud/print/(:any)'] = 'Aset/printAset/$1';
 $route['aset_wujud/print_multiple'] = 'Aset/printMultiple';
+$route['aset_wujud/mulai_sinkronisasi_barcode'] = 'Aset/mulai_sinkronisasi_barcode';
+$route['aset_wujud/sinkronisasi_barcode_batch'] = 'Aset/sinkronisasi_barcode_batch';
 
 //Dihapuskan
 $route['aset_dihapuskan'] = 'Aset/dihapuskanAset';

@@ -198,6 +198,7 @@ class ModelAset extends CI_Model
 
 		return $query->row_array();
 	}
+
 	public function getAsetByIds($ids)
 	{
 		$this->db->select('a.*, b.nama_barang, b.merek, c.nama_lokasi, d.nama_kategori');

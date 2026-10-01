@@ -412,7 +412,7 @@ class Aset extends CI_Controller
 
 				$image_name = 'qr_' . $id_aset . '.png'; //buat name dari qr code sesuai dengan nim
 
-				$url = 'http://aset.smkfadilah.sch.id/ai/ai_aset/detail/' . $id_aset;
+				$url = 'https://aset.smkfadilah.sch.id/ai/ai_aset/detail/' . $id_aset;
 
 				$params['data'] = $url; //data yang akan di jadikan QR CODE
 				$params['level'] = 'H'; //H=High
@@ -690,6 +690,174 @@ class Aset extends CI_Controller
 		$query = $this->ma->searchAset($bar, 'nama_barang');
 
 		echo json_encode($query);
+	}
+
+	public function sinkronisasi_barcode_batch()
+	{
+		// Hanya administrator
+		if ($this->session->userdata('role') != '1') {
+
+			echo json_encode([
+				'status' => 'error',
+				'message' => 'Anda tidak memiliki akses.'
+			]);
+
+			return;
+		}
+
+		// Ambil posisi proses sekarang
+		$offset = (int) $this->session->userdata('barcode_sync_offset');
+
+		// Kalau belum ada proses, mulai dari 0
+		if ($offset < 0) {
+			$offset = 0;
+		}
+
+		// Total seluruh aset
+		$total = $this->db
+			->count_all('asets');
+
+		// Kalau tidak ada aset
+		if ($total == 0) {
+
+			echo json_encode([
+				'status' => 'success',
+				'selesai' => 0,
+				'total' => 0,
+				'berhasil' => 0,
+				'gagal' => 0
+			]);
+
+			return;
+		}
+
+		// Jumlah aset setiap batch
+		$limit = 20;
+
+		// Ambil aset
+		$asets = $this->db
+			->select('id_aset')
+			->from('asets')
+			->order_by('id_aset', 'ASC')
+			->limit($limit, $offset)
+			->get()
+			->result();
+
+		// Konfigurasi QR Code
+		$config['cacheable'] = true;
+		$config['cachedir'] = './src/';
+		$config['errorlog'] = './src/';
+		$config['imagedir'] = './src/img/qrcode/';
+		$config['quality'] = true;
+		$config['size'] = '1024';
+		$config['black'] = array(224, 255, 255);
+		$config['white'] = array(70, 130, 180);
+
+		$this->ciqrcode->initialize($config);
+
+		$berhasil = (int) $this->session->userdata('barcode_sync_berhasil');
+		$gagal = (int) $this->session->userdata('barcode_sync_gagal');
+
+		foreach ($asets as $aset) {
+
+			$id_aset = $aset->id_aset;
+
+			$image_name = 'qr_' . $id_aset . '.png';
+
+			// URL BARU
+			$url = 'http://aset.smkfadilah.sch.id/ai/ai_aset/detail/' . $id_aset;
+
+			$params = array(
+				'data' => $url,
+				'level' => 'H',
+				'size' => 10,
+				'savename' => FCPATH . $config['imagedir'] . $image_name
+			);
+
+			try {
+
+				$generate = $this->ciqrcode->generate($params);
+
+				if ($generate) {
+
+					$this->db
+						->where('id_aset', $id_aset)
+						->update('asets', [
+							'qr_code' => $image_name
+						]);
+
+					$berhasil++;
+				} else {
+
+					$gagal++;
+				}
+			} catch (Exception $e) {
+
+				$gagal++;
+			}
+
+			$offset++;
+		}
+
+		// Simpan progress
+		$this->session->set_userdata([
+			'barcode_sync_offset' => $offset,
+			'barcode_sync_berhasil' => $berhasil,
+			'barcode_sync_gagal' => $gagal
+		]);
+
+		$selesai = min($offset, $total);
+
+		// Kalau sudah selesai
+		if ($selesai >= $total) {
+
+			$hasil_berhasil = $berhasil;
+			$hasil_gagal = $gagal;
+
+			// Bersihkan session proses
+			$this->session->unset_userdata([
+				'barcode_sync_offset',
+				'barcode_sync_berhasil',
+				'barcode_sync_gagal'
+			]);
+
+			echo json_encode([
+				'status' => 'success',
+				'selesai' => $selesai,
+				'total' => $total,
+				'berhasil' => $hasil_berhasil,
+				'gagal' => $hasil_gagal
+			]);
+
+			return;
+		}
+
+		echo json_encode([
+			'status' => 'success',
+			'selesai' => $selesai,
+			'total' => $total,
+			'berhasil' => $berhasil,
+			'gagal' => $gagal
+		]);
+	}
+
+	public function mulai_sinkronisasi_barcode()
+	{
+		if ($this->session->userdata('role') != '1') {
+			show_error('Anda tidak memiliki akses.', 403);
+			return;
+		}
+
+		// Reset progress
+		$this->session->set_userdata([
+			'barcode_sync_offset' => 0,
+			'barcode_sync_berhasil' => 0,
+			'barcode_sync_gagal' => 0
+		]);
+
+		echo json_encode([
+			'status' => 'success'
+		]);
 	}
 }
 
