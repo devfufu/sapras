@@ -240,25 +240,50 @@ class Pengadaan extends CI_Controller
 		$id_user = $this->session->userdata('id_user');
 		$role    = $this->session->userdata('role');
 
+		// Ambil filter terakhir dari session
+		$filter = $this->session->userdata('filter_pengadaan');
+
 		$data = array(
 			'title' => 'Pengadaan',
 			'active_menu_open_pnd' => 'menu-open',
 			'active_pengadaan' => 'active',
 			'active_menu_pgd' => 'active',
 			'lokasi' => $this->ml->getLokasi(),
+			'filter' => $filter
 		);
 
-		// ADMIN = tampilkan semua data
-		if ($role == '1') {
+		// Jika ada filter
+		if (!empty($filter)) {
 
-			$data['item'] = $this->mp->getPengadaanAset();
+			if ($role == '1') {
+
+				// ADMIN: boleh filter semua lokasi
+				$data['item'] = $this->mp->getFilterPengadaanAset(
+					$filter['id_lokasi'],
+					$filter['tahun_pengadaan']
+				);
+			} else {
+
+				// MANAGER / USER:
+				// tetap dibatasi berdasarkan lokasi user
+				$data['item'] = $this->mp->getFilterPengadaanAsetByUser(
+					$id_user,
+					$filter['id_lokasi'],
+					$filter['tahun_pengadaan']
+				);
+			}
 		} else {
 
-			// USER / MANAGER = hanya data sesuai lokasi user
-			$data['item'] = $this->mp->getPengadaanAsetByLokasi($id_user);
+			// Tidak ada filter
+			if ($role == '1') {
+
+				$data['item'] = $this->mp->getPengadaanAset();
+			} else {
+
+				$data['item'] = $this->mp->getPengadaanAsetByLokasi($id_user);
+			}
 		}
 
-		// Kalau bagian ini masih digunakan untuk tabel user biasa
 		$data['item_user'] = $this->mp->getPengadaanAsetUser($id_user);
 
 		$this->load->view('layouts/header', $data);
@@ -480,6 +505,10 @@ class Pengadaan extends CI_Controller
 
 	public function proses($id_pengadaan)
 	{
+		if ($this->session->userdata('role') != '1') {
+			redirect('pengadaan');
+			return;
+		}
 		$data['status'] = '1';
 
 		$result = $this->mp->updatePengadaan($id_pengadaan, $data);
@@ -502,6 +531,12 @@ class Pengadaan extends CI_Controller
 
 	public function setujuiPengadaan($id_pengadaan)
 	{
+
+		if ($this->session->userdata('role') != '1') {
+			redirect('pengadaan');
+			return;
+		}
+
 		$data['status'] = '2';
 
 		$result = $this->mp->updatePengadaan($id_pengadaan, $data);
@@ -524,6 +559,11 @@ class Pengadaan extends CI_Controller
 
 	public function tolakPengadaan($id_pengadaan)
 	{
+
+		if ($this->session->userdata('role') != '1') {
+			redirect('pengadaan');
+			return;
+		}
 		$data['status'] = '3';
 
 		$result = $this->mp->updatePengadaan($id_pengadaan, $data);
@@ -543,8 +583,183 @@ class Pengadaan extends CI_Controller
 		redirect('pengadaan');
 	}
 
+	public function proses_multiple()
+	{
+		// Hanya administrator
+		if ($this->session->userdata('role') != '1') {
+			redirect('pengadaan');
+			return;
+		}
+
+		$id_pengadaan = $this->input->post('id_pengadaan');
+
+		if (empty($id_pengadaan)) {
+			$this->session->set_flashdata(
+				'gagal',
+				'Silakan pilih data yang ingin diproses.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
+		$berhasil = 0;
+
+		foreach ($id_pengadaan as $id) {
+
+			// Pastikan hanya status 0 yang diproses
+			$pengadaan = $this->mp->getPengadaanById($id);
+
+			if ($pengadaan && $pengadaan['status'] == '0') {
+
+				$result = $this->mp->updatePengadaan(
+					$id,
+					array('status' => '1')
+				);
+
+				if ($result) {
+					$berhasil++;
+				}
+			}
+		}
+
+		if ($berhasil > 0) {
+
+			$this->session->set_flashdata(
+				'sukses',
+				$berhasil . ' data pengadaan berhasil diproses dan menunggu persetujuan.'
+			);
+		} else {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Tidak ada data yang dapat diproses.'
+			);
+		}
+
+		redirect('pengadaan');
+	}
+
+	public function setujui_multiple()
+	{
+		// Hanya administrator
+		if ($this->session->userdata('role') != '1') {
+			redirect('pengadaan');
+			return;
+		}
+
+		$id_pengadaan = $this->input->post('id_pengadaan');
+
+		if (empty($id_pengadaan)) {
+			$this->session->set_flashdata(
+				'gagal',
+				'Silakan pilih data yang ingin disetujui.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
+		$berhasil = 0;
+
+		foreach ($id_pengadaan as $id) {
+
+			// Hanya status 1 yang boleh disetujui
+			$pengadaan = $this->mp->getPengadaanById($id);
+
+			if ($pengadaan && $pengadaan['status'] == '1') {
+
+				$result = $this->mp->updatePengadaan(
+					$id,
+					array('status' => '2')
+				);
+
+				if ($result) {
+					$berhasil++;
+				}
+			}
+		}
+
+		if ($berhasil > 0) {
+
+			$this->session->set_flashdata(
+				'sukses',
+				$berhasil . ' data pengadaan berhasil disetujui.'
+			);
+		} else {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Tidak ada data yang dapat disetujui.'
+			);
+		}
+
+		redirect('pengadaan');
+	}
+
+	public function tolak_multiple()
+	{
+		// Hanya administrator
+		if ($this->session->userdata('role') != '1') {
+			redirect('pengadaan');
+			return;
+		}
+
+		$id_pengadaan = $this->input->post('id_pengadaan');
+
+		if (empty($id_pengadaan)) {
+			$this->session->set_flashdata(
+				'gagal',
+				'Silakan pilih data yang ingin ditolak.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
+		$berhasil = 0;
+
+		foreach ($id_pengadaan as $id) {
+
+			// Hanya status 1 yang boleh ditolak
+			$pengadaan = $this->mp->getPengadaanById($id);
+
+			if ($pengadaan && $pengadaan['status'] == '1') {
+
+				$result = $this->mp->updatePengadaan(
+					$id,
+					array('status' => '3')
+				);
+
+				if ($result) {
+					$berhasil++;
+				}
+			}
+		}
+
+		if ($berhasil > 0) {
+
+			$this->session->set_flashdata(
+				'sukses',
+				$berhasil . ' data pengadaan berhasil ditolak.'
+			);
+		} else {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Tidak ada data yang dapat ditolak.'
+			);
+		}
+
+		redirect('pengadaan');
+	}
+
 	public function hapusPengadaan($id_pengadaan)
 	{
+		if ($this->session->userdata('role') != '1') {
+			redirect('pengadaan');
+			return;
+		}
 		$id_pengadaan = $this->uri->segment(3);
 		$where = array('id_pengadaan' => $id_pengadaan);
 		$res = $this->mp->deletePengadaan($where);
@@ -559,8 +774,24 @@ class Pengadaan extends CI_Controller
 
 	public function filterPengadaan()
 	{
-		$id_lokasi = $this->input->post('id_lokasi');
-		$tahun_pengadaan = $this->input->post('tahun_pengadaan');
+
+		if ($this->session->userdata('role') != '1') {
+			redirect('pengadaan');
+			return;
+		}
+		$id_user = $this->session->userdata('id_user');
+		$role    = $this->session->userdata('role');
+
+		$id_lokasi = $this->input->post('id_lokasi', true);
+		$tahun_pengadaan = $this->input->post('tahun_pengadaan', true);
+
+		// Simpan filter ke session
+		$filter = array(
+			'id_lokasi' => $id_lokasi,
+			'tahun_pengadaan' => $tahun_pengadaan
+		);
+
+		$this->session->set_userdata('filter_pengadaan', $filter);
 
 		$data = array(
 			'title' => 'Pengadaan',
@@ -568,17 +799,42 @@ class Pengadaan extends CI_Controller
 			'active_pengadaan' => 'active',
 			'active_menu_pgd' => 'active',
 			'lokasi' => $this->ml->getLokasi(),
-			'item' => $this->mp->getFilterPengadaanAset($id_lokasi, $tahun_pengadaan)
+			'filter' => $filter
 		);
 
-		if (count($data['item']) > 0) {
-			$this->load->view('layouts/header', $data);
-			$this->load->view('pengadaan/v_pengadaan', $data);
-			$this->load->view('layouts/footer');
+		if ($role == '1') {
+
+			// ADMIN
+			$data['item'] = $this->mp->getFilterPengadaanAset(
+				$id_lokasi,
+				$tahun_pengadaan
+			);
 		} else {
-			$this->session->set_flashdata('gagal', 'Data pengadaan tidak ditemukan');
-			redirect('pengadaan');
+
+			// MANAGER / USER
+			$data['item'] = $this->mp->getFilterPengadaanAsetByUser(
+				$id_user,
+				$id_lokasi,
+				$tahun_pengadaan
+			);
 		}
+
+		$data['item_user'] = $this->mp->getPengadaanAsetUser($id_user);
+
+		$this->load->view('layouts/header', $data);
+		$this->load->view('pengadaan/v_pengadaan', $data);
+		$this->load->view('layouts/footer');
+	}
+
+	public function reset_filter_pengadaan()
+	{
+		if ($this->session->userdata('role') != '1') {
+			redirect('pengadaan');
+			return;
+		}
+		$this->session->unset_userdata('filter_pengadaan');
+
+		redirect('pengadaan');
 	}
 
 	public function testpk()

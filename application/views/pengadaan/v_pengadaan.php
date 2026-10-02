@@ -50,11 +50,11 @@
                                 <option value="">- Pilih Lokasi -</option>
 
                                 <?php foreach ($lokasi as $row): ?>
-                                <option value="<?= $row['id_lokasi']; ?>">
+                                <option value="<?= $row['id_lokasi']; ?>"
+                                    <?= (!empty($filter['id_lokasi']) && $filter['id_lokasi'] == $row['id_lokasi']) ? 'selected' : ''; ?>>
                                     <?= $row['nama_lokasi']; ?>
                                 </option>
                                 <?php endforeach ?>
-
                             </select>
                         </div>
 
@@ -63,7 +63,8 @@
                                 <option value="">- Pilih Tahun -</option>
 
                                 <?php for ($tahun = 2008; $tahun <= date('Y'); $tahun++): ?>
-                                <option value="<?= $tahun; ?>">
+                                <option value="<?= $tahun; ?>"
+                                    <?= (!empty($filter['tahun_pengadaan']) && $filter['tahun_pengadaan'] == $tahun) ? 'selected' : ''; ?>>
                                     <?= $tahun; ?>
                                 </option>
                                 <?php endfor; ?>
@@ -77,10 +78,12 @@
                             </button>
                         </div>
 
+
                         <div class="col">
-                            <a href="<?= base_url('pengadaan'); ?>" class="btn btn-block btn-outline-danger">
+                            <button type="button" class="btn btn-block btn-outline-danger"
+                                onclick="resetFilterPengadaan()">
                                 Reset
-                            </a>
+                            </button>
                         </div>
 
                     </div>
@@ -94,18 +97,45 @@
                         id="formPrint">
 
                         <div class="mb-3">
-                            <button type="submit" class="btn btn-primary btn-sm" id="btnPrintMultiple"
+
+                            <!-- PROSES DATA TERPILIH -->
+                            <?php if ($this->session->userdata('role') == '1'): ?>
+                            <button type="button" class="btn btn-primary btn-sm" id="btnProsesMultiple"
+                                style="display: none;">
+                                <i class="fa fa-play"></i> Proses Data Terpilih
+                            </button>
+                            <?php endif; ?>
+
+                            <!-- SETUJUI DATA TERPILIH -->
+                            <?php if ($this->session->userdata('role') == '1'): ?>
+                            <button type="button" class="btn btn-success btn-sm" id="btnSetujuiMultiple"
+                                style="display: none;">
+                                <i class="fa fa-check"></i> Setujui Data Terpilih
+                            </button>
+
+                            <!-- TOLAK DATA TERPILIH -->
+                            <button type="button" class="btn btn-danger btn-sm" id="btnTolakMultiple"
+                                style="display: none;">
+                                <i class="fa fa-times"></i> Tolak Data Terpilih
+                            </button>
+                            <?php endif; ?>
+
+                            <!-- PRINT -->
+                            <button type="submit" class="btn btn-info btn-sm" id="btnPrintMultiple"
                                 style="display: none;">
                                 <i class="fas fa-print"></i> Print Data Terpilih
                             </button>
 
+                            <!-- PILIH SEMUA -->
                             <button type="button" class="btn btn-secondary btn-sm" id="pilihSemua">
                                 <i class="fas fa-check-square"></i> Pilih Semua
                             </button>
 
+                            <!-- HAPUS PILIHAN -->
                             <button type="button" class="btn btn-warning btn-sm" id="hapusPilihan">
                                 <i class="fas fa-times"></i> Hapus Pilihan
                             </button>
+
                         </div>
 
                         <table id="example1" class="table table-bordered table-striped">
@@ -121,6 +151,7 @@
                                     <th>Nama Aset</th>
                                     <th>Tahun</th>
                                     <th>Status</th>
+                                    <th>Sifat Pengadaan</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -137,7 +168,8 @@
                                     <!-- CHECKBOX -->
                                     <td>
                                         <input type="checkbox" name="id_pengadaan[]"
-                                            value="<?= $row['id_pengadaan']; ?>" class="checkItem">
+                                            value="<?= $row['id_pengadaan']; ?>" data-status="<?= $row['status']; ?>"
+                                            class="checkItem">
                                     </td>
 
                                     <td><?= $no++; ?></td>
@@ -234,6 +266,7 @@
                                         <?php endif; ?>
 
                                     </td>
+                                    <td><?= $row['sifat_pengadaan']; ?></td>
 
                                     <td>
 
@@ -353,6 +386,7 @@
                                     <th>Nama Aset</th>
                                     <th>Tahun</th>
                                     <th>Status</th>
+                                    <th>Sifat Pengadaan</th>
                                     <th>Aksi</th>
                                 </tr>
                             </tfoot>
@@ -381,31 +415,173 @@ $(function() {
     $("#example1").DataTable({
         "language": {
             "sSearch": "Cari"
-        }
+        },
+        "stateSave": true,
+        "stateDuration": -1
     });
 });
 
-$(document).ready(function() {
+function resetFilterPengadaan() {
 
-    // ==========================================
-    // FUNGSI SHOW / HIDE TOMBOL PRINT
-    // ==========================================
+    // Hapus state DataTables
+    if ($.fn.DataTable.isDataTable('#example1')) {
+        $('#example1').DataTable().state.clear();
+    }
+
+    // Hapus filter session
+    window.location.href = "<?= base_url('pengadaan/reset_filter'); ?>";
+}
+
+$(document).ready(function() {
     function cekPilihan() {
 
-        var jumlah = $('.checkItem:checked').length;
+        var checked = $('.checkItem:checked');
 
-        if (jumlah > 0) {
-            $('#btnPrintMultiple').show();
-        } else {
-            $('#btnPrintMultiple').hide();
+        var jumlah = checked.length;
+
+        // Sembunyikan semua tombol aksi terlebih dahulu
+        $('#btnProsesMultiple').hide();
+        $('#btnSetujuiMultiple').hide();
+        $('#btnTolakMultiple').hide();
+        $('#btnPrintMultiple').hide();
+
+        if (jumlah === 0) {
+            return;
         }
 
+        // Ambil status semua data yang dicentang
+        var semuaStatus = [];
+
+        checked.each(function() {
+            semuaStatus.push($(this).data('status').toString());
+        });
+
+        // Cek apakah semua status sama
+        var statusPertama = semuaStatus[0];
+
+        var statusSama = semuaStatus.every(function(status) {
+            return status === statusPertama;
+        });
+
+        // Kalau status campuran
+        if (!statusSama) {
+            return;
+        }
+
+        if (statusPertama === '0') {
+
+            $('#btnProsesMultiple').show();
+
+        } else if (statusPertama === '1') {
+
+            $('#btnSetujuiMultiple').show();
+            $('#btnTolakMultiple').show();
+
+        }
+
+        $('#btnPrintMultiple').show();
+    }
+
+    $('#btnProsesMultiple').click(function() {
+
+        var ids = $('.checkItem:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        if (ids.length === 0) {
+            alert('Silakan pilih data terlebih dahulu.');
+            return;
+        }
+
+        if (!confirm(
+                'Apakah Anda yakin ingin memproses ' +
+                ids.length +
+                ' data pengadaan?'
+            )) {
+            return;
+        }
+
+        kirimAksiMultiple(
+            "<?= base_url('pengadaan/proses_multiple'); ?>",
+            ids
+        );
+    });
+
+    function kirimAksiMultiple(url, ids) {
+
+        var form = $('<form>', {
+            method: 'POST',
+            action: url
+        });
+
+        $.each(ids, function(index, id) {
+
+            $('<input>', {
+                type: 'hidden',
+                name: 'id_pengadaan[]',
+                value: id
+            }).appendTo(form);
+
+        });
+
+        form.appendTo('body');
+        form.submit();
     }
 
 
-    // ==========================================
-    // CHECKBOX INDIVIDUAL
-    // ==========================================
+    $('#btnSetujuiMultiple').click(function() {
+
+        var ids = $('.checkItem:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        if (ids.length === 0) {
+            alert('Silakan pilih data terlebih dahulu.');
+            return;
+        }
+
+        if (!confirm(
+                'Apakah Anda yakin ingin menyetujui ' +
+                ids.length +
+                ' data pengadaan?'
+            )) {
+            return;
+        }
+
+        kirimAksiMultiple(
+            "<?= base_url('pengadaan/setujui_multiple'); ?>",
+            ids
+        );
+    });
+
+
+    $('#btnTolakMultiple').click(function() {
+
+        var ids = $('.checkItem:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        if (ids.length === 0) {
+            alert('Apakah Anda yakin ingin menolak ' +
+                ids.length +
+                ' data pengadaan?');
+            return;
+        }
+
+        if (!confirm(
+                'Apakah Anda yakin ingin menolak ' +
+                ids.length +
+                ' data pengadaan?'
+            )) {
+            return;
+        }
+
+        kirimAksiMultiple(
+            "<?= base_url('pengadaan/tolak_multiple'); ?>",
+            ids
+        );
+    });
+
     $('.checkItem').change(function() {
 
         // Cek tombol print
@@ -422,10 +598,6 @@ $(document).ready(function() {
 
     });
 
-
-    // ==========================================
-    // CHECK ALL
-    // ==========================================
     $('#checkAll').click(function() {
 
         $('.checkItem').prop(
@@ -438,10 +610,6 @@ $(document).ready(function() {
 
     });
 
-
-    // ==========================================
-    // PILIH SEMUA
-    // ==========================================
     $('#pilihSemua').click(function() {
 
         $('.checkItem').prop('checked', true);
@@ -454,9 +622,6 @@ $(document).ready(function() {
     });
 
 
-    // ==========================================
-    // HAPUS SEMUA PILIHAN
-    // ==========================================
     $('#hapusPilihan').click(function() {
 
         $('.checkItem').prop('checked', false);
@@ -468,10 +633,6 @@ $(document).ready(function() {
 
     });
 
-
-    // ==========================================
-    // VALIDASI SEBELUM PRINT
-    // ==========================================
     $('#formPrint').submit(function(e) {
 
         var jumlah = $('.checkItem:checked').length;
@@ -487,10 +648,6 @@ $(document).ready(function() {
 
     });
 
-
-    // ==========================================
-    // KONDISI AWAL
-    // ==========================================
     cekPilihan();
 
 });

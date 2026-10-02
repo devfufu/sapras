@@ -211,6 +211,14 @@ class ModelPengadaan extends CI_Model
 		return $res;
 	}
 
+	public function getPengadaanById($id_pengadaan)
+	{
+		$this->db->where('id_pengadaan', $id_pengadaan);
+		$query = $this->db->get('pengadaan');
+
+		return $query->row_array();
+	}
+
 	public function updatePengadaan($id_pengadaan, $data)
 	{
 		$this->db->where(array('id_pengadaan' => $id_pengadaan));

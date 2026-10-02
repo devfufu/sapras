@@ -105,6 +105,10 @@ $route['pengadaan/hapus/(:any)'] = 'Pengadaan/hapusPengadaan/(:any)';
 $route['pengadaan/filter'] = 'Pengadaan/filterPengadaan';
 $route['pengadaan/print/(:any)'] = 'Pengadaan/printPengadaan/$1';
 $route['pengadaan/print_multiple'] = 'Pengadaan/printMultiple';
+$route['pengadaan/reset_filter'] = 'Pengadaan/reset_filter_pengadaan';
+$route['pengadaan/proses_multiple'] = 'Pengadaan/proses_multiple';
+$route['pengadaan/setujui_multiple'] = 'Pengadaan/setujui_multiple';
+$route['pengadaan/tolak_multiple'] = 'Pengadaan/tolak_multiple';
 
 //Monitoring
 $route['monitoring'] = 'Monitoring/index';
