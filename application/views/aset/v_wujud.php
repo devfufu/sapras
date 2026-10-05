@@ -241,7 +241,9 @@
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th><input type="checkbox" id="checkAll"></th>
+                                    <?php if ($this->session->userdata('role') == '1'): ?>
+                                        <th><input type="checkbox" id="checkAll"></th>
+                                    <?php endif ?>
                                     <th>No.</th>
                                     <th>Foto</th>
                                     <th>Kode Aset</th>
@@ -257,8 +259,10 @@
                                 <?php $no = 1;
                                 foreach ($aset as $row): ?>
                                     <tr>
-                                        <td><input type="checkbox" name="id_aset[]" value="<?= $row['id_aset']; ?>"
-                                                class="checkItem"></td>
+                                        <?php if ($this->session->userdata('role') == '1'): ?>
+                                            <td><input type="checkbox" name="id_aset[]" value="<?= $row['id_aset']; ?>"
+                                                    class="checkItem"></td>
+                                        <?php endif ?>
                                         <td><?= $no++; ?></td>
                                         <td align="center">
                                             <?php if (!empty($row['foto_aset'])): ?>
@@ -300,7 +304,9 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th></th>
+                                    <?php if ($this->session->userdata('role') == '1'): ?>
+                                        <th></th>
+                                    <?php endif ?>
                                     <th>No.</th>
                                     <th>Foto</th>
                                     <th>Kode Aset</th>

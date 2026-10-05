@@ -983,9 +983,6 @@ class Pengadaan extends CI_Controller
 
 	public function resetStatus($id_pengadaan)
 	{
-		// ==========================================
-		// HANYA ADMIN / ROLE 1
-		// ==========================================
 
 		if ($this->session->userdata('role') != '1') {
 
@@ -997,10 +994,6 @@ class Pengadaan extends CI_Controller
 			redirect('pengadaan');
 			return;
 		}
-
-		// ==========================================
-		// CEK DATA PENGADAAN
-		// ==========================================
 
 		$pengadaan = $this->mp->getPengadaanById($id_pengadaan);
 
@@ -1015,12 +1008,42 @@ class Pengadaan extends CI_Controller
 			return;
 		}
 
-		// ==========================================
-		// KEMBALIKAN KE STATUS 0
-		// ==========================================
+		$statusLama = (string) $pengadaan['status'];
+
+		if ($statusLama == '1') {
+
+			// DIPROSES -> BELUM DIPROSES
+			$statusBaru = '0';
+
+			$pesan =
+				'Status pengadaan berhasil dikembalikan ke Belum Diproses.';
+		} elseif ($statusLama == '2') {
+
+			// DISETUJUI -> MENUNGGU PERSETUJUAN
+			$statusBaru = '1';
+
+			$pesan =
+				'Persetujuan berhasil dibatalkan. Data dikembalikan ke Menunggu Persetujuan.';
+		} elseif ($statusLama == '3') {
+
+			// DITOLAK -> MENUNGGU PERSETUJUAN
+			$statusBaru = '1';
+
+			$pesan =
+				'Data yang ditolak berhasil dikembalikan ke Menunggu Persetujuan.';
+		} else {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Status pengadaan tidak dapat direset.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
 
 		$data = array(
-			'status' => '0'
+			'status' => $statusBaru
 		);
 
 		$result = $this->mp->updatePengadaan(
@@ -1032,7 +1055,7 @@ class Pengadaan extends CI_Controller
 
 			$this->session->set_flashdata(
 				'sukses',
-				'Status pengadaan berhasil dikembalikan ke Belum Diproses.'
+				$pesan
 			);
 		} else {
 

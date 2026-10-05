@@ -308,8 +308,7 @@
                                                     $row['status'] != '0'
                                                 ): ?>
                                                     <a href="<?= base_url('pengadaan/reset_status/' . $row['id_pengadaan']) ?>"
-                                                        class="btn btn-warning btn-sm tombol-reset-status" title="Reset Status"
-                                                        data-status="<?= $row['status']; ?>">
+                                                        class="btn btn-warning btn-sm tombol-reset-status" title="Reset Status">
                                                         <i class="fas fa-undo"></i>
                                                     </a>
                                                 <?php endif ?>
@@ -392,13 +391,11 @@
                                                         $row['status'] == '2'
                                                     )
                                                 ): ?>
-
                                                     <!-- PRINT -->
                                                     <a href="<?= base_url('pengadaan/print/' . $row['id_pengadaan']) ?>"
                                                         class="btn btn-info btn-sm" target="_blank" title="Print">
                                                         <i class="fas fa-print"></i>
                                                     </a>
-
                                                 <?php endif; ?>
                                                 <?php if ($this->session->userdata('role') == '1'): ?>
                                                     <!-- HAPUS -->
@@ -472,49 +469,6 @@
         // Hapus filter session
         window.location.href = "<?= base_url('pengadaan/reset_filter'); ?>";
     }
-
-    $(document).on('click', '.tombol-reset-status', function(e) {
-
-        e.preventDefault();
-
-        var url = $(this).attr('href');
-
-        var status = $(this).data('status');
-
-        var pesan = '';
-
-        if (status == '1') {
-
-            pesan =
-                'Data sedang dalam status DIPROSES.\n\n' +
-                'Apakah Anda yakin ingin mengembalikannya ke BELUM DIPROSES?';
-
-        } else if (status == '2') {
-
-            pesan =
-                'Data sudah DISETUJUI.\n\n' +
-                'Apakah Anda yakin ingin membatalkan persetujuan dan mengembalikannya ke BELUM DIPROSES?';
-
-        } else if (status == '3') {
-
-            pesan =
-                'Data sudah DITOLAK.\n\n' +
-                'Apakah Anda yakin ingin mengembalikannya ke BELUM DIPROSES?';
-
-        } else {
-
-            pesan =
-                'Data sudah dalam status BELUM DIPROSES.\n\n' +
-                'Apakah Anda yakin ingin mereset statusnya?';
-        }
-
-        if (confirm(pesan)) {
-
-            window.location.href = url;
-
-        }
-
-    });
 
     $(document).ready(function() {
         function cekPilihan() {
