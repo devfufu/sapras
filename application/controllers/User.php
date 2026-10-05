@@ -24,6 +24,18 @@ class User extends CI_Controller
 	//menampilkan data user
 	public function users()
 	{
+
+		if ($this->session->userdata('role') != '1') {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$data = array(
 			'title' => 'Data User',
 			'active_menu_master' => 'menu-open',
@@ -39,6 +51,17 @@ class User extends CI_Controller
 
 	public function tambahUser()
 	{
+
+		if ($this->session->userdata('role') != '1') {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
 		$this->form_validation->set_rules(
 			'username',
 			'Username',
@@ -137,6 +160,17 @@ class User extends CI_Controller
 
 	public function hapusUser($id_user)
 	{
+		if ($this->session->userdata('role') != '1') {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$id_user = $this->uri->segment(3);
 		$where = array('id_user' => $id_user);
 		$res = $this->mu->delete_user($where);
@@ -151,6 +185,21 @@ class User extends CI_Controller
 
 	public function pengaturan()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$data = array(
 			'title' => 'Data User',
 			'active_menu_png' => 'active',
@@ -162,6 +211,22 @@ class User extends CI_Controller
 
 	public function updateUser()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
+
 		$id_user = $this->session->userdata('id_user');
 		if ($_FILES['foto']['name']) {
 
@@ -230,6 +295,21 @@ class User extends CI_Controller
 
 	public function updatePassword()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$this->form_validation->set_rules(
 			'password',
 			'Password Baru',
@@ -275,6 +355,19 @@ class User extends CI_Controller
 
 	public function editUsers($id_user)
 	{
+		if (
+			$this->session->userdata('role') != '1'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$data = array(
 			'title' => 'Edit User',
 			'users' => $this->mu->getUserById($id_user),
@@ -288,6 +381,19 @@ class User extends CI_Controller
 
 	public function updateUsers()
 	{
+		if (
+			$this->session->userdata('role') != '1'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$id_user = $this->input->post('id_user');
 		$role    = $this->input->post('role', true);
 
@@ -342,6 +448,19 @@ class User extends CI_Controller
 
 	public function resetPassword($id_user)
 	{
+		if (
+			$this->session->userdata('role') != '1'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$password_baru = password_hash('123456', PASSWORD_DEFAULT);
 
 		$data = [
@@ -364,6 +483,19 @@ class User extends CI_Controller
 
 	public function importUsers()
 	{
+		if (
+			$this->session->userdata('role') != '1'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		if (!empty($_FILES['file_excel']['tmp_name'])) {
 
 			$file = $_FILES['file_excel']['tmp_name'];

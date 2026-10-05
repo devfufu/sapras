@@ -30,6 +30,20 @@ class Aset extends CI_Controller
 
 	public function index()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$idUser = $this->session->userdata('id_user');
 
 		// Ambil filter terakhir dari session
@@ -71,6 +85,21 @@ class Aset extends CI_Controller
 
 	public function printAset($id)
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$data['aset'] = $this->ma->getDetailAsetPrint($id);
 
 		if (!$data['aset']) {
@@ -82,6 +111,21 @@ class Aset extends CI_Controller
 
 	public function printMultiple()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$id_aset = $this->input->post('id_aset');
 
 		if (empty($id_aset)) {
@@ -101,6 +145,21 @@ class Aset extends CI_Controller
 
 	public function tambahAset()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$data = array(
 			'title' => 'Aset Berwujud',
 			'active_menu_open' => 'menu-open',
@@ -117,6 +176,21 @@ class Aset extends CI_Controller
 
 	public function tambahAsetBaru()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$data = array(
 			'title' => 'Aset Berwujud Baru',
 			'active_menu_open' => 'menu-open',
@@ -135,6 +209,21 @@ class Aset extends CI_Controller
 
 	public function generateKodeAset()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$dana = $this->input->post('dana');
 		$kategori = $this->input->post('kategori');
 
@@ -150,6 +239,21 @@ class Aset extends CI_Controller
 
 	public function simpanAsetBaru()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$this->form_validation->set_rules(
 			'kode_aset',
 			'Kode Aset',
@@ -271,6 +375,21 @@ class Aset extends CI_Controller
 
 	public function simpanAset()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$this->form_validation->set_rules(
 			'kode_aset',
 			'Kode Aset',
@@ -392,6 +511,21 @@ class Aset extends CI_Controller
 
 	public function editAset($id_aset)
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$id_aset = $this->uri->segment(3);
 
 		$data = array(
@@ -410,6 +544,21 @@ class Aset extends CI_Controller
 
 	public function ubahAset()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$this->form_validation->set_rules(
 			'kode_aset',
 			'Kode Aset',
@@ -592,6 +741,21 @@ class Aset extends CI_Controller
 
 	public function detailAset($id_aset)
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$id_aset = $this->uri->segment(3);
 		$data = array(
 			'title' => 'Aset Berwujud',
@@ -607,6 +771,21 @@ class Aset extends CI_Controller
 
 	public function hapusAset($id_aset)
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$id_aset = $this->uri->segment(3);
 
 		// ambil data dulu
@@ -642,6 +821,21 @@ class Aset extends CI_Controller
 
 	public function filterAset()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$id_kategori = $this->input->post('id_kategori', true);
 		$tahun_perolehan = $this->input->post('tahun_perolehan', true);
 		$kondisi = $this->input->post('kondisi', true);
@@ -683,12 +877,42 @@ class Aset extends CI_Controller
 
 	public function reset_filter()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$this->session->unset_userdata('filter_aset_wujud');
 
 		redirect('aset_wujud');
 	}
 	public function dihapuskanAset()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$data = array(
 			'title' => 'Aset Dihapuskan',
 			'active_menu_open' => 'menu-open',
@@ -704,6 +928,21 @@ class Aset extends CI_Controller
 
 	public function detailDihapuskanAset($id_aset)
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$id_aset = $this->uri->segment(3);
 		$data = array(
 			'title' => 'Aset Berwujud',
@@ -719,6 +958,21 @@ class Aset extends CI_Controller
 
 	public function filterAsetDihapuskan()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$id_kategori = $this->input->post('id_kategori');
 		$tgl_penghapusan = $this->input->post('tgl_penghapusan');
 
@@ -742,6 +996,21 @@ class Aset extends CI_Controller
 
 	public function cariAset()
 	{
+		if (
+			$this->session->userdata('role') != '1' &&
+			$this->session->userdata('role') != '2' &&
+			$this->session->userdata('role') != '3'
+		) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
 		$bar = $this->input->get('bar');
 		$query = $this->ma->searchAset($bar, 'nama_barang');
 
