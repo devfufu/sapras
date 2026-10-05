@@ -168,6 +168,10 @@ $route['laporan/notifikasi'] = 'Laporan/notifikasi';
 $route['laporan/dataAsetPrint'] = 'Laporan/dataAsetPrint';
 $route['laporan/printDataAset'] = 'Laporan/printDataAset';
 
+//Habis Pakai Barang
+$route['habis'] = 'Habis/index';
+$route['habisData'] = 'Habis/data';
+
 //Settingan 
 $route['(:any)'] = 'errors/show_404';
 $route['(:any)/(:any)'] = 'errors/show_404';

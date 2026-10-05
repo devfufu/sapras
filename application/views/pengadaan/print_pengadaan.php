@@ -328,7 +328,7 @@ $tahun1 = date('Y');
             <th>Satuan</th>
             <th>Est.Harga Satuan</th>
             <th>Est.Total Harga</th>
-            <th>Keterangan/alasan</th>
+            <!-- <th>Keterangan/alasan</th> -->
         </tr>
         <tr>
             <?php
@@ -356,9 +356,9 @@ $tahun1 = date('Y');
             <td>
                 <?= number_format($total_harga, 0, ',', '.'); ?>
             </td>
-            <td>
+            <!-- <td>
 
-            </td>
+            </td> -->
         </tr>
     </table>
     <div class="penutup">

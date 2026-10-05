@@ -35,27 +35,133 @@ class Pengadaan extends CI_Controller
 
 	public function printPengadaan($id)
 	{
-		$data['pengadaan'] = $this->mp->getDetailPengadaan($id);
+		$role = $this->session->userdata('role');
 
-		if (!$data['pengadaan']) {
+		// Ambil data pengadaan
+		$pengadaan = $this->mp->getDetailPengadaan($id);
+
+		if (!$pengadaan) {
 			show_404();
 		}
+
+		// ==========================================
+		// KEAMANAN PRINT
+		// ==========================================
+
+		// Role 2 / Manager hanya boleh print
+		// jika pengadaan sudah DISETUJUI (status = 2)
+		if ($role == '2' && $pengadaan['status'] != '2') {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Data pengadaan belum disetujui oleh administrator, sehingga belum dapat dicetak.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
+		// Selain role 1 dan 2 tidak boleh print
+		if ($role != '1' && $role != '2') {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mencetak data pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
+		$data['pengadaan'] = $pengadaan;
 
 		$this->load->view('pengadaan/print_pengadaan', $data);
 	}
 
 	public function printMultiple()
 	{
-		$id_pengadaan = $this->input->post('id_pengadaan');
+		$role = $this->session->userdata('role');
 
-		if (empty($id_pengadaan)) {
-			echo "Tidak ada data yang dipilih.";
+		// ==========================================
+		// CEK ROLE
+		// ==========================================
+
+		if ($role != '1' && $role != '2') {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mencetak data pengadaan.'
+			);
+
+			redirect('pengadaan');
 			return;
 		}
 
-		$data['pengadaan'] = $this->mp->getPengadaanByIds($id_pengadaan);
+		$id_pengadaan = $this->input->post('id_pengadaan');
 
-		$this->load->view('pengadaan/print_pengadaan_multiple', $data);
+		if (empty($id_pengadaan) || !is_array($id_pengadaan)) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Silakan pilih data yang ingin dicetak.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
+		// ==========================================
+		// CEK SETIAP DATA
+		// ==========================================
+
+		$id_valid = array();
+
+		foreach ($id_pengadaan as $id) {
+
+			$pengadaan = $this->mp->getPengadaanById($id);
+
+			if (!$pengadaan) {
+				continue;
+			}
+
+			// ADMIN = boleh print semua status
+			if ($role == '1') {
+
+				$id_valid[] = $id;
+			}
+
+			// MANAGER = hanya status 2 / DISETUJUI
+			elseif ($role == '2' && $pengadaan['status'] == '2') {
+
+				$id_valid[] = $id;
+			}
+		}
+
+		// ==========================================
+		// TIDAK ADA DATA YANG BOLEH DICETAK
+		// ==========================================
+
+		if (empty($id_valid)) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Tidak ada data pengadaan yang sudah disetujui untuk dicetak.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
+		// ==========================================
+		// AMBIL DATA YANG SUDAH LOLOS VALIDASI
+		// ==========================================
+
+		$data['pengadaan'] = $this->mp->getPengadaanByIds($id_valid);
+
+		$this->load->view(
+			'pengadaan/print_pengadaan_multiple',
+			$data
+		);
 	}
 
 	public function ubahSpesifikasi()
