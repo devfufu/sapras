@@ -45,23 +45,9 @@ class Pengadaan extends CI_Controller
 		}
 
 		// ==========================================
-		// KEAMANAN PRINT
+		// CEK ROLE
 		// ==========================================
 
-		// Role 2 / Manager hanya boleh print
-		// jika pengadaan sudah DISETUJUI (status = 2)
-		if ($role == '2' && $pengadaan['status'] != '2') {
-
-			$this->session->set_flashdata(
-				'gagal',
-				'Data pengadaan belum disetujui oleh administrator, sehingga belum dapat dicetak.'
-			);
-
-			redirect('pengadaan');
-			return;
-		}
-
-		// Selain role 1 dan 2 tidak boleh print
 		if ($role != '1' && $role != '2') {
 
 			$this->session->set_flashdata(
@@ -73,9 +59,32 @@ class Pengadaan extends CI_Controller
 			return;
 		}
 
+		// ==========================================
+		// MANAGER
+		// HANYA BOLEH PRINT JIKA STATUS = 2
+		// ==========================================
+
+		if ($role == '2' && $pengadaan['status'] != '2') {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Data pengadaan belum disetujui oleh administrator, sehingga belum dapat dicetak.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
+		// ==========================================
+		// PRINT
+		// ==========================================
+
 		$data['pengadaan'] = $pengadaan;
 
-		$this->load->view('pengadaan/print_pengadaan', $data);
+		$this->load->view(
+			'pengadaan/print_pengadaan',
+			$data
+		);
 	}
 
 	public function printMultiple()
@@ -111,7 +120,7 @@ class Pengadaan extends CI_Controller
 		}
 
 		// ==========================================
-		// CEK SETIAP DATA
+		// VALIDASI DATA
 		// ==========================================
 
 		$id_valid = array();
@@ -124,13 +133,21 @@ class Pengadaan extends CI_Controller
 				continue;
 			}
 
-			// ADMIN = boleh print semua status
+			// ======================================
+			// ADMIN
+			// BOLEH PRINT SEMUA STATUS
+			// ======================================
+
 			if ($role == '1') {
 
 				$id_valid[] = $id;
 			}
 
-			// MANAGER = hanya status 2 / DISETUJUI
+			// ======================================
+			// MANAGER
+			// HANYA STATUS 2
+			// ======================================
+
 			elseif ($role == '2' && $pengadaan['status'] == '2') {
 
 				$id_valid[] = $id;
@@ -138,7 +155,7 @@ class Pengadaan extends CI_Controller
 		}
 
 		// ==========================================
-		// TIDAK ADA DATA YANG BOLEH DICETAK
+		// TIDAK ADA DATA YANG VALID
 		// ==========================================
 
 		if (empty($id_valid)) {
@@ -153,7 +170,7 @@ class Pengadaan extends CI_Controller
 		}
 
 		// ==========================================
-		// AMBIL DATA YANG SUDAH LOLOS VALIDASI
+		// AMBIL DATA YANG LOLOS VALIDASI
 		// ==========================================
 
 		$data['pengadaan'] = $this->mp->getPengadaanByIds($id_valid);
@@ -962,6 +979,70 @@ class Pengadaan extends CI_Controller
 		}
 
 		echo "<p>Dari hasil perhitungan ranking diatas, maka pemilihan aset terbaik untuk pengadaan dengan nilai tertinggi " . $output;
+	}
+
+	public function resetStatus($id_pengadaan)
+	{
+		// ==========================================
+		// HANYA ADMIN / ROLE 1
+		// ==========================================
+
+		if ($this->session->userdata('role') != '1') {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
+		// ==========================================
+		// CEK DATA PENGADAAN
+		// ==========================================
+
+		$pengadaan = $this->mp->getPengadaanById($id_pengadaan);
+
+		if (!$pengadaan) {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Data pengadaan tidak ditemukan.'
+			);
+
+			redirect('pengadaan');
+			return;
+		}
+
+		// ==========================================
+		// KEMBALIKAN KE STATUS 0
+		// ==========================================
+
+		$data = array(
+			'status' => '0'
+		);
+
+		$result = $this->mp->updatePengadaan(
+			$id_pengadaan,
+			$data
+		);
+
+		if ($result) {
+
+			$this->session->set_flashdata(
+				'sukses',
+				'Status pengadaan berhasil dikembalikan ke Belum Diproses.'
+			);
+		} else {
+
+			$this->session->set_flashdata(
+				'gagal',
+				'Status pengadaan gagal dikembalikan.'
+			);
+		}
+
+		redirect('pengadaan');
 	}
 }
 

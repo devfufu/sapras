@@ -109,6 +109,7 @@ $route['pengadaan/reset_filter'] = 'Pengadaan/reset_filter_pengadaan';
 $route['pengadaan/proses_multiple'] = 'Pengadaan/proses_multiple';
 $route['pengadaan/setujui_multiple'] = 'Pengadaan/setujui_multiple';
 $route['pengadaan/tolak_multiple'] = 'Pengadaan/tolak_multiple';
+$route['pengadaan/reset_status/(:num)'] = 'Pengadaan/resetStatus/$1';
 
 //Monitoring
 $route['monitoring'] = 'Monitoring/index';
