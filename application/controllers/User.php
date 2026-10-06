@@ -24,15 +24,15 @@ class User extends CI_Controller
 	//menampilkan data user
 	public function users()
 	{
-
-		if ($this->session->userdata('role') != '1') {
+		$role = $this->session->userdata('role');
+		if (in_array($role, ['1'])) {
 
 			$this->session->set_flashdata(
 				'gagal',
-				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+				'Anda tidak memiliki akses ke data user.'
 			);
 
-			redirect('pengadaan');
+			redirect('/');
 			return;
 		}
 
@@ -51,17 +51,18 @@ class User extends CI_Controller
 
 	public function tambahUser()
 	{
-
-		if ($this->session->userdata('role') != '1') {
+		$role = $this->session->userdata('role');
+		if (in_array($role, ['1'])) {
 
 			$this->session->set_flashdata(
 				'gagal',
-				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+				'Anda tidak memiliki akses ke data user.'
 			);
 
-			redirect('pengadaan');
+			redirect('/');
 			return;
 		}
+
 		$this->form_validation->set_rules(
 			'username',
 			'Username',
@@ -160,14 +161,15 @@ class User extends CI_Controller
 
 	public function hapusUser($id_user)
 	{
-		if ($this->session->userdata('role') != '1') {
+		$role = $this->session->userdata('role');
+		if (in_array($role, ['1'])) {
 
 			$this->session->set_flashdata(
 				'gagal',
-				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+				'Anda tidak memiliki akses ke data user.'
 			);
 
-			redirect('pengadaan');
+			redirect('/');
 			return;
 		}
 
@@ -185,18 +187,15 @@ class User extends CI_Controller
 
 	public function pengaturan()
 	{
-		if (
-			$this->session->userdata('role') != '1' &&
-			$this->session->userdata('role') != '2' &&
-			$this->session->userdata('role') != '3'
-		) {
+		$role = $this->session->userdata('role');
+		if (in_array($role, ['1', '2', '3'])) {
 
 			$this->session->set_flashdata(
 				'gagal',
-				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+				'Anda tidak memiliki akses ke data user.'
 			);
 
-			redirect('pengadaan');
+			redirect('/');
 			return;
 		}
 
@@ -211,21 +210,17 @@ class User extends CI_Controller
 
 	public function updateUser()
 	{
-		if (
-			$this->session->userdata('role') != '1' &&
-			$this->session->userdata('role') != '2' &&
-			$this->session->userdata('role') != '3'
-		) {
+		$role = $this->session->userdata('role');
+		if (in_array($role, ['1', '2', '3'])) {
 
 			$this->session->set_flashdata(
 				'gagal',
-				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+				'Anda tidak memiliki akses ke data user.'
 			);
 
-			redirect('pengadaan');
+			redirect('/');
 			return;
 		}
-
 
 		$id_user = $this->session->userdata('id_user');
 		if ($_FILES['foto']['name']) {
@@ -295,11 +290,8 @@ class User extends CI_Controller
 
 	public function updatePassword()
 	{
-		if (
-			$this->session->userdata('role') != '1' &&
-			$this->session->userdata('role') != '2' &&
-			$this->session->userdata('role') != '3'
-		) {
+		$role = $this->session->userdata('role');
+		if (in_array($role, ['1', '2', '3'])) {
 
 			$this->session->set_flashdata(
 				'gagal',
@@ -355,16 +347,15 @@ class User extends CI_Controller
 
 	public function editUsers($id_user)
 	{
-		if (
-			$this->session->userdata('role') != '1'
-		) {
+		$role = $this->session->userdata('role');
+		if (in_array($role, ['1'])) {
 
 			$this->session->set_flashdata(
 				'gagal',
-				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+				'Anda tidak memiliki akses ke data user.'
 			);
 
-			redirect('pengadaan');
+			redirect('/');
 			return;
 		}
 
@@ -381,16 +372,15 @@ class User extends CI_Controller
 
 	public function updateUsers()
 	{
-		if (
-			$this->session->userdata('role') != '1'
-		) {
+		$role = $this->session->userdata('role');
+		if (in_array($role, ['1'])) {
 
 			$this->session->set_flashdata(
 				'gagal',
-				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+				'Anda tidak memiliki akses ke data user.'
 			);
 
-			redirect('pengadaan');
+			redirect('/');
 			return;
 		}
 
@@ -448,16 +438,15 @@ class User extends CI_Controller
 
 	public function resetPassword($id_user)
 	{
-		if (
-			$this->session->userdata('role') != '1'
-		) {
+		$role = $this->session->userdata('role');
+		if (in_array($role, ['1'])) {
 
 			$this->session->set_flashdata(
 				'gagal',
-				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+				'Anda tidak memiliki akses ke data user.'
 			);
 
-			redirect('pengadaan');
+			redirect('/');
 			return;
 		}
 
@@ -483,16 +472,15 @@ class User extends CI_Controller
 
 	public function importUsers()
 	{
-		if (
-			$this->session->userdata('role') != '1'
-		) {
+		$role = $this->session->userdata('role');
+		if (in_array($role, ['1'])) {
 
 			$this->session->set_flashdata(
 				'gagal',
-				'Anda tidak memiliki akses untuk mengembalikan status pengadaan.'
+				'Anda tidak memiliki akses ke data user.'
 			);
 
-			redirect('pengadaan');
+			redirect('/');
 			return;
 		}
 
