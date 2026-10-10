@@ -3,6 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Habis extends CI_Controller
 {
+
     public function __construct()
     {
         parent::__construct();
@@ -15,19 +16,17 @@ class Habis extends CI_Controller
     {
         $data = array(
             'title' => 'Habis Pakai Barang',
-
-            // Untuk membuka menu Habis Pakai
             'active_menu_open_hpb' => 'menu-open',
-
-            // Untuk membuat menu Habis Pakai aktif
             'active_habis' => 'active',
+            'active_menu_hpb' => 'active',
 
-            // Untuk membuat submenu Habis Pakai Barang aktif
-            'active_menu_hpb' => 'active'
+            'pesan' => 'Mohon maaf, halaman Habis Pakai Barang sedang dalam perbaikan. Kami sedang melakukan pembaruan sistem agar layanan menjadi lebih baik.',
+            'estimasi' => 'Silakan coba kembali beberapa saat lagi.'
         );
 
         $this->load->view('layouts/header', $data);
-        $this->load->view('habis/v_habis', $data);
+        //$this->load->view('habis/v_data', $data);
+        $this->load->view('layouts/maintenance', $data);
         $this->load->view('layouts/footer');
     }
 
@@ -35,19 +34,17 @@ class Habis extends CI_Controller
     {
         $data = array(
             'title' => 'Data Habis Pakai',
-
-            // Untuk membuka menu Habis Pakai
             'active_menu_open_hpb' => 'menu-open',
-
-            // Untuk membuat menu Habis Pakai aktif
             'active_habis' => 'active',
+            'active_menu_hd' => 'active',
 
-            // Untuk membuat submenu Lihat Data aktif
-            'active_menu_hd' => 'active'
+            'pesan' => 'Mohon maaf, halaman Habis Pakai Barang sedang dalam perbaikan. Kami sedang melakukan pembaruan sistem agar layanan menjadi lebih baik.',
+            'estimasi' => 'Silakan coba kembali beberapa saat lagi.'
         );
 
         $this->load->view('layouts/header', $data);
-        $this->load->view('habis/v_data', $data);
+        //$this->load->view('habis/v_data', $data);
+        $this->load->view('layouts/maintenance', $data);
         $this->load->view('layouts/footer');
     }
 }
