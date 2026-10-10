@@ -268,32 +268,33 @@
                                     </li>
                                 </ul>
                             </li>
-
-                            <li class="nav-item has-treeview
+                            <?php if ($this->session->userdata('role') == '1'): ?>
+                                <li class="nav-item has-treeview
                                 <?= isset($active_menu_open_hpb) ? $active_menu_open_hpb : '' ?>">
-                                <a href="#" class="nav-link <?= isset($active_habis) ? $active_habis : '' ?>">
-                                    <i class="nav-icon fas fa-eraser"></i>
-                                    <p>Habis Pakai
-                                        <i class="fas fa-angle-left right"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="<?= base_url('habis') ?>"
-                                            class="nav-link <?= isset($active_menu_hpb) ? $active_menu_hpb : '' ?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Habis Pakai Barang</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="<?= base_url('habisData') ?>"
-                                            class="nav-link <?= isset($active_menu_hd) ? $active_menu_hd : '' ?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Lihat Data</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                                    <a href="#" class="nav-link <?= isset($active_habis) ? $active_habis : '' ?>">
+                                        <i class="nav-icon fas fa-eraser"></i>
+                                        <p>Habis Pakai
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('habis') ?>"
+                                                class="nav-link <?= isset($active_menu_hpb) ? $active_menu_hpb : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Habis Pakai Barang</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= base_url('habisData') ?>"
+                                                class="nav-link <?= isset($active_menu_hd) ? $active_menu_hd : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Lihat Data</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            <?php endif ?>
 
                             <li class="nav-item has-treeview">
                                 <a href="<?= base_url('monitoring') ?>"
