@@ -25,7 +25,7 @@ class Aset extends CI_Controller
 
 	private function getUrlQrAset($id_aset)
 	{
-		return base_url('ai/ai_aset/detail/' . $id_aset);
+		return base_url('aset/detail/' . $id_aset);
 	}
 
 	public function index()
@@ -832,6 +832,7 @@ class Aset extends CI_Controller
 
 			// URL BARU
 			$url = $this->getUrlQrAset($id_aset);
+			log_message('error', 'URL QR AKTIF: ' . $url);
 
 			$params = array(
 				'data' => $url,
