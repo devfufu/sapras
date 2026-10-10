@@ -220,7 +220,7 @@ class Aset extends CI_Controller
 
 				$this->ciqrcode->initialize($config);
 
-				$image_name = 'qr_' . $id_aset . '.png';
+				$image_name = $id_aset . '.png';
 
 				$url = $this->getUrlQrAset($id_aset);
 
@@ -342,7 +342,7 @@ class Aset extends CI_Controller
 
 				$this->ciqrcode->initialize($config);
 
-				$image_name = 'qr_' . $id_aset . '.png';
+				$image_name = $id_aset . '.png';
 
 				$url = $this->getUrlQrAset($id_aset);
 
@@ -451,7 +451,7 @@ class Aset extends CI_Controller
 				$id = $this->uuid->v4();
 				$image = str_replace('-', '', $id);
 
-				$image_name = 'qr_' . $id_aset . '.png'; //buat name dari qr code sesuai dengan nim
+				$image_name = $id_aset . '.png'; //buat name dari qr code sesuai dengan nim
 
 				$url = $this->getUrlQrAset($id_aset);
 
@@ -828,7 +828,7 @@ class Aset extends CI_Controller
 
 			$id_aset = $aset->id_aset;
 
-			$image_name = 'qr_' . $id_aset . '.png';
+			$image_name = $id_aset . '.png';
 
 			// URL BARU
 			$url = $this->getUrlQrAset($id_aset);

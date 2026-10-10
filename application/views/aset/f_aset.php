@@ -51,7 +51,7 @@
                   <td width="50px">:</td>
                   <td><?= $d['kode_kategori'] ?> - <?= $d['nama_kategori'] ?></td>
                 </tr>
-                div
+
                 <tr>
                   <td width="100px">Merek</td>
                   <td width="50px">:</td>

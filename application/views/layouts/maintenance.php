@@ -49,10 +49,10 @@
                         </p>
 
                         <?php if (!empty($estimasi)) : ?>
-                            <div class="text-muted mb-4">
-                                <i class="far fa-clock mr-1"></i>
-                                <?= html_escape($estimasi) ?>
-                            </div>
+                        <div class="text-muted mb-4">
+                            <i class="far fa-clock mr-1"></i>
+                            <?= html_escape($estimasi) ?>
+                        </div>
                         <?php endif; ?>
 
                         <a href="<?= base_url('home') ?>" class="btn btn-primary px-4">
